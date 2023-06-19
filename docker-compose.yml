@@ -1,0 +1,25 @@
+version: '3'
+
+networks:
+  chirp:
+
+services:
+  api:
+    image: node:18-alpine
+    working_dir: /usr/src/app/
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend/:/usr/src/app/
+    command: npm run dev
+    networks:
+      - chirp
+  
+  npm:
+    image: node:18-alpine
+    working_dir: /usr/src/app/
+    volumes:
+      - ./backend/:/usr/src/app/
+    entrypoint: 'npm'
+    networks:
+      - chirp
