@@ -12,15 +12,34 @@ services:
     volumes:
       - ./backend/:/usr/src/app/
     command: npm run dev
+    depends_on:
+      - mysql
     networks:
       - chirp
   
+  mysql:
+    image: mariadb:10
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: chirp
+      MARIADB_USER: root
+      MARIADB_PASSWORD: secret
+      MARIADB_ROOT_PASSWORD: secret
+    networks:
+      - chirp
+
   prisma:
     image: node:18-alpine
     working_dir: /usr/src/app/src/
     volumes:
       - ./backend/:/usr/src/app/
     entrypoint: 'npx prisma'
+    depends_on:
+      - mysql
     networks:
       - chirp
 
