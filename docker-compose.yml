@@ -15,6 +15,15 @@ services:
     networks:
       - chirp
   
+  prisma:
+    image: node:18-alpine
+    working_dir: /usr/src/app/src/
+    volumes:
+      - ./backend/:/usr/src/app/
+    entrypoint: 'npx prisma'
+    networks:
+      - chirp
+
   npm:
     image: node:18-alpine
     working_dir: /usr/src/app/
