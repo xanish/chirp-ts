@@ -3,6 +3,7 @@ import './bootstrap/env.js';
 import morgan from 'morgan';
 import express, { Express, Request, Response, NextFunction } from 'express';
 import AppConfig from './config/AppConfig.js';
+import bootstrapRoutes from './bootstrap/routes.js';
 
 const app: Express = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', function (req: Request, res: Response) {
   res.json({ message: 'Hello, World!' });
 });
+bootstrapRoutes(app);
 
 // Show routes called in console
 if (AppConfig.ENV === 'dev') app.use(morgan('dev'));
