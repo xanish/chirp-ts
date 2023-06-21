@@ -17,7 +17,7 @@ app.get('/', function (req: Request, res: Response) {
 bootstrapRoutes(app);
 
 // Show routes called in console
-if (AppConfig.ENV === 'dev') app.use(morgan('dev'));
+if (AppConfig.APP_ENV === 'dev') app.use(morgan('dev'));
 
 export class ErrorWithStatus extends Error {
   status: number;
@@ -35,7 +35,7 @@ app.use(
     if (req.app.get('env') === 'dev') {
       res.json({ error: err });
     }
-
+    
     res.json({ error: 'Internal Server Error' });
   }
 );
