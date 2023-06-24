@@ -68,4 +68,16 @@ export default [
     middlewares: [],
     action: FollowController.followingByUser.bind(FollowController),
   },
+  {
+    method: 'put',
+    path: '/users/:userId/followers',
+    middlewares: [],
+    action: FollowController.create.bind(FollowController),
+  },
+  {
+    method: 'delete',
+    path: '/users/:userId/followers',
+    middlewares: [],
+    action: FollowController.delete.bind(FollowController),
+  },
 ];
