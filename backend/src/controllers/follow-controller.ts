@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 
-function followersByUser(req: Request, res: Response, next: NextFunction) {}
+import BaseController from './base-controller.js';
 
-function followingByUser(req: Request, res: Response, next: NextFunction) {}
+class FollowController extends BaseController {
+  async followersByUser(req: Request, res: Response, next: NextFunction) {}
 
-export { followersByUser, followingByUser };
+  async followingByUser(req: Request, res: Response, next: NextFunction) {}
+}
+
+export default new FollowController();

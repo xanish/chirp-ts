@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
-function findByUser(req: Request, res: Response, next: NextFunction) {}
+import BaseController from './base-controller.js';
 
-export { findByUser };
+class LikeController extends BaseController {
+  async findByUser(req: Request, res: Response, next: NextFunction) {}
+}
+
+export default new LikeController();

@@ -35,7 +35,7 @@ app.use(
     if (req.app.get('env') === 'dev') {
       res.json({ error: err });
     }
-    
+
     res.json({ error: 'Internal Server Error' });
   }
 );
