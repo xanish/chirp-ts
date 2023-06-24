@@ -4,7 +4,25 @@ import { NextFunction, Request, Response } from 'express';
 import BaseController from './base-controller.js';
 
 class UserController extends BaseController {
-  all(req: Request, res: Response, next: NextFunction) {}
+  async findMany(req: Request, res: Response, next: NextFunction) {
+    res.json(
+      await this.prisma.user.findMany({
+        skip: +(req.query.offset || 0),
+        take: +(req.query.limit || 10),
+        where: {
+          username: {
+            contains: req.query.term?.toString(),
+          },
+        },
+        select: {
+          id: true,
+          username: true,
+          firstName: true,
+          lastName: true,
+        },
+      })
+    );
+  }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
     const id = req.params.userId;

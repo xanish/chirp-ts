@@ -18,7 +18,7 @@ export default [
     method: 'get',
     path: '/users',
     middlewares: [],
-    action: UserController.all.bind(UserController),
+    action: UserController.findMany.bind(UserController),
   },
   {
     method: 'get',
