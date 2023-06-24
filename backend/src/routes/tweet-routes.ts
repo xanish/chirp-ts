@@ -10,7 +10,7 @@ export default [
     method: 'get',
     path: '/tweets',
     middlewares: [],
-    action: TweetController.all.bind(TweetController),
+    action: TweetController.findMany.bind(TweetController),
   },
   {
     method: 'post',

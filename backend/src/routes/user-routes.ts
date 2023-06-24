@@ -9,6 +9,9 @@ import UserController from '../controllers/user-controller.js';
 
 // validation schemas
 import CreateUserSchema from '../schemas/users/create-user-schema.js';
+import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
+import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
+import UpdateUserSchema from '../schemas/users/update-user-schema.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.js';
@@ -17,13 +20,13 @@ export default [
   {
     method: 'get',
     path: '/users',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyUserSchema), validateRequest],
     action: UserController.findMany.bind(UserController),
   },
   {
     method: 'get',
     path: '/users/:userId',
-    middlewares: [],
+    middlewares: [checkSchema(FindOneUserSchema), validateRequest],
     action: UserController.findOne.bind(UserController),
   },
   {
@@ -35,7 +38,7 @@ export default [
   {
     method: 'put',
     path: '/users/:userId',
-    middlewares: [checkSchema(CreateUserSchema), validateRequest],
+    middlewares: [checkSchema(UpdateUserSchema), validateRequest],
     action: UserController.update.bind(UserController),
   },
   {

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import BaseController from './base-controller.js';
 
 class TweetController extends BaseController {
-  async all(req: Request, res: Response, next: NextFunction) {}
+  async findMany(req: Request, res: Response, next: NextFunction) {}
 
   async create(req: Request, res: Response, next: NextFunction) {}
 

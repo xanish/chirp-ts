@@ -2,8 +2,16 @@ import { Schema } from 'express-validator';
 
 import { isEmailAvailable } from '../../validators/is-email-available.js';
 import { isUsernameAvailable } from '../../validators/is-username-available.js';
+import { isUserPresent } from '../../validators/is-user-present.js';
 
-const CreateUserSchema: Schema = {
+const UpdateUserSchema: Schema = {
+  userId: {
+    in: ['params'],
+    custom: {
+      options: isUserPresent,
+    },
+  },
+
   username: {
     in: ['body'],
     exists: {
@@ -45,11 +53,8 @@ const CreateUserSchema: Schema = {
 
   firstName: {
     in: ['body'],
-    exists: {
-      options: {
-        checkNull: true,
-      },
-      errorMessage: 'The first name field is required',
+    optional: {
+      options: { nullable: true },
     },
     isLength: {
       options: { min: 2, max: 64 },
@@ -110,4 +115,4 @@ const CreateUserSchema: Schema = {
   },
 };
 
-export default CreateUserSchema;
+export default UpdateUserSchema;
