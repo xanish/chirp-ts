@@ -2,7 +2,7 @@ import './bootstrap/env.js';
 
 import morgan from 'morgan';
 import express, { Express, Request, Response, NextFunction } from 'express';
-import AppConfig from './config/AppConfig.js';
+import AppConfig from './config/app-config.js';
 import bootstrapRoutes from './bootstrap/routes.js';
 
 const app: Express = express();
