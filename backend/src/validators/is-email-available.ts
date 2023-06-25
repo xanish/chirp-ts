@@ -16,4 +16,4 @@ const isEmailAvailable = async (email: string, meta: Meta) => {
   }
 };
 
-export { isEmailAvailable };
+export default isEmailAvailable;

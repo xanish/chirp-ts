@@ -15,4 +15,4 @@ const isUsernameAvailable = async (username: string) => {
   }
 };
 
-export { isUsernameAvailable };
+export default isUsernameAvailable;

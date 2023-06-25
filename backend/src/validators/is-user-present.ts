@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { Meta } from 'express-validator';
 
 const isUserPresent = async (id: string) => {
   const prisma: PrismaClient = new PrismaClient();
@@ -13,4 +12,4 @@ const isUserPresent = async (id: string) => {
   }
 };
 
-export { isUserPresent };
+export default isUserPresent;
