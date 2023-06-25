@@ -5,6 +5,13 @@ import LikeController from '../controllers/like-controller.js';
 import ReplyController from '../controllers/reply-controller.js';
 import TweetController from '../controllers/tweet-controller.js';
 
+// validation schemas
+import CreateTweetSchema from '../schemas/tweets/create-tweet-schema.js';
+import DeleteTweetSchema from '../schemas/tweets/delete-tweet-schema.js';
+
+// middlewares
+import validateRequest from '../middlewares/validate-request.js';
+
 export default [
   {
     method: 'get',
@@ -15,13 +22,13 @@ export default [
   {
     method: 'post',
     path: '/tweets',
-    middlewares: [],
+    middlewares: [checkSchema(CreateTweetSchema), validateRequest],
     action: TweetController.create.bind(TweetController),
   },
   {
     method: 'delete',
     path: '/tweets/:tweetId',
-    middlewares: [],
+    middlewares: [checkSchema(DeleteTweetSchema), validateRequest],
     action: TweetController.delete.bind(TweetController),
   },
   {

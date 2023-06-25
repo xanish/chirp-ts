@@ -10,6 +10,7 @@ import UserController from '../controllers/user-controller.js';
 // validation schemas
 import CreateUserSchema from '../schemas/users/create-user-schema.js';
 import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
+import FindManyUserTweetsSchema from '../schemas/tweets/find-many-user-tweets-schema.js';
 import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
 import UpdateUserSchema from '../schemas/users/update-user-schema.js';
 
@@ -44,13 +45,13 @@ export default [
   {
     method: 'get',
     path: '/users/:userId/tweets',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyUserTweetsSchema), validateRequest],
     action: TweetController.findByUser.bind(TweetController),
   },
   {
     method: 'get',
     path: '/users/:userId/replies',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyUserTweetsSchema), validateRequest],
     action: ReplyController.findByUser.bind(ReplyController),
   },
   {
