@@ -1,8 +1,8 @@
 import { Schema } from 'express-validator';
 
-import { isEmailAvailable } from '../../validators/is-email-available.js';
-import { isUsernameAvailable } from '../../validators/is-username-available.js';
-import { isUserPresent } from '../../validators/is-user-present.js';
+import isEmailAvailable from '../../validators/is-email-available.js';
+import isUsernameAvailable from '../../validators/is-username-available.js';
+import isUserPresent from '../../validators/is-user-present.js';
 
 const UpdateUserSchema: Schema = {
   userId: {
