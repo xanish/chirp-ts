@@ -8,6 +8,7 @@ class ReplyController extends BaseController {
     const replies = await this.prisma.tweet.findMany({
       select: {
         id: true,
+        type: true,
         content: true,
         attachments: {
           select: {
@@ -18,6 +19,7 @@ class ReplyController extends BaseController {
         related: {
           select: {
             id: true,
+            type: true,
             content: true,
             user: {
               select: {
@@ -61,6 +63,7 @@ class ReplyController extends BaseController {
     const replies = await this.prisma.tweet.findMany({
       select: {
         id: true,
+        type: true,
         content: true,
         attachments: {
           select: {
