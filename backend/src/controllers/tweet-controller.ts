@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Prisma } from '@prisma/client';
+import { Prisma, TweetType } from '@prisma/client';
 
 import BaseController from './base-controller.js';
 
@@ -36,7 +36,7 @@ class TweetController extends BaseController {
       },
       where: {
         userId: req.params.userId,
-        isReply: false,
+        type: TweetType.TWEET,
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import BaseController from './base-controller.js';
+import { TweetType } from '@prisma/client';
 
 class ReplyController extends BaseController {
   async findByUser(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +15,7 @@ class ReplyController extends BaseController {
             content: true,
           },
         },
-        parent: {
+        related: {
           select: {
             id: true,
             content: true,
@@ -35,7 +36,7 @@ class ReplyController extends BaseController {
       },
       where: {
         userId: req.params.userId,
-        isReply: true,
+        type: TweetType.REPLY,
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,
@@ -71,8 +72,8 @@ class ReplyController extends BaseController {
         updatedAt: true,
       },
       where: {
-        parentId: req.params.tweetId,
-        isReply: true,
+        relatedId: req.params.tweetId,
+        type: TweetType.REPLY,
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,

@@ -14,9 +14,15 @@ datasource db {
 // Enums
 // ------------------------------------------------------------
 enum AttachmentType {
-  TWEET
   IMAGE
   VIDEO
+}
+
+enum TweetType {
+  TWEET
+  REPLY
+  RETWEET
+  QUOTE
 }
 
 // ------------------------------------------------------------
@@ -43,14 +49,17 @@ model User {
 }
 
 model Tweet {
-  id      String  @id @default(uuid())
-  content String  @db.VarChar(512)
-  isReply Boolean @default(false)
+  id      String @id @default(uuid())
+  content String @db.VarChar(512)
 
-  // parent-child relation between tweet and its replies
-  parentId String?
-  parent   Tweet?  @relation("TweetReplies", fields: [parentId], references: [id])
-  replies  Tweet[] @relation("TweetReplies")
+  // parent-child relation between
+  // 1. tweet and its replies
+  // 2. tweet and its quoted tweet
+  // 3. new tweet which is a retweet
+  type      TweetType @default(TWEET)
+  relatedId String?
+  related   Tweet?    @relation("RelatedTweet", fields: [relatedId], references: [id])
+  replies   Tweet[]   @relation("RelatedTweet")
 
   // tweet owner
   user   User?   @relation(fields: [userId], references: [id])

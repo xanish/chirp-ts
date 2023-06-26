@@ -1,45 +1,11 @@
-import { Schema } from 'express-validator';
+import { Meta, Schema } from 'express-validator';
+import { TweetType } from '@prisma/client';
 
 import isTweetPresent from '../../validators/is-tweet-present.js';
 import isUserPresent from '../../validators/is-user-present.js';
 import isValidUploadedMedia from '../../validators/is-valid-uploaded-media.js';
 
 const CreateTweetSchema: Schema = {
-  content: {
-    in: ['body'],
-    exists: {
-      options: {
-        checkNull: true,
-      },
-      errorMessage: 'The content field is required',
-    },
-    isLength: {
-      options: { min: 1, max: 512 },
-      errorMessage:
-        'The content field must have length between 1 and 512 characters',
-    },
-  },
-
-  isReply: {
-    in: ['body'],
-    optional: {
-      options: { nullable: true },
-    },
-    isBoolean: {
-      errorMessage: 'The is reply field must be a boolean',
-    },
-  },
-
-  parentId: {
-    in: ['body'],
-    optional: {
-      options: { nullable: true },
-    },
-    custom: {
-      options: isTweetPresent,
-    },
-  },
-
   userId: {
     in: ['body'],
     exists: {
@@ -54,7 +20,38 @@ const CreateTweetSchema: Schema = {
     },
   },
 
-  quoteTweetId: {
+  content: {
+    in: ['body'],
+    exists: {
+      if: (value: string, meta: Meta) =>
+        meta.req.body.type != TweetType.RETWEET,
+      options: {
+        checkNull: true,
+      },
+      errorMessage: 'The content field is required',
+    },
+    isLength: {
+      options: { min: 1, max: 512 },
+      errorMessage:
+        'The content field must have length between 1 and 512 characters',
+    },
+  },
+
+  type: {
+    in: ['body'],
+    optional: {
+      options: { nullable: true },
+    },
+    isIn: {
+      options: [
+        [TweetType.QUOTE, TweetType.REPLY, TweetType.RETWEET, TweetType.TWEET],
+      ],
+      errorMessage:
+        'The type field must have a value from ("QUOTE", "REPLY", "RETWEET", "TWEET")',
+    },
+  },
+
+  relatedId: {
     in: ['body'],
     optional: {
       options: { nullable: true },
