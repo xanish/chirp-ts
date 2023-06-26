@@ -91,29 +91,29 @@ model Attachment {
 }
 
 model Like {
-  id String @id @default(uuid())
-
   // userId liked the tweetId
-  userId  String?
-  tweetId String?
-  user    User?   @relation(fields: [userId], references: [id])
-  tweet   Tweet?  @relation(fields: [tweetId], references: [id])
+  userId  String
+  tweetId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([userId, tweetId])
 }
 
 model Follow {
-  id String @id @default(uuid())
-
   // followerId follows followingId
-  followerId  String?
-  followingId String?
-  follower    User?   @relation("UserFollower", fields: [followerId], references: [id])
-  following   User?   @relation("UserFollowing", fields: [followingId], references: [id])
+  followerId  String
+  followingId String
+  follower    User   @relation("UserFollower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([followerId, followingId])
 }
