@@ -25,6 +25,25 @@ class TweetController extends BaseController {
       select: {
         id: true,
         content: true,
+        type: true,
+        related: {
+          select: {
+            id: true,
+            content: true,
+            type: true,
+            relatedId: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         attachments: {
           select: {
             type: true,
@@ -36,7 +55,9 @@ class TweetController extends BaseController {
       },
       where: {
         userId: req.params.userId,
-        type: TweetType.TWEET,
+        NOT: {
+          type: TweetType.REPLY,
+        },
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,
