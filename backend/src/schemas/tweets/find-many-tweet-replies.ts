@@ -2,7 +2,7 @@ import { Schema } from 'express-validator';
 
 import isTweetPresent from '../../validators/is-tweet-present.js';
 
-const DeleteTweetSchema: Schema = {
+const FindManyTweetRepliesSchema: Schema = {
   tweetId: {
     in: ['params'],
     custom: {
@@ -30,4 +30,4 @@ const DeleteTweetSchema: Schema = {
   },
 };
 
-export default DeleteTweetSchema;
+export default FindManyTweetRepliesSchema;

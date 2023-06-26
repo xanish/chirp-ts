@@ -11,6 +11,7 @@ import DeleteTweetSchema from '../schemas/tweets/delete-tweet-schema.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.js';
+import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.js';
 
 export default [
   {
@@ -52,7 +53,7 @@ export default [
   {
     method: 'get',
     path: '/tweets/:tweetId/replies',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyTweetRepliesSchema), validateRequest],
     action: ReplyController.findByTweet.bind(ReplyController),
   },
 ];
