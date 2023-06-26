@@ -6,12 +6,13 @@ import ReplyController from '../controllers/reply-controller.js';
 import TweetController from '../controllers/tweet-controller.js';
 
 // validation schemas
+import CreateDeleteLikeTweetSchema from '../schemas/tweets/create-delete-like-tweet-schema.js';
 import CreateTweetSchema from '../schemas/tweets/create-tweet-schema.js';
 import DeleteTweetSchema from '../schemas/tweets/delete-tweet-schema.js';
+import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.js';
-import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.js';
 
 export default [
   {
@@ -41,13 +42,13 @@ export default [
   {
     method: 'put',
     path: '/tweets/:tweetId/likes',
-    middlewares: [],
+    middlewares: [checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
     action: LikeController.create.bind(LikeController),
   },
   {
     method: 'delete',
     path: '/tweets/:tweetId/likes',
-    middlewares: [],
+    middlewares: [checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
     action: LikeController.delete.bind(LikeController),
   },
   {
