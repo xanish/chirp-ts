@@ -49,8 +49,8 @@ model User {
 }
 
 model Tweet {
-  id      String @id @default(uuid())
-  content String @db.VarChar(512)
+  id      String  @id @default(uuid())
+  content String? @db.VarChar(512)
 
   // parent-child relation between
   // 1. tweet and its replies
@@ -58,7 +58,7 @@ model Tweet {
   // 3. new tweet which is a retweet
   type      TweetType @default(TWEET)
   relatedId String?
-  related   Tweet?    @relation("RelatedTweet", fields: [relatedId], references: [id])
+  related   Tweet?    @relation("RelatedTweet", fields: [relatedId], references: [id], onDelete: SetNull)
   replies   Tweet[]   @relation("RelatedTweet")
 
   // tweet owner
