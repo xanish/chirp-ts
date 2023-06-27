@@ -11,9 +11,7 @@ const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', function (req: Request, res: Response) {
-  res.json({ message: 'Hello, World!' });
-});
+// setup application routes
 bootstrapRoutes(app);
 
 // Show routes called in console
