@@ -9,6 +9,7 @@ import UserController from '../controllers/user-controller.js';
 
 // validation schemas
 import CreateUserSchema from '../schemas/users/create-user-schema.js';
+import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.js';
 import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
 import FindManyUserTweetsSchema from '../schemas/users/find-many-user-tweets-schema.js';
 import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
@@ -57,7 +58,7 @@ export default [
   {
     method: 'get',
     path: '/users/:userId/likes',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyUserLikesSchema), validateRequest],
     action: LikeController.findByUser.bind(LikeController),
   },
   {

@@ -9,6 +9,7 @@ import TweetController from '../controllers/tweet-controller.js';
 import CreateDeleteLikeTweetSchema from '../schemas/tweets/create-delete-like-tweet-schema.js';
 import CreateTweetSchema from '../schemas/tweets/create-tweet-schema.js';
 import DeleteTweetSchema from '../schemas/tweets/delete-tweet-schema.js';
+import FindManyTweetLikesSchema from '../schemas/tweets/find-many-tweet-likes.js';
 import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.js';
 
 // middlewares
@@ -36,7 +37,7 @@ export default [
   {
     method: 'get',
     path: '/tweets/:tweetId/likes',
-    middlewares: [],
+    middlewares: [checkSchema(FindManyTweetLikesSchema), validateRequest],
     action: LikeController.findByTweet.bind(LikeController),
   },
   {
