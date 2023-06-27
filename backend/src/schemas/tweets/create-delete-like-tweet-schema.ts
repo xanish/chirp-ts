@@ -12,7 +12,7 @@ const CreateDeleteLikeTweetSchema: Schema = {
   },
 
   userId: {
-    in: ['params'],
+    in: ['body'],
     custom: {
       options: isUserPresent,
     },
