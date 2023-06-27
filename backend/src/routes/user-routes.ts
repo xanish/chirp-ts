@@ -8,6 +8,7 @@ import TweetController from '../controllers/tweet-controller.js';
 import UserController from '../controllers/user-controller.js';
 
 // validation schemas
+import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow-schema.js';
 import CreateUserSchema from '../schemas/users/create-user-schema.js';
 import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.js';
 import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
@@ -76,13 +77,13 @@ export default [
   {
     method: 'put',
     path: '/users/:userId/followers',
-    middlewares: [],
+    middlewares: [checkSchema(CreateDeleteUserFollowSchema), validateRequest],
     action: FollowController.create.bind(FollowController),
   },
   {
     method: 'delete',
     path: '/users/:userId/followers',
-    middlewares: [],
+    middlewares: [checkSchema(CreateDeleteUserFollowSchema), validateRequest],
     action: FollowController.delete.bind(FollowController),
   },
 ];
