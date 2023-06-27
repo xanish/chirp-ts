@@ -36,9 +36,71 @@ class FollowController extends BaseController {
     res.status(204);
   }
 
-  async followersByUser(req: Request, res: Response, next: NextFunction) {}
+  async followersByUser(req: Request, res: Response, next: NextFunction) {
+    const offset = req.query.offset ? +req.query.offset : 0;
+    const limit = +(req.query.limit || 10);
 
-  async followingByUser(req: Request, res: Response, next: NextFunction) {}
+    const follows = await this.prisma.follow.findMany({
+      select: {
+        follower: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      where: {
+        followingId: req.params.userId,
+      },
+      take: limit,
+      skip: offset,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    res.json({
+      currentLimit: limit,
+      currentOffset: offset,
+      nextOffset: follows.length < limit ? null : offset + limit,
+      records: follows.map((follow) => follow.follower),
+    });
+  }
+
+  async followingByUser(req: Request, res: Response, next: NextFunction) {
+    const offset = req.query.offset ? +req.query.offset : 0;
+    const limit = +(req.query.limit || 10);
+
+    const follows = await this.prisma.follow.findMany({
+      select: {
+        following: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      where: {
+        followerId: req.params.userId,
+      },
+      take: limit,
+      skip: offset,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    res.json({
+      currentLimit: limit,
+      currentOffset: offset,
+      nextOffset: follows.length < limit ? null : offset + limit,
+      records: follows.map((follow) => follow.following),
+    });
+  }
 }
 
 export default new FollowController();
