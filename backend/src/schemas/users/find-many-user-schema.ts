@@ -1,4 +1,5 @@
 import { Schema } from 'express-validator';
+import isUserPresent from '../../validators/is-user-present.js';
 
 const FindManyUserSchema: Schema = {
   term: {
@@ -17,10 +18,9 @@ const FindManyUserSchema: Schema = {
   offset: {
     in: ['query'],
     optional: { options: { nullable: true } },
-    isInt: {
-      options: { min: 0 },
-      errorMessage:
-        'The offset field must be a valid integer greater than or equal to 0',
+    custom: {
+      options: isUserPresent,
+      errorMessage: 'The offset field must be a valid user id',
     },
   },
 

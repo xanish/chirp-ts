@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AttachmentType, Prisma, TweetType } from '@prisma/client';
+import { AttachmentType, TweetType } from '@prisma/client';
 import mime from 'mime-types';
 
 import BaseController from './base-controller.js';

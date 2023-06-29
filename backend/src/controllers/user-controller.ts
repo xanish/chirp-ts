@@ -5,29 +5,36 @@ import BaseController from './base-controller.js';
 
 class UserController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
-    const offset = +(req.query.offset || 0);
+    const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
     const users = await this.prisma.user.findMany({
-      skip: offset,
-      take: limit,
-      where: {
-        username: {
-          contains: req.query.term?.toString(),
-        },
-      },
       select: {
         id: true,
         username: true,
         firstName: true,
         lastName: true,
       },
+      where: {
+        username: {
+          contains: req.query.term?.toString(),
+        },
+      },
+      take: limit,
+      skip: offset ? 1 : undefined,
+      cursor: offset ? { id: offset + '' } : undefined,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
+    // if not users then return next offset as null to indicate end of results
+    const lastUserId = users.length ? users[users.length - 1].id : null;
+
     return res.json({
+      currentOffset: offset ?? null,
       currentLimit: limit,
-      currentOffset: offset,
-      nextOffset: users.length < limit ? null : offset + limit,
+      nextOffset: lastUserId,
       records: users,
     });
   }
