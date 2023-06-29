@@ -31,10 +31,10 @@ app.use(
     res.status(err.status || 500);
 
     if (req.app.get('env') === 'dev') {
-      res.json({ error: err });
-    } else {
-      res.json({ error: 'Internal Server Error' });
+      return res.json({ error: err });
     }
+
+    return res.json({ error: 'Internal Server Error' });
   }
 );
 

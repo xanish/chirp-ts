@@ -4,36 +4,31 @@ import BaseController from './base-controller.js';
 
 class FollowController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const follow = await this.prisma.follow.findFirst({
-      where: {
-        followerId: req.params.userId,
-        followingId: req.body.followId,
-      },
+    const [followerId, followingId] = [req.body.followerId, req.params.userId];
+
+    const followExists = await this.prisma.follow.findFirst({
+      where: { followerId, followingId },
     });
 
-    if (follow) {
-      res.json(follow);
-    } else {
-      res.json(
-        await this.prisma.follow.create({
-          data: {
-            followerId: req.body.followerId,
-            followingId: req.params.userId,
-          },
-        })
-      );
+    if (followExists) {
+      return res.json(followExists);
     }
+
+    const newFollow = await this.prisma.follow.create({
+      data: { followerId, followingId },
+    });
+
+    return res.json(newFollow);
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
+    const [followerId, followingId] = [req.body.followerId, req.params.userId];
+
     const countDeleted = await this.prisma.follow.deleteMany({
-      where: {
-        followerId: req.body.followerId,
-        followingId: req.params.userId,
-      },
+      where: { followerId, followingId },
     });
 
-    res.status(204);
+    return res.status(204);
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
@@ -61,7 +56,7 @@ class FollowController extends BaseController {
       },
     });
 
-    res.json({
+    return res.json({
       currentLimit: limit,
       currentOffset: offset,
       nextOffset: follows.length < limit ? null : offset + limit,
@@ -94,7 +89,7 @@ class FollowController extends BaseController {
       },
     });
 
-    res.json({
+    return res.json({
       currentLimit: limit,
       currentOffset: offset,
       nextOffset: follows.length < limit ? null : offset + limit,

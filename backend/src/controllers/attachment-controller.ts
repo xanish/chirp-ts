@@ -61,13 +61,12 @@ class AttachmentController extends BaseController {
       async (err: any, fields: formidable.Fields, files: formidable.Files) => {
         // return any validation errors raised by formidable
         if (err) {
-          res.status(err.httpCode).json({
+          return res.status(err.httpCode).json({
             files: {
               code: err.code,
               messages: [this.errorMap[err.code]],
             },
           });
-          return;
         }
 
         const uploads = Array.isArray(files.attachments)
@@ -91,7 +90,7 @@ class AttachmentController extends BaseController {
 
           // return the uploaded image names to user so they can reuse them
           // on tweet creation
-          res.json({
+          return res.json({
             messages: ['Successfully uploaded files'],
             uploadedFiles: uploads.map(
               (file) =>

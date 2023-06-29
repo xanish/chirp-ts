@@ -51,7 +51,7 @@ class ReplyController extends BaseController {
     // if not replies then return next offset as null to indicate end of results
     const lastReplyId = replies.length ? replies[replies.length - 1].id : null;
 
-    res.json({
+    return res.json({
       currentOffset: req.query.offset ?? null,
       currentLimit: req.query.limit ?? 10,
       nextOffset: lastReplyId,
@@ -89,7 +89,7 @@ class ReplyController extends BaseController {
     // if not replies then return next offset as null to indicate end of results
     const lastReplyId = replies.length ? replies[replies.length - 1].id : null;
 
-    res.json({
+    return res.json({
       currentOffset: req.query.offset ?? null,
       currentLimit: req.query.limit ?? 10,
       nextOffset: lastReplyId,

@@ -8,43 +8,40 @@ class TweetController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {}
 
   async create(req: Request, res: Response, next: NextFunction) {
-    if (req.body.attachments) {
-      res.json(
-        await this.prisma.tweet.create({
-          data: {
-            userId: req.body.userId,
-            content: req.body.content,
-            type: req.body.type ?? undefined,
-            relatedId: req.body.relatedId ?? undefined,
-            attachments: {
-              create: req.body.attachments.map((attachment: string) => {
-                return {
-                  type: (mime.lookup(attachment) || '').includes('video')
-                    ? AttachmentType.VIDEO
-                    : AttachmentType.IMAGE,
-                  content: attachment,
-                };
-              }),
-            },
-          },
-        })
-      );
-    } else {
-      const tweet: Prisma.TweetCreateInput = req.body;
+    const attachments = (req.body.attachments || []).map(
+      (attachment: string) => {
+        return {
+          type: (mime.lookup(attachment) || '').includes('video')
+            ? AttachmentType.VIDEO
+            : AttachmentType.IMAGE,
+          content: attachment,
+        };
+      }
+    );
 
-      res.json(await this.prisma.tweet.create({ data: tweet }));
-    }
+    const tweet = {
+      userId: req.body.userId,
+      content: req.body.content,
+      type: req.body.type ?? undefined,
+      relatedId: req.body.relatedId ?? undefined,
+      attachments: attachments ? { create: attachments } : undefined,
+    };
+
+    return res.json(await this.prisma.tweet.create({ data: tweet }));
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    res.json(
-      await this.prisma.tweet.delete({
-        where: { id: req.params.tweetId },
-      })
-    );
+    const id = req.params.tweetId;
+
+    const countDeleted = await this.prisma.tweet.delete({ where: { id } });
+
+    return res.status(204);
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
+    const offset = req.query.offset ?? undefined;
+    const limit = +(req.query.limit || 10);
+
     const tweets = await this.prisma.tweet.findMany({
       select: {
         id: true,
@@ -83,9 +80,9 @@ class TweetController extends BaseController {
           type: TweetType.REPLY,
         },
       },
-      take: +(req.query.limit || 10),
-      skip: req.query.offset ? 1 : undefined,
-      cursor: req.query.offset ? { id: req.query.offset + '' } : undefined,
+      take: limit,
+      skip: offset ? 1 : undefined,
+      cursor: offset ? { id: offset + '' } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -94,9 +91,9 @@ class TweetController extends BaseController {
     // if not tweets then return next offset as null to indicate end of results
     const lastTweetId = tweets.length ? tweets[tweets.length - 1].id : null;
 
-    res.json({
-      currentOffset: req.query.offset ?? null,
-      currentLimit: req.query.limit ?? 10,
+    return res.json({
+      currentOffset: offset ?? null,
+      currentLimit: limit,
       nextOffset: lastTweetId,
       records: tweets,
     });

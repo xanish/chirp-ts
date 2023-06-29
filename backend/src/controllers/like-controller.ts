@@ -4,40 +4,35 @@ import BaseController from './base-controller.js';
 
 class LikeController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const like = await this.prisma.like.findFirst({
-      where: {
-        userId: req.body.userId,
-        tweetId: req.params.tweetId,
-      },
+    const [userId, tweetId] = [req.body.userId, req.params.tweetId];
+
+    const likeExists = await this.prisma.like.findFirst({
+      where: { userId, tweetId },
     });
 
-    if (like) {
-      res.json(like);
-    } else {
-      res.json(
-        await this.prisma.like.create({
-          data: {
-            userId: req.body.userId,
-            tweetId: req.params.tweetId,
-          },
-        })
-      );
+    if (likeExists) {
+      return res.json(likeExists);
     }
+
+    const newLike = await this.prisma.like.create({
+      data: { userId, tweetId },
+    });
+
+    return res.json(newLike);
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
+    const [userId, tweetId] = [req.body.userId, req.params.tweetId];
+
     const countDeleted = await this.prisma.like.deleteMany({
-      where: {
-        userId: req.body.userId,
-        tweetId: req.params.tweetId,
-      },
+      where: { userId, tweetId },
     });
 
-    res.status(204);
+    return res.status(204);
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const offset = req.query.offset ? +req.query.offset : 0;
+    const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
     const likes = await this.prisma.like.findMany({
@@ -54,7 +49,7 @@ class LikeController extends BaseController {
       },
     });
 
-    res.json({
+    return res.json({
       currentLimit: limit,
       currentOffset: offset,
       nextOffset: likes.length < limit ? null : offset + limit,
@@ -63,7 +58,7 @@ class LikeController extends BaseController {
   }
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
-    const offset = req.query.offset ? +req.query.offset : 0;
+    const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
     const likes = await this.prisma.like.findMany({
@@ -87,7 +82,7 @@ class LikeController extends BaseController {
       },
     });
 
-    res.json({
+    return res.json({
       currentLimit: limit,
       currentOffset: offset,
       nextOffset: likes.length < limit ? null : offset + limit,
