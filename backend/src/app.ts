@@ -32,9 +32,9 @@ app.use(
 
     if (req.app.get('env') === 'dev') {
       res.json({ error: err });
+    } else {
+      res.json({ error: 'Internal Server Error' });
     }
-
-    res.json({ error: 'Internal Server Error' });
   }
 );
 

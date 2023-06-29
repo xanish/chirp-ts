@@ -2,8 +2,9 @@ import { Express } from 'express';
 
 import userRoutes from '../routes/user-routes.js';
 import tweetRoutes from '../routes/tweet-routes.js';
+import attachmentRoutes from '../routes/attachment-routes.js';
 
-const routes = [...userRoutes, ...tweetRoutes];
+const routes = [...userRoutes, ...tweetRoutes, ...attachmentRoutes];
 
 export default function bootstrapRoutes(app: Express) {
   for (let route of routes) {

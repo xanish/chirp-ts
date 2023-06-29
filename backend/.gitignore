@@ -1,3 +1,5 @@
 node_modules
 dist
+public/media/*
+!public/media/.gitkeep
 src/.env

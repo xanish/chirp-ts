@@ -11,7 +11,7 @@ const isValidUploadedMedia = async (attachment: string) => {
     '..',
     '..',
     'public',
-    'temp',
+    'media',
     attachment
   );
 

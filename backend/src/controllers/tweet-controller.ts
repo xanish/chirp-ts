@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { Prisma, TweetType } from '@prisma/client';
+import { AttachmentType, Prisma, TweetType } from '@prisma/client';
+import mime from 'mime-types';
 
 import BaseController from './base-controller.js';
 
@@ -7,9 +8,32 @@ class TweetController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {}
 
   async create(req: Request, res: Response, next: NextFunction) {
-    const tweet: Prisma.TweetCreateInput = req.body;
+    if (req.body.attachments) {
+      res.json(
+        await this.prisma.tweet.create({
+          data: {
+            userId: req.body.userId,
+            content: req.body.content,
+            type: req.body.type ?? undefined,
+            relatedId: req.body.relatedId ?? undefined,
+            attachments: {
+              create: req.body.attachments.map((attachment: string) => {
+                return {
+                  type: (mime.lookup(attachment) || '').includes('video')
+                    ? AttachmentType.VIDEO
+                    : AttachmentType.IMAGE,
+                  content: attachment,
+                };
+              }),
+            },
+          },
+        })
+      );
+    } else {
+      const tweet: Prisma.TweetCreateInput = req.body;
 
-    res.json(await this.prisma.tweet.create({ data: tweet }));
+      res.json(await this.prisma.tweet.create({ data: tweet }));
+    }
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
