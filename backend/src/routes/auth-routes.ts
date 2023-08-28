@@ -18,7 +18,7 @@ export default [
     action: AuthController.register.bind(AuthController),
   },
   {
-    method: 'get',
+    method: 'post',
     path: '/auth/verify/:token',
     middlewares: [],
     action: AuthController.verify.bind(AuthController),
