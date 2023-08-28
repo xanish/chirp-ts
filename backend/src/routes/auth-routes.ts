@@ -18,9 +18,9 @@ export default [
     action: AuthController.register.bind(AuthController),
   },
   {
-    method: 'post',
-    path: '/auth/verify',
-    middlewares: [checkSchema(RegisterUserSchema), validateRequest],
+    method: 'get',
+    path: '/auth/verify/:token',
+    middlewares: [],
     action: AuthController.verify.bind(AuthController),
   },
   {

@@ -15,7 +15,29 @@ class AuthController extends BaseController {
     return res.json(await this.prisma.user.create({ data: user }));
   }
 
-  async verify(req: Request, res: Response, next: NextFunction) {}
+  async verify(req: Request, res: Response, next: NextFunction) {
+    try {
+      const decoded = jwt.verify(req.params.token, AppConfig.JWT_SECRET);
+      const id = (<{ id: string; username: string }>decoded).id;
+
+      const user = await this.prisma.user.findFirst({ where: { id } });
+
+      if (user) {
+        await this.prisma.user.update({
+          where: { id },
+          data: { isVerified: true },
+        });
+
+        return res.send('Ok');
+      } else {
+        return res.status(400).send('Failed to verify');
+      }
+    } catch (err) {
+      return next(
+        new AuthenticationError(400, (<{ message: string }>err).message)
+      );
+    }
+  }
 
   async login(req: Request, res: Response, next: NextFunction) {
     const username = req.body.username;
@@ -24,12 +46,17 @@ class AuthController extends BaseController {
       where: { username },
     });
 
+    if (user.isVerified === false) {
+      return next(new AuthenticationError(403, 'Forbidden'));
+    }
+
     const matches = await bcrypt.compare(req.body.password, user.password);
 
     if (matches) {
       const token = jwt.sign(
         { id: user.id, username: user.username },
-        AppConfig.JWT_SECRET
+        AppConfig.JWT_SECRET,
+        { expiresIn: AppConfig.JWT_DURATION }
       );
 
       return res.json({ token });
