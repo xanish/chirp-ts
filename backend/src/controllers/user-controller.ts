@@ -47,12 +47,6 @@ class UserController extends BaseController {
     return res.json(user);
   }
 
-  async create(req: Request, res: Response, next: NextFunction) {
-    const user: Prisma.UserCreateInput = req.body;
-
-    return res.json(await this.prisma.user.create({ data: user }));
-  }
-
   async update(req: Request, res: Response, next: NextFunction) {
     const id = req.params.userId;
     const data: Prisma.UserUpdateInput = req.body;

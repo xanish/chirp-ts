@@ -9,7 +9,6 @@ import UserController from '../controllers/user-controller.js';
 
 // validation schemas
 import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow-schema.js';
-import CreateUserSchema from '../schemas/users/create-user-schema.js';
 import FindManyUserFollowsSchema from '../schemas/users/find-many-user-follows-schema.js';
 import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.js';
 import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
@@ -32,12 +31,6 @@ export default [
     path: '/users/:userId',
     middlewares: [checkSchema(FindOneUserSchema), validateRequest],
     action: UserController.findOne.bind(UserController),
-  },
-  {
-    method: 'post',
-    path: '/users',
-    middlewares: [checkSchema(CreateUserSchema), validateRequest],
-    action: UserController.create.bind(UserController),
   },
   {
     method: 'put',

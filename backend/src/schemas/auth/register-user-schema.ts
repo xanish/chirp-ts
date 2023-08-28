@@ -3,7 +3,7 @@ import { Schema } from 'express-validator';
 import isEmailAvailable from '../../validators/is-email-available.js';
 import isUsernameAvailable from '../../validators/is-username-available.js';
 
-const CreateUserSchema: Schema = {
+const RegisterUserSchema: Schema = {
   username: {
     in: ['body'],
     exists: {
@@ -19,6 +19,21 @@ const CreateUserSchema: Schema = {
     },
     custom: {
       options: isUsernameAvailable,
+    },
+  },
+
+  password: {
+    in: ['body'],
+    exists: {
+      options: {
+        checkNull: true,
+      },
+      errorMessage: 'The password field is required',
+    },
+    isLength: {
+      options: { min: 6, max: 20 },
+      errorMessage:
+        'The password field must have length between 6 and 20 characters',
     },
   },
 
@@ -110,4 +125,4 @@ const CreateUserSchema: Schema = {
   },
 };
 
-export default CreateUserSchema;
+export default RegisterUserSchema;

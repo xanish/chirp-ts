@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import express, { Express, Request, Response, NextFunction } from 'express';
 import AppConfig from './config/app-config.js';
 import bootstrapRoutes from './bootstrap/routes.js';
+import { BaseError } from './errors/base-error.js';
 
 const app: Express = express();
 
@@ -17,26 +18,20 @@ bootstrapRoutes(app);
 // Show routes called in console
 if (AppConfig.APP_ENV === 'dev') app.use(morgan('dev'));
 
-export class ErrorWithStatus extends Error {
-  status: number;
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-  }
-}
-
 // Add error handler
-app.use(
-  (err: ErrorWithStatus, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status || 500);
+app.use((err: BaseError, req: Request, res: Response, next: NextFunction) => {
+  res.status(err.status || 500);
 
-    if (req.app.get('env') === 'dev') {
-      return res.json({ error: err });
-    }
-
-    return res.json({ error: 'Internal Server Error' });
+  if (typeof err['serialize'] === 'function') {
+    return res.json(err.serialize());
   }
-);
+
+  if (req.app.get('env') === 'dev') {
+    return res.json({ error: err });
+  }
+
+  return res.json({ error: 'Internal Server Error' });
+});
 
 app.listen(AppConfig.PORT, () => {
   console.log(`Server is running at http://localhost:${AppConfig.PORT}`);

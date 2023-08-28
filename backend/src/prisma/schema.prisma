@@ -29,14 +29,16 @@ enum TweetType {
 // Models
 // ------------------------------------------------------------
 model User {
-  id        String    @id @default(uuid())
-  username  String    @unique @db.VarChar(64)
-  email     String    @unique @db.VarChar(64)
-  firstName String    @db.VarChar(64)
-  lastName  String?   @db.VarChar(64)
-  city      String?   @db.VarChar(100)
-  country   String?   @db.VarChar(64)
-  birthDate DateTime? @db.Date
+  id         String    @id @default(uuid())
+  username   String    @unique @db.VarChar(64)
+  email      String    @unique @db.VarChar(64)
+  password   String
+  firstName  String    @db.VarChar(64)
+  lastName   String?   @db.VarChar(64)
+  city       String?   @db.VarChar(100)
+  country    String?   @db.VarChar(64)
+  birthDate  DateTime? @db.Date
+  isVerified Boolean   @default(false)
 
   // users tweets, likes, followers and following
   tweets    Tweet[]
