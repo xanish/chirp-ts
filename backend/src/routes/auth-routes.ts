@@ -32,7 +32,7 @@ export default [
   {
     method: 'post',
     path: '/auth/forgot-password',
-    middlewares: [checkSchema(RegisterUserSchema), validateRequest],
+    middlewares: [checkSchema(LoginUserSchema), validateRequest],
     action: AuthController.forgotPassword.bind(AuthController),
   },
 ];

@@ -12,6 +12,8 @@ class AuthController extends BaseController {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const user: Prisma.UserCreateInput = req.body;
 
+    // todo: trigger verify user mail
+
     return res.json(await this.prisma.user.create({ data: user }));
   }
 
@@ -65,7 +67,25 @@ class AuthController extends BaseController {
     }
   }
 
-  async forgotPassword(req: Request, res: Response, next: NextFunction) {}
+  async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    const { username, password } = req.body;
+
+    const userExists = await this.prisma.user.findFirst({
+      where: { username },
+    });
+
+    if (userExists) {
+      const user = await this.prisma.user.update({
+        where: { username },
+        data: { password },
+      });
+
+      // todo: send password updated mail
+
+      return res.json(user);
+    }
+  }
 }
 
 export default new AuthController();
