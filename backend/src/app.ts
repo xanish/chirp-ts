@@ -8,6 +8,11 @@ import { BaseError } from './errors/base-error.js';
 
 const app: Express = express();
 
+// setup bigint handling
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

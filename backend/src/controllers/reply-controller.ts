@@ -37,12 +37,14 @@ class ReplyController extends BaseController {
         updatedAt: true,
       },
       where: {
-        userId: req.params.userId,
+        userId: BigInt(req.params.userId),
         type: TweetType.REPLY,
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,
-      cursor: req.query.offset ? { id: req.query.offset + '' } : undefined,
+      cursor: req.query.offset
+        ? { id: BigInt(req.query.offset.toString()) }
+        : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -75,12 +77,14 @@ class ReplyController extends BaseController {
         updatedAt: true,
       },
       where: {
-        relatedId: req.params.tweetId,
+        relatedId: BigInt(req.params.tweetId),
         type: TweetType.REPLY,
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? 1 : undefined,
-      cursor: req.query.offset ? { id: req.query.offset + '' } : undefined,
+      cursor: req.query.offset
+        ? { id: BigInt(req.query.offset.toString()) }
+        : undefined,
       orderBy: {
         createdAt: 'desc',
       },

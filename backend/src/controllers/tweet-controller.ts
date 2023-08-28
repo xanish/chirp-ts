@@ -11,6 +11,7 @@ class TweetController extends BaseController {
     const attachments = (req.body.attachments || []).map(
       (attachment: string) => {
         return {
+          id: this.snowflakeId(),
           type: (mime.lookup(attachment) || '').includes('video')
             ? AttachmentType.VIDEO
             : AttachmentType.IMAGE,
@@ -20,6 +21,7 @@ class TweetController extends BaseController {
     );
 
     const tweet = {
+      id: this.snowflakeId(),
       userId: req.body.userId,
       content: req.body.content,
       type: req.body.type ?? undefined,
@@ -31,7 +33,7 @@ class TweetController extends BaseController {
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.tweetId;
+    const id = +req.params.tweetId;
 
     const countDeleted = await this.prisma.tweet.delete({ where: { id } });
 
@@ -75,14 +77,14 @@ class TweetController extends BaseController {
         updatedAt: true,
       },
       where: {
-        userId: req.params.userId,
+        userId: +req.params.userId,
         NOT: {
           type: TweetType.REPLY,
         },
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset + '' } : undefined,
+      cursor: offset ? { id: BigInt(offset.toString()) } : undefined,
       orderBy: {
         createdAt: 'desc',
       },

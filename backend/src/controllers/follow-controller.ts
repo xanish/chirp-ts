@@ -4,7 +4,10 @@ import BaseController from './base-controller.js';
 
 class FollowController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const [followerId, followingId] = [req.body.followerId, req.params.userId];
+    const [followerId, followingId] = [
+      BigInt(req.body.followerId),
+      BigInt(req.params.userId),
+    ];
 
     const followExists = await this.prisma.follow.findFirst({
       where: { followerId, followingId },
@@ -22,7 +25,10 @@ class FollowController extends BaseController {
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    const [followerId, followingId] = [req.body.followerId, req.params.userId];
+    const [followerId, followingId] = [
+      BigInt(req.body.followerId),
+      BigInt(req.params.userId),
+    ];
 
     const countDeleted = await this.prisma.follow.deleteMany({
       where: { followerId, followingId },
@@ -47,7 +53,7 @@ class FollowController extends BaseController {
         },
       },
       where: {
-        followingId: req.params.userId,
+        followingId: BigInt(req.params.userId),
       },
       take: limit,
       skip: offset,
@@ -80,7 +86,7 @@ class FollowController extends BaseController {
         },
       },
       where: {
-        followerId: req.params.userId,
+        followerId: BigInt(req.params.userId),
       },
       take: limit,
       skip: offset,

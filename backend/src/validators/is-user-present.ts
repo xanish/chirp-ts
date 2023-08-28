@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-const isUserPresent = async (id: string) => {
+const isUserPresent = async (id: bigint) => {
   const prisma: PrismaClient = new PrismaClient();
 
   const user = await prisma.user.findUnique({

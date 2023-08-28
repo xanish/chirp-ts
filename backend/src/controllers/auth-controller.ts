@@ -11,6 +11,7 @@ class AuthController extends BaseController {
   async register(req: Request, res: Response, next: NextFunction) {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const user: Prisma.UserCreateInput = req.body;
+    user.id = this.snowflakeId();
 
     // todo: trigger verify user mail
 
@@ -20,7 +21,7 @@ class AuthController extends BaseController {
   async verify(req: Request, res: Response, next: NextFunction) {
     try {
       const decoded = jwt.verify(req.params.token, AppConfig.JWT_SECRET);
-      const id = (<{ id: string; username: string }>decoded).id;
+      const id = BigInt((<{ id: string; username: string }>decoded).id);
 
       const user = await this.prisma.user.findFirst({ where: { id } });
 

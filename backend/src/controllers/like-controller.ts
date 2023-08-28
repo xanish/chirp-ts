@@ -4,7 +4,10 @@ import BaseController from './base-controller.js';
 
 class LikeController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const [userId, tweetId] = [req.body.userId, req.params.tweetId];
+    const [userId, tweetId] = [
+      BigInt(req.body.userId),
+      BigInt(req.params.tweetId),
+    ];
 
     const likeExists = await this.prisma.like.findFirst({
       where: { userId, tweetId },
@@ -22,7 +25,10 @@ class LikeController extends BaseController {
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    const [userId, tweetId] = [req.body.userId, req.params.tweetId];
+    const [userId, tweetId] = [
+      BigInt(req.body.userId),
+      BigInt(req.params.tweetId),
+    ];
 
     const countDeleted = await this.prisma.like.deleteMany({
       where: { userId, tweetId },
@@ -40,7 +46,7 @@ class LikeController extends BaseController {
         tweet: true,
       },
       where: {
-        userId: req.params.userId,
+        userId: BigInt(req.params.userId),
       },
       take: limit,
       skip: offset,
@@ -73,7 +79,7 @@ class LikeController extends BaseController {
         },
       },
       where: {
-        tweetId: req.params.tweetId,
+        tweetId: BigInt(req.params.tweetId),
       },
       take: +(req.query.limit || 10),
       skip: req.query.offset ? +req.query.offset : 0,

@@ -22,7 +22,7 @@ class UserController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset + '' } : undefined,
+      cursor: offset ? { id: BigInt(offset.toString()) } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -40,7 +40,7 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.userId;
+    const id = BigInt(req.params.userId);
 
     const user = await this.prisma.user.findFirstOrThrow({ where: { id } });
 
@@ -48,7 +48,7 @@ class UserController extends BaseController {
   }
 
   async update(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.userId;
+    const id = BigInt(req.params.userId);
     const data: Prisma.UserUpdateInput = req.body;
 
     const user = await this.prisma.user.update({
