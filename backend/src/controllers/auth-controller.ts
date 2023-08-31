@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import BaseController from './base-controller.js';
 import AppConfig from '../config/app-config.js';
-import { AuthenticationError } from '../errors/authentication-error.js';
+import { AuthenticationError } from '../errors/authentication.error.js';
 
 class AuthController extends BaseController {
   async register(req: Request, res: Response, next: NextFunction) {

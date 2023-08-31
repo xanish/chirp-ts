@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ApplicationError } from '../errors/application-error.js';
+import { ApplicationError } from '../errors/application.error.js';
 
 class ErrorHandler {
   protected dontReport: Array<string> = [];
