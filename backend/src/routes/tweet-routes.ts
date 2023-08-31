@@ -13,7 +13,7 @@ import FindManyTweetLikesSchema from '../schemas/tweets/find-many-tweet-likes.js
 import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.js';
 
 // middlewares
-import validateRequest from '../middlewares/validate-request.js';
+import validateRequest from '../middlewares/validate-request.middleware.js';
 
 export default [
   {

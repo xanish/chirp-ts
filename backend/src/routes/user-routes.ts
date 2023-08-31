@@ -17,7 +17,7 @@ import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
 import UpdateUserSchema from '../schemas/users/update-user-schema.js';
 
 // middlewares
-import validateRequest from '../middlewares/validate-request.js';
+import validateRequest from '../middlewares/validate-request.middleware.js';
 
 export default [
   {

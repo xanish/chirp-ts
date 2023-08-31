@@ -8,7 +8,7 @@ import RegisterUserSchema from '../schemas/auth/register-user-schema.js';
 import LoginUserSchema from '../schemas/auth/login-user-schema.js';
 
 // middlewares
-import validateRequest from '../middlewares/validate-request.js';
+import validateRequest from '../middlewares/validate-request.middleware.js';
 
 export default [
   {

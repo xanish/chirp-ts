@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import express, { Express } from 'express';
 import AppConfig from './config/app-config.js';
 import bootstrapRoutes from './bootstrap/routes.js';
-import errorHandler from './middlewares/error-handler.js';
+import errorHandler from './middlewares/error-handler.middleware.js';
 import GracefulShutdown from 'http-graceful-shutdown';
 import { Server } from 'http';
 
