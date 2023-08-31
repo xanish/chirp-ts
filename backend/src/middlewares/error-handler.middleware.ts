@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+
+import { NextFunction, Request, Response } from 'express';
 import { ApplicationError } from '../errors/application.error.js';
 
 class ErrorHandler {
   protected dontReport: Array<string> = [];
 
-  handle(err: ApplicationError | Error, req: Request, res: Response) {
+  handle(err: ApplicationError | Error, req: Request, res: Response, next: NextFunction) {
     if (err instanceof ApplicationError) {
       err.render(req, res);
       if (!this.dontReport.includes(err.name)) {

@@ -15,6 +15,9 @@ const app: Express = express();
   return this.toString();
 };
 
+// Show routes called in console
+if (AppConfig.APP_ENV === 'dev') app.use(morgan('dev'));
+
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,11 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 // setup application routes
 bootstrapRoutes(app);
 
-// Show routes called in console
-if (AppConfig.APP_ENV === 'dev') app.use(morgan('dev'));
-
 // Add error handler
-app.use(errorHandler.handle);
+app.use(errorHandler.handle.bind(errorHandler));
 
 const server: Server = app.listen(AppConfig.PORT, () => {
   console.log(`Server is running at http://localhost:${AppConfig.PORT}`);
