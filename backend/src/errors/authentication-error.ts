@@ -1,3 +1,3 @@
-import { BaseError } from './base-error.js';
+import { ApplicationError } from './application-error.js';
 
-export class AuthenticationError extends BaseError {}
+export class AuthenticationError extends ApplicationError {}

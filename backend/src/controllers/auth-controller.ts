@@ -37,7 +37,7 @@ class AuthController extends BaseController {
       }
     } catch (err) {
       return next(
-        new AuthenticationError(400, (<{ message: string }>err).message)
+        new AuthenticationError((<{ message: string }>err).message, 400)
       );
     }
   }
@@ -50,7 +50,7 @@ class AuthController extends BaseController {
     });
 
     if (user.isVerified === false) {
-      return next(new AuthenticationError(403, 'Forbidden'));
+      return next(new AuthenticationError('Forbidden', 403));
     }
 
     const matches = await bcrypt.compare(req.body.password, user.password);
@@ -64,7 +64,7 @@ class AuthController extends BaseController {
 
       return res.json({ token });
     } else {
-      return next(new AuthenticationError(401, 'Unauthorized'));
+      return next(new AuthenticationError('Unauthorized', 401));
     }
   }
 
