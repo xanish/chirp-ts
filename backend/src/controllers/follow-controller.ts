@@ -34,7 +34,7 @@ class FollowController extends BaseController {
       where: { followerId, followingId },
     });
 
-    return res.status(204);
+    return res.status(204).send();
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {

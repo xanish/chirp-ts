@@ -37,7 +37,7 @@ class TweetController extends BaseController {
 
     const countDeleted = await this.prisma.tweet.delete({ where: { id } });
 
-    return res.status(204);
+    return res.status(204).send();
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
