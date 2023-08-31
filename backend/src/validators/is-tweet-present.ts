@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { CustomValidator } from 'express-validator';
 
-const isTweetPresent: CustomValidator = async (id: bigint) => {
+const isTweetPresent: CustomValidator = async (id: string) => {
   const prisma: PrismaClient = new PrismaClient();
 
   const tweet = await prisma.tweet.findUnique({
-    where: { id },
+    where: { id: BigInt(id).valueOf() },
   });
 
   if (!tweet) {
