@@ -1,5 +1,3 @@
-import { checkSchema } from 'express-validator';
-
 // controllers
 import AttachmentController from '../controllers/attachment-controller.js';
 
