@@ -14,48 +14,49 @@ import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replie
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.middleware.js';
+import verifyToken from '../middlewares/validate-token.middleware.js';
 
 export default [
   {
     method: 'get',
     path: '/tweets',
-    middlewares: [],
+    middlewares: [verifyToken, ],
     action: TweetController.findMany.bind(TweetController),
   },
   {
     method: 'post',
     path: '/tweets',
-    middlewares: [checkSchema(CreateTweetSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(CreateTweetSchema), validateRequest],
     action: TweetController.create.bind(TweetController),
   },
   {
     method: 'delete',
     path: '/tweets/:tweetId',
-    middlewares: [checkSchema(DeleteTweetSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(DeleteTweetSchema), validateRequest],
     action: TweetController.delete.bind(TweetController),
   },
   {
     method: 'get',
     path: '/tweets/:tweetId/likes',
-    middlewares: [checkSchema(FindManyTweetLikesSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(FindManyTweetLikesSchema), validateRequest],
     action: LikeController.findByTweet.bind(LikeController),
   },
   {
     method: 'put',
     path: '/tweets/:tweetId/likes',
-    middlewares: [checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
     action: LikeController.create.bind(LikeController),
   },
   {
     method: 'delete',
     path: '/tweets/:tweetId/likes',
-    middlewares: [checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
     action: LikeController.delete.bind(LikeController),
   },
   {
     method: 'get',
     path: '/tweets/:tweetId/replies',
-    middlewares: [checkSchema(FindManyTweetRepliesSchema), validateRequest],
+    middlewares: [verifyToken, checkSchema(FindManyTweetRepliesSchema), validateRequest],
     action: ReplyController.findByTweet.bind(ReplyController),
   },
 ];
