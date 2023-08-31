@@ -8,6 +8,7 @@ import errorHandler from './middlewares/error-handler.middleware.js';
 import GracefulShutdown from 'http-graceful-shutdown';
 import { Server } from 'http';
 import HttpLogging from './middlewares/http-logging.middleware.js';
+import { ApplicationError } from './errors/application.error.js';
 
 const app: Express = express();
 
@@ -39,3 +40,16 @@ GracefulShutdown(server, {
   development: AppConfig.APP_ENV === 'dev',
   forceExit: true,
 });
+
+process.on('uncaughtException', (err: Error) => {
+  errorHandler.handleUncaught(err);
+});
+process.on(
+  'unhandledRejection',
+  (reason: unknown, promise: Promise<unknown>) => {
+    // reason and promise are unreliable and hence should not be checked
+    errorHandler.handleUncaught(
+      new ApplicationError('Unhandled promise rejection encountered', 500)
+    );
+  }
+);

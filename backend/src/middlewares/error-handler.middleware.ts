@@ -23,9 +23,10 @@ class ErrorHandler {
   }
 
   handleUncaught(err: Error) {
-    // todo: log error / report it
-    console.log(err.message);
     Logger.error('uncaught error', { message: err.message, trace: err.stack });
+
+    // it is considered a good practice to exit the server on any uncaught errors
+    // the process manager must make sure to restart the process after this
     process.exit(1);
   }
 

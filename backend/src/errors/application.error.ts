@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Logger from '../bootstrap/logging.js';
 
-export abstract class ApplicationError extends Error {
+export class ApplicationError extends Error {
   statusCode: number;
 
   constructor(message: string, statusCode: number = 500) {
