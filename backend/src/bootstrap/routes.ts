@@ -1,9 +1,9 @@
 import { Express } from 'express';
 
-import authRoutes from '../routes/auth-routes.js';
-import userRoutes from '../routes/user-routes.js';
-import tweetRoutes from '../routes/tweet-routes.js';
-import attachmentRoutes from '../routes/attachment-routes.js';
+import authRoutes from '../routes/auth.routes.js';
+import userRoutes from '../routes/user.routes.js';
+import tweetRoutes from '../routes/tweet.routes.js';
+import attachmentRoutes from '../routes/attachment.routes.js';
 
 const routes = [
   ...authRoutes,
