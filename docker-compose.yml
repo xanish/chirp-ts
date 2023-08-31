@@ -5,7 +5,7 @@ networks:
 
 services:
   api:
-    image: node:18-alpine
+    image: node:18-alpine3.17
     working_dir: /usr/src/app/
     ports:
       - 3000:3000
@@ -18,7 +18,7 @@ services:
       - chirp
   
   mysql:
-    image: mariadb:10
+    image: mariadb:10.11.5
     restart: unless-stopped
     ports:
       - "3306:3306"
@@ -33,7 +33,7 @@ services:
       - chirp
 
   prisma:
-    image: node:18-alpine
+    image: node:18-alpine3.17
     working_dir: /usr/src/app/src/
     volumes:
       - ./backend/:/usr/src/app/
@@ -44,10 +44,19 @@ services:
       - chirp
 
   npm:
-    image: node:18-alpine
+    image: node:18-alpine3.17
     working_dir: /usr/src/app/
     volumes:
       - ./backend/:/usr/src/app/
     entrypoint: 'npm'
+    networks:
+      - chirp
+  
+  npx:
+    image: node:18-alpine3.17
+    working_dir: /usr/src/app/
+    volumes:
+      - ./backend/:/usr/src/app/
+    entrypoint: 'npx'
     networks:
       - chirp
