@@ -1,11 +1,16 @@
-
 import { NextFunction, Request, Response } from 'express';
 import { ApplicationError } from '../errors/application.error.js';
+import Logger from '../bootstrap/logging.js';
 
 class ErrorHandler {
   protected dontReport: Array<string> = [];
 
-  handle(err: ApplicationError | Error, req: Request, res: Response, next: NextFunction) {
+  handle(
+    err: ApplicationError | Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     if (err instanceof ApplicationError) {
       err.render(req, res);
       if (!this.dontReport.includes(err.name)) {
@@ -19,6 +24,8 @@ class ErrorHandler {
 
   handleUncaught(err: Error) {
     // todo: log error / report it
+    console.log(err.message);
+    Logger.error('uncaught error', { message: err.message, trace: err.stack });
     process.exit(1);
   }
 
@@ -30,7 +37,16 @@ class ErrorHandler {
     });
   }
 
-  protected report(err: Error, req: Request) {}
+  protected report(err: Error, req: Request) {
+    Logger.error(err.message, {
+      request: {
+        url: req.originalUrl,
+        headers: req.headers,
+        body: req.body,
+      },
+      trace: err.stack,
+    });
+  }
 }
 
 export default new ErrorHandler();

@@ -7,6 +7,7 @@ import bootstrapRoutes from './bootstrap/routes.js';
 import errorHandler from './middlewares/error-handler.middleware.js';
 import GracefulShutdown from 'http-graceful-shutdown';
 import { Server } from 'http';
+import HttpLogging from './middlewares/http-logging.middleware.js';
 
 const app: Express = express();
 
@@ -16,7 +17,7 @@ const app: Express = express();
 };
 
 // Show routes called in console
-if (AppConfig.APP_ENV === 'dev') app.use(morgan('dev'));
+app.use(HttpLogging);
 
 // Basic middleware
 app.use(express.json());

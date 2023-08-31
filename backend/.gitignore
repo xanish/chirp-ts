@@ -3,3 +3,5 @@ dist
 public/media/*
 !public/media/.gitkeep
 src/.env
+storage/logs/*
+!storage/logs/.gitkeep

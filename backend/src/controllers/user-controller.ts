@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 import BaseController from './base-controller.js';
+import { AuthenticationError } from '../errors/authentication.error.js';
 
 class UserController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {

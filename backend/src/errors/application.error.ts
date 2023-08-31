@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import Logger from '../bootstrap/logging.js';
 
 export abstract class ApplicationError extends Error {
   statusCode: number;
@@ -20,5 +21,14 @@ export abstract class ApplicationError extends Error {
     });
   }
 
-  report(req: Request) {}
+  report(req: Request) {
+    Logger.error(this.message, {
+      request: {
+        url: req.originalUrl,
+        headers: req.headers,
+        body: req.body,
+      },
+      trace: this.stack,
+    });
+  }
 }
