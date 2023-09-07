@@ -31,7 +31,7 @@ class AuthController extends BaseController {
           data: { isVerified: true },
         });
 
-        return res.send('Ok');
+        return res.status(200).send();
       } else {
         return res.status(400).send('Failed to verify');
       }
