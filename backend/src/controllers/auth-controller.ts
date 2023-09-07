@@ -69,6 +69,25 @@ class AuthController extends BaseController {
   }
 
   async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.body;
+
+    const user = await this.prisma.user.findFirst({
+      where: { username },
+    });
+
+    if (user) {
+      const token = jwt.sign(
+        { id: user.id, username: user.username },
+        AppConfig.JWT_SECRET,
+        { expiresIn: AppConfig.JWT_DURATION }
+      );
+      // todo: send password reset mail with token
+
+      return res.status(200).send();
+    }
+  }
+
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const { username, password } = req.body;
 
