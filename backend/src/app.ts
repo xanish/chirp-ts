@@ -49,7 +49,9 @@ process.on(
   'unhandledRejection',
   (reason: unknown, promise: Promise<unknown>) => {
     // reason and promise are unreliable and hence should not be checked
-    errorHandler.handleUncaught(
+    errorHandler.handleUncaughtRejection(
+      reason,
+      promise,
       new ApplicationError('Unhandled promise rejection encountered', 500)
     );
   }
