@@ -1,7 +1,7 @@
 import './bootstrap/env.js';
 
-import morgan from 'morgan';
 import express, { Express } from 'express';
+import Cors from 'cors';
 import AppConfig from './config/app-config.js';
 import bootstrapRoutes from './bootstrap/routes.js';
 import errorHandler from './middlewares/error-handler.middleware.js';
@@ -19,6 +19,7 @@ const app: Express = express();
 
 // Show routes called in console
 app.use(HttpLogging);
+app.use(Cors());
 
 // Basic middleware
 app.use(express.json());
