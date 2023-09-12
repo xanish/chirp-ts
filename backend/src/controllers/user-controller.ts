@@ -40,9 +40,15 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const id = BigInt(req.params.userId).valueOf();
+    let where: any = {};
 
-    const user = await this.prisma.user.findFirstOrThrow({ where: { id } });
+    try {
+      where.id = BigInt(req.params.userId).valueOf();
+    } catch (e) {
+      where.username = req.params.userId;
+    }
+
+    const user = await this.prisma.user.findFirstOrThrow({ where });
 
     return res.json(user);
   }
