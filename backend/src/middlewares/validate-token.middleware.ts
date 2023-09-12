@@ -20,7 +20,7 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
       }
     }
 
-    return res.status(400).send('Unauthorized');
+    return res.status(401).send('Unauthorized');
   } catch (err) {
     if (err instanceof Error) {
       return next(
