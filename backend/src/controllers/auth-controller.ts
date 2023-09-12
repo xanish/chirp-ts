@@ -57,7 +57,12 @@ class AuthController extends BaseController {
 
     if (matches) {
       const token = jwt.sign(
-        { id: user.id, username: user.username, firstName: user.firstName, lastName: user.lastName },
+        {
+          id: user.id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
         AppConfig.JWT_SECRET,
         { expiresIn: AppConfig.JWT_DURATION }
       );
@@ -77,7 +82,12 @@ class AuthController extends BaseController {
 
     if (user) {
       const token = jwt.sign(
-        { id: user.id, username: user.username, firstName: user.firstName, lastName: user.lastName },
+        {
+          id: user.id,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
         AppConfig.JWT_SECRET,
         { expiresIn: AppConfig.JWT_DURATION }
       );

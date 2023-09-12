@@ -25,7 +25,4 @@ const isUsernamePresent = async (username: string) => {
 };
 
 export default isUserPresent;
-export {
-  isUserPresent,
-  isUsernamePresent
-};
+export { isUserPresent, isUsernamePresent };

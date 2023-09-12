@@ -25,7 +25,9 @@ class TweetController extends BaseController {
       userId: BigInt(req.body.userId).valueOf(),
       content: req.body.content,
       type: req.body.type ?? undefined,
-      relatedId: req.body.relatedId ? BigInt(req.body.relatedId).valueOf() : undefined,
+      relatedId: req.body.relatedId
+        ? BigInt(req.body.relatedId).valueOf()
+        : undefined,
       attachments: attachments ? { create: attachments } : undefined,
     };
 

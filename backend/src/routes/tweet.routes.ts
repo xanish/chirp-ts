@@ -20,7 +20,7 @@ export default [
   {
     method: 'get',
     path: '/tweets',
-    middlewares: [verifyToken, ],
+    middlewares: [verifyToken],
     action: TweetController.findMany.bind(TweetController),
   },
   {
@@ -38,25 +38,41 @@ export default [
   {
     method: 'get',
     path: '/tweets/:tweetId/likes',
-    middlewares: [verifyToken, checkSchema(FindManyTweetLikesSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyTweetLikesSchema),
+      validateRequest,
+    ],
     action: LikeController.findByTweet.bind(LikeController),
   },
   {
     method: 'put',
     path: '/tweets/:tweetId/likes',
-    middlewares: [verifyToken, checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(CreateDeleteLikeTweetSchema),
+      validateRequest,
+    ],
     action: LikeController.create.bind(LikeController),
   },
   {
     method: 'delete',
     path: '/tweets/:tweetId/likes',
-    middlewares: [verifyToken, checkSchema(CreateDeleteLikeTweetSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(CreateDeleteLikeTweetSchema),
+      validateRequest,
+    ],
     action: LikeController.delete.bind(LikeController),
   },
   {
     method: 'get',
     path: '/tweets/:tweetId/replies',
-    middlewares: [verifyToken, checkSchema(FindManyTweetRepliesSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyTweetRepliesSchema),
+      validateRequest,
+    ],
     action: ReplyController.findByTweet.bind(ReplyController),
   },
 ];

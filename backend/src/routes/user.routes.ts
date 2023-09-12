@@ -24,7 +24,11 @@ export default [
   {
     method: 'get',
     path: '/users',
-    middlewares: [verifyToken, checkSchema(FindManyUserSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserSchema),
+      validateRequest,
+    ],
     action: UserController.findMany.bind(UserController),
   },
   {
@@ -42,43 +46,71 @@ export default [
   {
     method: 'get',
     path: '/users/:userId/tweets',
-    middlewares: [verifyToken, checkSchema(FindManyUserTweetsSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserTweetsSchema),
+      validateRequest,
+    ],
     action: TweetController.findByUser.bind(TweetController),
   },
   {
     method: 'get',
     path: '/users/:userId/replies',
-    middlewares: [verifyToken, checkSchema(FindManyUserTweetsSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserTweetsSchema),
+      validateRequest,
+    ],
     action: ReplyController.findByUser.bind(ReplyController),
   },
   {
     method: 'get',
     path: '/users/:userId/likes',
-    middlewares: [verifyToken, checkSchema(FindManyUserLikesSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserLikesSchema),
+      validateRequest,
+    ],
     action: LikeController.findByUser.bind(LikeController),
   },
   {
     method: 'get',
     path: '/users/:userId/followers',
-    middlewares: [verifyToken, checkSchema(FindManyUserFollowsSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserFollowsSchema),
+      validateRequest,
+    ],
     action: FollowController.followersByUser.bind(FollowController),
   },
   {
     method: 'get',
     path: '/users/:userId/following',
-    middlewares: [verifyToken, checkSchema(FindManyUserFollowsSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserFollowsSchema),
+      validateRequest,
+    ],
     action: FollowController.followingByUser.bind(FollowController),
   },
   {
     method: 'put',
     path: '/users/:userId/followers',
-    middlewares: [verifyToken, checkSchema(CreateDeleteUserFollowSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(CreateDeleteUserFollowSchema),
+      validateRequest,
+    ],
     action: FollowController.create.bind(FollowController),
   },
   {
     method: 'delete',
     path: '/users/:userId/followers',
-    middlewares: [verifyToken, checkSchema(CreateDeleteUserFollowSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(CreateDeleteUserFollowSchema),
+      validateRequest,
+    ],
     action: FollowController.delete.bind(FollowController),
   },
 ];
