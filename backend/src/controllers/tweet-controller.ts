@@ -22,10 +22,10 @@ class TweetController extends BaseController {
 
     const tweet = {
       id: this.snowflakeId(),
-      userId: req.body.userId,
+      userId: BigInt(req.body.userId).valueOf(),
       content: req.body.content,
       type: req.body.type ?? undefined,
-      relatedId: req.body.relatedId ?? undefined,
+      relatedId: req.body.relatedId ? BigInt(req.body.relatedId).valueOf() : undefined,
       attachments: attachments ? { create: attachments } : undefined,
     };
 
@@ -33,7 +33,7 @@ class TweetController extends BaseController {
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    const id = +req.params.tweetId;
+    const id = BigInt(req.params.tweetId).valueOf();
 
     const countDeleted = await this.prisma.tweet.delete({ where: { id } });
 
@@ -77,14 +77,14 @@ class TweetController extends BaseController {
         updatedAt: true,
       },
       where: {
-        userId: +req.params.userId,
+        userId: BigInt(req.params.userId).valueOf(),
         NOT: {
           type: TweetType.REPLY,
         },
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()) } : undefined,
+      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
       orderBy: {
         createdAt: 'desc',
       },

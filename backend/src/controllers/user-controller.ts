@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 import BaseController from './base-controller.js';
-import { AuthenticationError } from '../errors/authentication.error.js';
 
 class UserController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
@@ -23,7 +22,7 @@ class UserController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()) } : undefined,
+      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -41,7 +40,7 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const id = BigInt(req.params.userId);
+    const id = BigInt(req.params.userId).valueOf();
 
     const user = await this.prisma.user.findFirstOrThrow({ where: { id } });
 
@@ -49,7 +48,7 @@ class UserController extends BaseController {
   }
 
   async update(req: Request, res: Response, next: NextFunction) {
-    const id = BigInt(req.params.userId);
+    const id = BigInt(req.params.userId).valueOf();
     const data: Prisma.UserUpdateInput = req.body;
 
     const user = await this.prisma.user.update({

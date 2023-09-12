@@ -5,8 +5,8 @@ import BaseController from './base-controller.js';
 class FollowController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId),
-      BigInt(req.params.userId),
+      BigInt(req.body.followerId).valueOf(),
+      BigInt(req.params.userId).valueOf(),
     ];
 
     const followExists = await this.prisma.follow.findFirst({
@@ -26,8 +26,8 @@ class FollowController extends BaseController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId),
-      BigInt(req.params.userId),
+      BigInt(req.body.followerId).valueOf(),
+      BigInt(req.params.userId).valueOf(),
     ];
 
     const countDeleted = await this.prisma.follow.deleteMany({
@@ -38,7 +38,7 @@ class FollowController extends BaseController {
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
-    const offset = req.query.offset ? +req.query.offset : 0;
+    const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
     const follows = await this.prisma.follow.findMany({
@@ -53,7 +53,7 @@ class FollowController extends BaseController {
         },
       },
       where: {
-        followingId: BigInt(req.params.userId),
+        followingId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
       skip: offset,
@@ -71,7 +71,7 @@ class FollowController extends BaseController {
   }
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
-    const offset = req.query.offset ? +req.query.offset : 0;
+    const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
     const follows = await this.prisma.follow.findMany({
@@ -86,7 +86,7 @@ class FollowController extends BaseController {
         },
       },
       where: {
-        followerId: BigInt(req.params.userId),
+        followerId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
       skip: offset,

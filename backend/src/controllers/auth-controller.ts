@@ -20,8 +20,8 @@ class AuthController extends BaseController {
 
   async verify(req: Request, res: Response, next: NextFunction) {
     try {
-      const decoded = jwt.verify(req.params.token, AppConfig.JWT_SECRET);
-      const id = BigInt((<{ id: string; username: string }>decoded).id);
+      const decoded: any = jwt.verify(req.params.token, AppConfig.JWT_SECRET);
+      const id = BigInt(decoded.id).valueOf();
 
       const user = await this.prisma.user.findFirst({ where: { id } });
 
