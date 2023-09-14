@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 import BaseController from './base-controller.js';
+import { ApplicationError } from '../errors/application.error.js';
 
 class UserController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
@@ -48,9 +49,13 @@ class UserController extends BaseController {
       where.username = req.params.userId;
     }
 
-    const user = await this.prisma.user.findFirstOrThrow({ where });
+    try {
+      const user = await this.prisma.user.findFirstOrThrow({ where });
 
-    return res.json(user);
+      return res.json(user);
+    } catch (e) {
+      return next(new ApplicationError('User not found', 404));
+    }
   }
 
   async update(req: Request, res: Response, next: NextFunction) {

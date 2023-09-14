@@ -44,10 +44,15 @@ class AuthController extends BaseController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     const username = req.body.username;
+    let user;
 
-    const user = await this.prisma.user.findFirstOrThrow({
-      where: { username },
-    });
+    try {
+      user = await this.prisma.user.findFirstOrThrow({
+        where: { username },
+      });
+    } catch (e) {
+      return next(new AuthenticationError('Unauthorized', 401));
+    }
 
     if (user.isVerified === false) {
       return next(new AuthenticationError('Forbidden', 403));
