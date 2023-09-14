@@ -51,6 +51,14 @@ class TweetController extends BaseController {
         id: true,
         content: true,
         type: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         related: {
           select: {
             id: true,
@@ -73,6 +81,11 @@ class TweetController extends BaseController {
           select: {
             type: true,
             content: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
           },
         },
         createdAt: true,

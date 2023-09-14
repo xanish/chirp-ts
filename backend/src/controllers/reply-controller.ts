@@ -33,6 +33,11 @@ class ReplyController extends BaseController {
             updatedAt: true,
           },
         },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
         createdAt: true,
         updatedAt: true,
       },
