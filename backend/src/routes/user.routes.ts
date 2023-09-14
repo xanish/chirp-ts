@@ -11,6 +11,7 @@ import UserController from '../controllers/user-controller.js';
 import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow-schema.js';
 import FindManyUserFollowsSchema from '../schemas/users/find-many-user-follows-schema.js';
 import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.js';
+import FindManyUserMediasSchema from '../schemas/users/find-many-user-medias-schema.js';
 import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
 import FindManyUserTweetsSchema from '../schemas/users/find-many-user-tweets-schema.js';
 import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
@@ -72,6 +73,16 @@ export default [
       validateRequest,
     ],
     action: LikeController.findByUser.bind(LikeController),
+  },
+  {
+    method: 'get',
+    path: '/users/:userId/medias',
+    middlewares: [
+      verifyToken,
+      checkSchema(FindManyUserMediasSchema),
+      validateRequest,
+    ],
+    action: TweetController.findMediaByUser.bind(TweetController),
   },
   {
     method: 'get',
