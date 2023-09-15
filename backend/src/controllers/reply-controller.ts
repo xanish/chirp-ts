@@ -12,6 +12,7 @@ class ReplyController extends BaseController {
         content: true,
         attachments: {
           select: {
+            id: true,
             type: true,
             content: true,
           },
@@ -74,6 +75,7 @@ class ReplyController extends BaseController {
         content: true,
         attachments: {
           select: {
+            id: true,
             type: true,
             content: true,
           },
