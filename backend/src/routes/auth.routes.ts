@@ -4,9 +4,9 @@ import { checkSchema } from 'express-validator';
 import AuthController from '../controllers/auth-controller.js';
 
 // validation schemas
-import ForgotPasswordUserSchema from '../schemas/auth/forgot-password-user-schema.js';
-import RegisterUserSchema from '../schemas/auth/register-user-schema.js';
-import LoginUserSchema from '../schemas/auth/login-user-schema.js';
+import ForgotPasswordUserSchema from '../schemas/auth/forgot-password-user.schema.js';
+import RegisterUserSchema from '../schemas/auth/register-user.schema.js';
+import LoginUserSchema from '../schemas/auth/login-user.schema.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.middleware.js';
