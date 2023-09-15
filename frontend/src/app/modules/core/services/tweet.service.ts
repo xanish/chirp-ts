@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Tweet } from '../../shared/models/tweet.model';
+import { TPaginationResponse } from '../../shared/types/paginated-response.type';
+import { TPaginationOptions } from '../../shared/types/pagination-options.type';
+import { TTweet } from '../../shared/types/tweet.type';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 
@@ -9,22 +14,48 @@ export class TweetService {
     private tokenService: TokenService
   ) {}
 
-  feed() {}
-
-  personal(params: { offset?: null | string; limit: number }) {
-    if (params.offset == null || params.offset === '') {
-      delete params.offset;
-    }
-
-    return this.apiService.get(
-      `/users/${this.tokenService.id()}/tweets`,
-      params
-    );
+  create(tweet: Tweet): Observable<TTweet> {
+    return this.apiService.post('/tweet', tweet);
   }
 
-  create() {}
+  delete(id: string): Observable<any> {
+    return this.apiService.delete(`/tweet/${id}`);
+  }
 
-  reply() {}
+  feed(options: TPaginationOptions): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.get(`/tweets`, options);
+  }
 
-  retweet() {}
+  likes(
+    id: string,
+    options: TPaginationOptions
+  ): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.get(`/tweets/${id}/likes`, options);
+  }
+
+  like(id: string): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.put(`/tweets/${id}/likes`, {
+      userId: this.tokenService.id(),
+    });
+  }
+
+  unlike(id: string): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.delete(`/tweets/${id}/likes`, {
+      userId: this.tokenService.id(),
+    });
+  }
+
+  quotes(
+    id: string,
+    options: TPaginationOptions
+  ): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.get(`/tweets/${id}/quotes`, options);
+  }
+
+  replies(
+    id: string,
+    options: TPaginationOptions
+  ): Observable<TPaginationResponse<TTweet>> {
+    return this.apiService.get(`/tweets/${id}/replies`, options);
+  }
 }
