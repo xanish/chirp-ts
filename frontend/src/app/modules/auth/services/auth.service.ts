@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/modules/core/services/api.service';
-import { ForgotPasswordFormData } from '../shared/models/forgot-password-form-data.model';
-import { LoginFormData } from '../shared/models/login-form-data.model';
-import { RegisterFormData } from '../shared/models/register-form-data.model';
-import { ResetPasswordFormData } from '../shared/models/reset-password-form-data.model copy';
+import { ForgotPasswordOptions } from '../shared/types/forgot-password-options.type';
+import { LoginOptions } from '../shared/types/login-options.type';
+import { RegisterOptions } from '../shared/types/register-options.type';
+import { ResetPasswordOptions } from '../shared/types/reset-password-options.type';
 
 @Injectable()
 export class AuthService {
   constructor(private apiService: ApiService) {}
 
-  forgotPassword(data: ForgotPasswordFormData): Observable<Object> {
+  forgotPassword(data: ForgotPasswordOptions): Observable<Object> {
     return this.apiService.post('/auth/forgot-password', data);
   }
 
-  login(data: LoginFormData): Observable<Object> {
+  login(data: LoginOptions): Observable<Object> {
     return this.apiService.post('/auth/login', data);
   }
 
-  register(data: RegisterFormData): Observable<Object> {
+  register(data: RegisterOptions): Observable<Object> {
     return this.apiService.post('/auth/register', data);
   }
 
-  resetPassword(data: ResetPasswordFormData): Observable<Object> {
+  resetPassword(data: ResetPasswordOptions): Observable<Object> {
     return this.apiService.post('/auth/reset-password', data);
   }
 
