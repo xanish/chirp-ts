@@ -1,0 +1,34 @@
+<nav class="flex flex-col justify-center px-6 py-6">
+  <div class="flex flex-grow flex-col">
+    <a
+      class="my-2 rounded-lg py-4 text-center text-sm uppercase leading-6 hover:bg-gray-300"
+      routerLink="/feed"
+      >Home</a
+    >
+    <a
+      class="my-2 rounded-lg py-4 text-center text-sm uppercase leading-6 hover:bg-gray-300"
+      routerLink="/"
+      >Profile</a
+    >
+    <button
+      class="my-2 block w-full rounded-md bg-indigo-600 px-4 py-4 text-sm font-bold uppercase leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+      New Post
+    </button>
+  </div>
+
+  <div class="flex flex-row items-center justify-center" *ngIf="user.id">
+    <img
+      class="block rounded-full"
+      src="{{ user.profileImg }}"
+      alt="profile image"
+    />
+
+    <ul class="list-none px-4">
+      <li class="font-bold">{{ user.name }}</li>
+      <li>@{{ user.username }}</li>
+    </ul>
+
+    <button>Options</button>
+  </div>
+</nav>

@@ -1,0 +1,14 @@
+:host {
+  width: 100%;
+}
+
+:host > nav {
+  min-height: calc(100vh - 98px);
+  max-height: calc(100vh - 98px);
+  position: sticky;
+  top: 98px;
+}
+
+.img {
+  background: linear-gradient(0deg, #8d54ff, #32a6ff);
+}

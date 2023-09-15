@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    min-height: 100vh;
+}
+
+.mini-loader {
+  display: inline-block;
+  width: 20px;
+  height: 1rem;
+  margin-left: 0.2rem;
+  vertical-align: middle;
+  aspect-ratio: .75;
+  --c: no-repeat linear-gradient(#fff 0 0);
+  background: 
+    var(--c) 0%   50%,
+    var(--c) 50%  50%,
+    var(--c) 100% 50%;
+  animation: l7 1s infinite linear alternate;
+}
+@keyframes l7 {
+  0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
+  20% {background-size: 20% 20% ,20% 50% ,20% 50% }
+  40% {background-size: 20% 100%,20% 20% ,20% 50% }
+  60% {background-size: 20% 50% ,20% 100%,20% 20% }
+  80% {background-size: 20% 50% ,20% 50% ,20% 100%}
+  100%{background-size: 20% 50% ,20% 50% ,20% 50% }
+}
+
+.aurora-outer {
+    background: linear-gradient(45deg, #32a6ff 0%, #3f6fff 49%, #8d54ff 82%);
+    background-size: 200%;
+    animation: aurora 8s infinite;
+  }
+  
+  .aurora-inner {
+    background: radial-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.15)
+    );
+    background-size: 200%;
+    animation: aurora 4s infinite;
+  }
+  
+  @keyframes aurora {
+    0% {
+      background-position: left top;
+    }
+    25% {
+      background-position: right top;
+    }
+    50% {
+      background-position: right bottom;
+    }
+    75% {
+      background-position: left bottom;
+    }
+    100% {
+      background-position: left top;
+    }
+  }
+  
