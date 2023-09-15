@@ -1,3 +1,3 @@
-export type TokenResponse = {
+export type TTokenResponse = {
   token: string;
 };
