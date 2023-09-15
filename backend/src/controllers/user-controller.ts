@@ -51,6 +51,7 @@ class UserController extends BaseController {
 
     try {
       const user = await this.prisma.user.findFirstOrThrow({
+        where: where,
         select: {
           id: true,
           username: true,

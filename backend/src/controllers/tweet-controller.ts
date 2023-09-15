@@ -42,6 +42,7 @@ class TweetController extends BaseController {
         },
         attachments: {
           select: {
+            id: true,
             type: true,
             content: true,
           },
@@ -167,6 +168,7 @@ class TweetController extends BaseController {
         },
         attachments: {
           select: {
+            id: true,
             type: true,
             content: true,
           },
@@ -241,6 +243,7 @@ class TweetController extends BaseController {
         },
         attachments: {
           select: {
+            id: true,
             type: true,
             content: true,
           },
