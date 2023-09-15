@@ -50,7 +50,27 @@ class UserController extends BaseController {
     }
 
     try {
-      const user = await this.prisma.user.findFirstOrThrow({ where });
+      const user = await this.prisma.user.findFirstOrThrow({
+        select: {
+          id: true,
+          username: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          city: true,
+          country: true,
+          birthDate: true,
+          _count: {
+            select: {
+              tweets: true,
+              followers: true,
+              following: true,
+            },
+          },
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
 
       return res.json(user);
     } catch (e) {
