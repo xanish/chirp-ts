@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { User } from '../shared/models/user.model';
+import { User } from '../../shared/models/user.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TokenService {
   constructor() {}
 
@@ -25,16 +23,16 @@ export class TokenService {
     const token = this.token();
 
     if (!token) {
-      return new User(null, null, null, null);
+      return User.default();
     }
 
     const payload: any = JSON.parse(atob(token.split('.')[1]));
 
-    return new User(
-      payload.id,
-      payload.username,
-      payload.firstName,
-      payload.lastName
-    );
+    return new User({
+      id: payload.id,
+      username: payload.username,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/core/api.service';
+import { ApiService } from 'src/app/modules/core/services/api.service';
 import { ForgotPasswordFormData } from '../shared/models/forgot-password-form-data.model';
 import { LoginFormData } from '../shared/models/login-form-data.model';
 import { RegisterFormData } from '../shared/models/register-form-data.model';

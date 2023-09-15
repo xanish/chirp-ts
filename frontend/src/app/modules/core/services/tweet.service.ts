@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class TweetService {
   constructor(
     private apiService: ApiService,
