@@ -11,6 +11,7 @@ const __dirname = dirname(__filename);
 
 import BaseController from './base-controller.js';
 import AttachmentErrorsConfig from '../config/attachment-errors-config.js';
+import { ApplicationError } from '../errors/application.error.js';
 
 class AttachmentController extends BaseController {
   // need to upload multiple files together so promisify the copyFile function
@@ -85,6 +86,23 @@ class AttachmentController extends BaseController {
     } catch (e) {
       next(e);
     }
+  }
+
+  async get(req: Request, res: Response) {
+    const filePath = path.join(
+      __dirname,
+      '../../public/media',
+      `${req.params.mediaName}`
+    );
+
+    if (!fs.existsSync(filePath)) {
+      throw new ApplicationError(
+        `File ${req.params.mediaName} does not exists`,
+        404
+      );
+    }
+
+    return res.set('Cache-control', 'public, max-age=86400').sendFile(filePath);
   }
 }
 
