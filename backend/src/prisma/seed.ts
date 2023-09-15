@@ -52,8 +52,8 @@ const users = [
           create: [
             {
               id: await getId(),
-              type: AttachmentType.IMAGE,
-              content: '4.jpg',
+              type: AttachmentType.VIDEO,
+              content: '4.mp4',
             },
           ],
         },
@@ -181,7 +181,7 @@ const users = [
             {
               id: await getId(),
               type: AttachmentType.VIDEO,
-              content: '4.jpg',
+              content: '4.mp4',
             },
           ],
         },
