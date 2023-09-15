@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
-import { TokenInterceptor } from './modules/core/interceptors/token.interceptor';
+import { InjectTokenInterceptor } from './modules/core/interceptors/inject-token.interceptor';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -22,7 +22,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: InjectTokenInterceptor,
       multi: true,
     },
   ],

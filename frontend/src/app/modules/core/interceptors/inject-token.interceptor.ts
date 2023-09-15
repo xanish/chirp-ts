@@ -10,7 +10,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { TokenService } from '../services/token.service';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
+export class InjectTokenInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private tokenService: TokenService
