@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
 import { InjectTokenInterceptor } from './modules/core/interceptors/inject-token.interceptor';
+import { RefreshTokenInterceptor } from './modules/core/interceptors/refresh-token.interceptor';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -23,6 +24,11 @@ import { ProfileComponent } from './pages/profile/profile.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InjectTokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
       multi: true,
     },
   ],
