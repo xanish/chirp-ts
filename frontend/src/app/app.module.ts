@@ -9,6 +9,7 @@ import { InjectTokenInterceptor } from './modules/core/interceptors/inject-token
 import { RefreshTokenInterceptor } from './modules/core/interceptors/refresh-token.interceptor';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
+import { FollowsComponent } from './pages/follows/follows.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
@@ -19,6 +20,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
     ProfileComponent,
     EditProfileComponent,
     NotFoundComponent,
+    FollowsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, CoreModule],
   bootstrap: [AppComponent],

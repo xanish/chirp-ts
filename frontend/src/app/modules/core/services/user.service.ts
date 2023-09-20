@@ -38,6 +38,28 @@ export class UserService {
     });
   }
 
+  followers(
+    id: string,
+    options: TPaginationOptions
+  ): Observable<TPaginationResponse<TUser>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
+    return this.apiService.get(`/users/${id}/followers`, options);
+  }
+
+  following(
+    id: string,
+    options: TPaginationOptions
+  ): Observable<TPaginationResponse<TUser>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
+    return this.apiService.get(`/users/${id}/following`, options);
+  }
+
   tweets(
     id: string,
     options: TPaginationOptions

@@ -1,0 +1,133 @@
+<div class="flex min-h-screen flex-col">
+  <div
+    class="sticky top-0 z-50 flex items-center justify-between bg-white px-10 py-6 shadow-sm"
+  >
+    <h6 class="font-display text-3xl text-indigo-600">Chirp</h6>
+
+    <div class="md:w-1/2 lg:w-1/4">
+      <input
+        type="text"
+        placeholder="Search"
+        class="block w-full rounded border border-gray-200 bg-gray-200 px-4 py-3 text-gray-700 focus:border-indigo-600 focus:bg-white focus:outline-none"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-grow px-64">
+    <div class="flex flex-grow lg:w-1/4">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
+      <div class="aurora-outer w-full rounded-md pt-16 shadow-sm">
+        <div class="aurora-inner"></div>
+
+        <div
+          class="flex flex-row items-start justify-center rounded-md bg-white py-3"
+        >
+          <img
+            class="relative -top-12 z-0 mx-4 block rounded-full border-4 border-white"
+            src="https://placehold.co/100/4f46e5/white?text=Chirp&font=roboto"
+            alt=""
+          />
+
+          <ul class="flex-grow">
+            <li class="font-semibold">{{ user.name }}</li>
+            <li class="text-gray-500">@{{ user.username }}</li>
+            <li>
+              {{ user.location }}
+              <span class="ms-4"
+                >Joined {{ user.createdAt | date: 'MMMM YYYY' }}</span
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/{{ user.username }}/followers"
+                class="me-4 hover:underline"
+                ><span class="font-semibold">{{ user.count.followers }}</span>
+                Followers</a
+              >
+              <a
+                routerLink="/{{ user.username }}/following"
+                class="hover:underline"
+                ><span class="font-semibold">{{ user.count.following }}</span>
+                Following</a
+              >
+            </li>
+          </ul>
+
+          <button
+            class="mx-4 rounded-md border-2 border-indigo-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-indigo-600 hover:bg-indigo-600 hover:text-white"
+          >
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="flex w-full flex-row items-center justify-evenly rounded-md bg-white shadow-sm"
+      >
+        <a
+          routerLink="/{{ user.username }}/followers"
+          class="w-full p-4 text-center text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.FOLLOWERS
+          }"
+        >
+          Followers
+        </a>
+
+        <a
+          routerLink="/{{ user.username }}/following"
+          class="w-full p-4 text-center text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.FOLLOWING
+          }"
+        >
+          Following
+        </a>
+      </div>
+
+      <div class="w-full rounded-md bg-white py-4 shadow-sm">
+        <ng-template ngFor let-follow [ngForOf]="follows">
+          <div
+            class="flex flex-row items-center justify-center gap-2 px-4 py-2"
+          >
+            <img
+              class="block rounded-full"
+              src="{{ follow.profileImg }}"
+              alt="profile image"
+            />
+
+            <ul class="flex-grow">
+              <li class="font-semibold">{{ follow.name }}</li>
+              <li class="text-gray-500">@{{ follow.username }}</li>
+            </ul>
+
+            <ng-container *ngIf="tab === tabType.FOLLOWING">
+              <button
+                type="button"
+                class="rounded-md border-2 border-red-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-red-600 hover:bg-red-600 hover:text-white"
+              >
+                Unfollow
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="tab === tabType.FOLLOWERS">
+              <button
+                type="button"
+                class="rounded-md border-2 border-indigo-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-indigo-600 hover:bg-indigo-600 hover:text-white"
+              >
+                Follow
+              </button>
+            </ng-container>
+          </div>
+        </ng-template>
+      </div>
+    </section>
+
+    <aside class="lg:w-1/4"></aside>
+  </div>
+</div>

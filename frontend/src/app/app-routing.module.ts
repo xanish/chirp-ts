@@ -5,6 +5,7 @@ import { userAuthenticatedGuard } from './modules/core/guards/user-authenticated
 import { userResolver } from './modules/core/resolvers/user.resolver';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
+import { FollowsComponent } from './pages/follows/follows.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
@@ -34,6 +35,22 @@ const routes: Routes = [
       user: userResolver,
     },
     canActivate: [userAuthenticatedGuard, editProfileGuard],
+  },
+  {
+    path: ':username/followers',
+    component: FollowsComponent,
+    resolve: {
+      user: userResolver,
+    },
+    canActivate: [userAuthenticatedGuard],
+  },
+  {
+    path: ':username/following',
+    component: FollowsComponent,
+    resolve: {
+      user: userResolver,
+    },
+    canActivate: [userAuthenticatedGuard],
   },
   {
     path: '**',
