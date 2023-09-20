@@ -3,9 +3,14 @@ import { AttachmentType, TweetType } from '@prisma/client';
 import mime from 'mime-types';
 
 import BaseController from './base-controller.js';
+import jwt from 'jsonwebtoken';
+import AppConfig from '../config/app-config.js';
 
 class TweetController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -59,8 +64,12 @@ class TweetController extends BaseController {
         OR: [
           {
             user: {
-              followers: {
-                some: { followerId: BigInt(req.params.userId).valueOf() },
+              following: {
+                some: {
+                  followerId: {
+                    equals: BigInt(userId).valueOf(),
+                  },
+                },
               },
             },
           },
@@ -68,8 +77,12 @@ class TweetController extends BaseController {
             likes: {
               some: {
                 user: {
-                  followers: {
-                    some: { followerId: BigInt(req.params.userId).valueOf() },
+                  following: {
+                    some: {
+                      followerId: {
+                        equals: BigInt(userId).valueOf(),
+                      },
+                    },
                   },
                 },
               },
