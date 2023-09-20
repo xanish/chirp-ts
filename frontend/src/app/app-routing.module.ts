@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { editProfileGuard } from './modules/core/guards/edit-profile.guard';
 import { userAuthenticatedGuard } from './modules/core/guards/user-authenticated.guard';
+import { userResolver } from './modules/core/resolvers/user.resolver';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -21,11 +22,17 @@ const routes: Routes = [
   {
     path: ':username',
     component: ProfileComponent,
+    resolve: {
+      user: userResolver,
+    },
     canActivate: [userAuthenticatedGuard],
   },
   {
     path: ':username/edit',
     component: EditProfileComponent,
+    resolve: {
+      user: userResolver,
+    },
     canActivate: [userAuthenticatedGuard, editProfileGuard],
   },
   {

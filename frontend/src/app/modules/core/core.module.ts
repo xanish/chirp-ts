@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { EditProfileGuard } from './guards/edit-profile.guard';
 import { UserAuthenticatedGuard } from './guards/user-authenticated.guard';
+import { UserResolver } from './resolvers/user.resolver';
 import { ApiService } from './services/api.service';
 import { TokenService } from './services/token.service';
 import { TweetService } from './services/tweet.service';
@@ -18,6 +19,7 @@ import { TweetService } from './services/tweet.service';
     TweetService,
     EditProfileGuard,
     UserAuthenticatedGuard,
+    UserResolver,
   ],
 })
 export class CoreModule {}

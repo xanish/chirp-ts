@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
 import { TTweet } from 'src/app/modules/shared/types/tweet.type';
+import { User } from '../../modules/shared/models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +16,7 @@ import { TTweet } from 'src/app/modules/shared/types/tweet.type';
 export class ProfileComponent implements OnInit {
   tabType = TabType;
   tab: TabType = TabType.TWEETS;
+  user: User = User.default();
   tweets: Array<Tweet> = [];
   replies: Array<Tweet> = [];
   medias: Array<Tweet> = [];
@@ -27,25 +30,23 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.user = this.route.snapshot.data['user'];
+    this.userService.tweets(this.user.id ?? '', this.filters.tweets).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.tweets.offset = response.nextOffset;
+        this.tweets = response.records.map((tweet: TTweet) => new Tweet(tweet));
+      },
+      error: (e: any) => {
+        console.log(e);
+      },
+    });
     this.userService
-      .tweets(this.tokenService.id(), this.filters.tweets)
-      .subscribe({
-        next: (response: TPaginationResponse<TTweet>) => {
-          this.filters.tweets.offset = response.nextOffset;
-          this.tweets = response.records.map(
-            (tweet: TTweet) => new Tweet(tweet)
-          );
-        },
-        error: (e: any) => {
-          console.log(e);
-        },
-      });
-    this.userService
-      .replies(this.tokenService.id(), this.filters.replies)
+      .replies(this.user.id ?? '', this.filters.replies)
       .subscribe({
         next: (response: TPaginationResponse<TTweet>) => {
           this.filters.replies.offset = response.nextOffset;
@@ -57,32 +58,24 @@ export class ProfileComponent implements OnInit {
           console.log(e);
         },
       });
-    this.userService
-      .medias(this.tokenService.id(), this.filters.medias)
-      .subscribe({
-        next: (response: TPaginationResponse<TTweet>) => {
-          this.filters.medias.offset = response.nextOffset;
-          this.medias = response.records.map(
-            (tweet: TTweet) => new Tweet(tweet)
-          );
-        },
-        error: (e: any) => {
-          console.log(e);
-        },
-      });
-    this.userService
-      .likes(this.tokenService.id(), this.filters.likes)
-      .subscribe({
-        next: (response: TPaginationResponse<TTweet>) => {
-          this.filters.likes.offset = response.nextOffset;
-          this.likes = response.records.map(
-            (tweet: TTweet) => new Tweet(tweet)
-          );
-        },
-        error: (e: any) => {
-          console.log(e);
-        },
-      });
+    this.userService.medias(this.user.id ?? '', this.filters.medias).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.medias.offset = response.nextOffset;
+        this.medias = response.records.map((tweet: TTweet) => new Tweet(tweet));
+      },
+      error: (e: any) => {
+        console.log(e);
+      },
+    });
+    this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.likes.offset = response.nextOffset;
+        this.likes = response.records.map((tweet: TTweet) => new Tweet(tweet));
+      },
+      error: (e: any) => {
+        console.log(e);
+      },
+    });
   }
 
   tabChange(tab: TabType) {
