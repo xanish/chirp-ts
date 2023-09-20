@@ -6,8 +6,9 @@
       >Home</a
     >
     <a
+      *ngIf="user.id"
       class="my-2 rounded-lg py-4 text-center text-sm uppercase leading-6 hover:bg-gray-300"
-      routerLink="/"
+      routerLink="/{{ user.username }}"
       >Profile</a
     >
     <button
