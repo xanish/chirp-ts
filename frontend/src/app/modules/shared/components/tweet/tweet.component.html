@@ -33,14 +33,18 @@
       <ng-template ngFor let-attachment [ngForOf]="tweet.attachments">
         <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
           <img
-            class="border"
+            class="h-full w-auto border object-none"
             src="{{ attachment.content }}"
             alt="{{ attachment.id }}"
           />
         </ng-container>
 
         <ng-container *ngIf="attachment.type === attachmentType.VIDEO">
-          <video class="border" src="{{ attachment.content }}" controls></video>
+          <video
+            class="h-full w-auto border object-none"
+            src="{{ attachment.content }}"
+            controls
+          ></video>
         </ng-container>
       </ng-template>
     </div>

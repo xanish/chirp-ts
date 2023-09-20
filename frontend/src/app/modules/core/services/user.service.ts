@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { TPaginationResponse } from '../../shared/types/paginated-response.type';
 import { TPaginationOptions } from '../../shared/types/pagination-options.type';
 import { TTweet } from '../../shared/types/tweet.type';
@@ -41,6 +42,10 @@ export class UserService {
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
     return this.apiService.get(`/users/${id}/tweets`, options);
   }
 
@@ -48,6 +53,10 @@ export class UserService {
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
     return this.apiService.get(`/users/${id}/replies`, options);
   }
 
@@ -55,6 +64,10 @@ export class UserService {
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
     return this.apiService.get(`/users/${id}/medias`, options);
   }
 
@@ -62,6 +75,10 @@ export class UserService {
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
+    if (options.offset == null) {
+      delete options.offset;
+    }
+
     return this.apiService.get(`/users/${id}/likes`, options);
   }
 }

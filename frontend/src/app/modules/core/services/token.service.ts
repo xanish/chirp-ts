@@ -9,10 +9,10 @@ export class TokenService {
     return localStorage.getItem('token') ?? null;
   }
 
-  id(): string | null {
+  id(): string {
     const user = this.user();
 
-    return user.id;
+    return user.id ?? '';
   }
 
   clear() {

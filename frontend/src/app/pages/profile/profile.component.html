@@ -18,7 +18,80 @@
       <app-sidebar></app-sidebar>
     </div>
 
-    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2"></section>
+    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
+      <div
+        class="flex w-full flex-row items-center justify-evenly rounded-md bg-white shadow-sm"
+      >
+        <button
+          type="button"
+          (click)="tabChange(tabType.TWEETS)"
+          class="w-full p-4 text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.TWEETS
+          }"
+        >
+          Tweets
+        </button>
+        <button
+          type="button"
+          (click)="tabChange(tabType.REPLIES)"
+          class="w-full p-4 text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.REPLIES
+          }"
+        >
+          Replies
+        </button>
+        <button
+          type="button"
+          (click)="tabChange(tabType.MEDIA)"
+          class="w-full p-4 text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.MEDIA
+          }"
+        >
+          Media
+        </button>
+        <button
+          type="button"
+          (click)="tabChange(tabType.LIKES)"
+          class="w-full p-4 text-sm uppercase leading-6"
+          [ngClass]="{
+            'border-b-2 border-indigo-600 font-semibold text-indigo-600':
+              tab === tabType.LIKES
+          }"
+        >
+          Likes
+        </button>
+      </div>
+
+      <div *ngIf="tab === tabType.TWEETS" class="flex w-full flex-col gap-2">
+        <ng-template ngFor let-tweet [ngForOf]="tweets">
+          <app-tweet [tweet]="tweet"></app-tweet>
+        </ng-template>
+      </div>
+
+      <div *ngIf="tab === tabType.REPLIES" class="flex w-full flex-col gap-2">
+        <ng-template ngFor let-reply [ngForOf]="replies">
+          <app-tweet [tweet]="reply"></app-tweet>
+        </ng-template>
+      </div>
+
+      <div *ngIf="tab === tabType.MEDIA" class="flex w-full flex-col gap-2">
+        <ng-template ngFor let-media [ngForOf]="medias">
+          <app-tweet [tweet]="media"></app-tweet>
+        </ng-template>
+      </div>
+
+      <div *ngIf="tab === tabType.LIKES" class="flex w-full flex-col gap-2">
+        <ng-template ngFor let-like [ngForOf]="likes">
+          <app-tweet [tweet]="like"></app-tweet>
+        </ng-template>
+      </div>
+    </section>
 
     <aside class="lg:w-1/4"></aside>
   </div>
