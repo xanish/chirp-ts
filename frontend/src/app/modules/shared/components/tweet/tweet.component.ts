@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AttachmentType } from '../../enums/attachment-type.enum';
+import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
 
 @Component({
@@ -9,6 +10,7 @@ import { Tweet } from '../../models/tweet.model';
 })
 export class TweetComponent {
   @Input({ required: true }) tweet: Tweet = Tweet.default();
+  tweetType = TweetType;
   attachmentType = AttachmentType;
 
   gridClasses(attachmentCount: number): string {
