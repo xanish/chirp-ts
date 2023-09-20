@@ -26,24 +26,21 @@
     </div>
 
     <div
-      class="mt-2 flex flex-wrap rounded-md"
+      class="mt-2 grid grid-rows-2 rounded-md"
+      [ngClass]="gridClasses(tweet.attachments.length)"
       *ngIf="tweet.attachments.length > 0"
     >
       <ng-template ngFor let-attachment [ngForOf]="tweet.attachments">
         <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
           <img
-            class="w-1/2 border object-none"
+            class="border"
             src="{{ attachment.content }}"
             alt="{{ attachment.id }}"
           />
         </ng-container>
 
         <ng-container *ngIf="attachment.type === attachmentType.VIDEO">
-          <video
-            class="w-1/2 border object-none"
-            src="{{ attachment.content }}"
-            controls
-          ></video>
+          <video class="border" src="{{ attachment.content }}" controls></video>
         </ng-container>
       </ng-template>
     </div>
