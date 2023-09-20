@@ -69,27 +69,67 @@
       </div>
 
       <div *ngIf="tab === tabType.TWEETS" class="flex w-full flex-col gap-2">
-        <ng-template ngFor let-tweet [ngForOf]="tweets">
-          <app-tweet [tweet]="tweet"></app-tweet>
-        </ng-template>
+        <ng-container *ngIf="tweets.length > 0">
+          <ng-template ngFor let-tweet [ngForOf]="tweets">
+            <app-tweet [tweet]="tweet"></app-tweet>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="tweets.length === 0">
+          <div class="mt-10 flex w-full flex-col items-center justify-center">
+            <h3 class="font-display text-3xl text-gray-500">
+              Nothing to see here
+            </h3>
+          </div>
+        </ng-container>
       </div>
 
       <div *ngIf="tab === tabType.REPLIES" class="flex w-full flex-col gap-2">
-        <ng-template ngFor let-reply [ngForOf]="replies">
-          <app-tweet [tweet]="reply"></app-tweet>
-        </ng-template>
+        <ng-container *ngIf="replies.length > 0">
+          <ng-template ngFor let-reply [ngForOf]="replies">
+            <app-tweet [tweet]="reply"></app-tweet>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="replies.length === 0">
+          <div class="mt-10 flex w-full flex-col items-center justify-center">
+            <h3 class="font-display text-3xl text-gray-500">
+              Nothing to see here
+            </h3>
+          </div>
+        </ng-container>
       </div>
 
       <div *ngIf="tab === tabType.MEDIA" class="flex w-full flex-col gap-2">
-        <ng-template ngFor let-media [ngForOf]="medias">
-          <app-tweet [tweet]="media"></app-tweet>
-        </ng-template>
+        <ng-container *ngIf="medias.length > 0">
+          <ng-template ngFor let-media [ngForOf]="medias">
+            <app-tweet [tweet]="media"></app-tweet>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="medias.length === 0">
+          <div class="mt-10 flex w-full flex-col items-center justify-center">
+            <h3 class="font-display text-3xl text-gray-500">
+              Nothing to see here
+            </h3>
+          </div>
+        </ng-container>
       </div>
 
       <div *ngIf="tab === tabType.LIKES" class="flex w-full flex-col gap-2">
-        <ng-template ngFor let-like [ngForOf]="likes">
-          <app-tweet [tweet]="like"></app-tweet>
-        </ng-template>
+        <ng-container *ngIf="likes.length > 0">
+          <ng-template ngFor let-like [ngForOf]="likes">
+            <app-tweet [tweet]="like"></app-tweet>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="likes.length === 0">
+          <div class="mt-10 flex w-full flex-col items-center justify-center">
+            <h3 class="font-display text-3xl text-gray-500">
+              Nothing to see here
+            </h3>
+          </div>
+        </ng-container>
       </div>
     </section>
 
