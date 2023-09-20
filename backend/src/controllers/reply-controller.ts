@@ -10,6 +10,14 @@ class ReplyController extends BaseController {
         id: true,
         type: true,
         content: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         attachments: {
           select: {
             id: true,
