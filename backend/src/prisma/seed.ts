@@ -246,6 +246,7 @@ async function main() {
           content: replies[Math.floor(Math.random() * replies.length)],
           type: TweetType.REPLY,
           relatedId: id,
+          userId: user.id,
         },
       });
     }
