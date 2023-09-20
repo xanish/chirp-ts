@@ -14,12 +14,12 @@
 
   <div class="flex flex-grow flex-col">
     <div class="flex flex-row items-center justify-between">
-      <div class="font-bold">
+      <a routerLink="/{{ tweet.user.username }}" class="font-bold">
         {{ tweet.user.name }}
         <span class="font-normal text-gray-400"
           >@{{ tweet.user.username }}</span
         >
-      </div>
+      </a>
 
       <div class="text-gray-400">
         {{ tweet.createdAt | date: 'MMM dd, yyyy hh:mm a' }}
