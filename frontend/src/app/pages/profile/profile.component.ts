@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TokenService } from 'src/app/modules/core/services/token.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
@@ -16,8 +15,6 @@ import { User } from '../../modules/shared/models/user.model';
 export class ProfileComponent implements OnInit {
   tabType = TabType;
   tab: TabType = TabType.TWEETS;
-  isFollowing: boolean = false;
-  loggedInUserId: string = '';
   user: User = User.default();
   tweets: Array<Tweet> = [];
   replies: Array<Tweet> = [];
@@ -32,12 +29,10 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private tokenService: TokenService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loggedInUserId = this.tokenService.id() ?? '';
     this.route.params.subscribe((params) => {
       this.user = this.route.snapshot.data['user'];
       delete this.filters.tweets.offset;

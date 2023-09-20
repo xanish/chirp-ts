@@ -19,68 +19,7 @@
     </div>
 
     <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
-      <div class="aurora-outer w-full rounded-md pt-16 shadow-sm">
-        <div class="aurora-inner"></div>
-
-        <div
-          class="flex flex-row items-start justify-center rounded-md bg-white py-3"
-        >
-          <img
-            class="relative -top-12 z-0 mx-4 block rounded-full border-4 border-white"
-            src="https://placehold.co/100/4f46e5/white?text=Chirp&font=roboto"
-            alt=""
-          />
-
-          <ul class="flex-grow">
-            <li class="font-semibold">{{ user.name }}</li>
-            <li class="text-gray-500">@{{ user.username }}</li>
-            <li>
-              {{ user.location }}
-              <span class="ms-4"
-                >Joined {{ user.createdAt | date: 'MMMM YYYY' }}</span
-              >
-            </li>
-            <li>
-              <a
-                routerLink="/{{ user.username }}/followers"
-                class="me-4 hover:underline"
-                ><span class="font-semibold">{{ user.count.followers }}</span>
-                Followers</a
-              >
-              <a
-                routerLink="/{{ user.username }}/following"
-                class="hover:underline"
-                ><span class="font-semibold">{{ user.count.following }}</span>
-                Following</a
-              >
-            </li>
-          </ul>
-
-          <ng-container *ngIf="user.id === loggedInUserId">
-            <button
-              class="mx-4 rounded-md border-2 border-indigo-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-indigo-600 hover:bg-indigo-600 hover:text-white"
-            >
-              Edit Profile
-            </button>
-          </ng-container>
-
-          <ng-container *ngIf="user.id !== loggedInUserId && !isFollowing">
-            <button
-              class="mx-4 rounded-md border-2 border-indigo-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-indigo-600 hover:bg-indigo-600 hover:text-white"
-            >
-              Follow
-            </button>
-          </ng-container>
-
-          <ng-container *ngIf="user.id !== loggedInUserId && isFollowing">
-            <button
-              class="mx-4 rounded-md border-2 border-red-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-red-600 hover:bg-red-600 hover:text-white"
-            >
-              Unfollow
-            </button>
-          </ng-container>
-        </div>
-      </div>
+      <app-user-details [user]="user"></app-user-details>
 
       <div
         class="flex w-full flex-row items-center justify-evenly rounded-md bg-white shadow-sm"
