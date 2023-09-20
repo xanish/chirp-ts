@@ -42,7 +42,8 @@
       <ng-template ngFor let-attachment [ngForOf]="tweet.attachments">
         <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
           <img
-            class="h-full w-auto border object-none"
+            class="h-full w-auto border"
+            [ngClass]="tweet.attachments.length === 1 ? '' : 'object-none'"
             src="{{ attachment.content }}"
             alt="{{ attachment.id }}"
           />
@@ -50,7 +51,8 @@
 
         <ng-container *ngIf="attachment.type === attachmentType.VIDEO">
           <video
-            class="h-full w-auto border object-none"
+            class="h-full w-auto border"
+            [ngClass]="tweet.attachments.length === 1 ? '' : 'object-none'"
             src="{{ attachment.content }}"
             controls
           ></video>
