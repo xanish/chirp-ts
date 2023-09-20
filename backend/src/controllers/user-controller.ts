@@ -73,6 +73,11 @@ class UserController extends BaseController {
         },
       });
 
+      [user._count.followers, user._count.following] = [
+        user._count.following,
+        user._count.followers,
+      ];
+
       return res.json(user);
     } catch (e) {
       return next(new ApplicationError('User not found', 404));
