@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { AttachmentType } from '../../enums/attachment-type.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
@@ -13,6 +14,8 @@ export class TweetComponent {
   tweetType = TweetType;
   attachmentType = AttachmentType;
 
+  constructor(private router: Router) {}
+
   gridClasses(attachmentCount: number): string {
     switch (attachmentCount) {
       case 4:
@@ -23,5 +26,14 @@ export class TweetComponent {
       default:
         return 'grid-cols-1 grid-rows-1';
     }
+  }
+
+  openProfile($event: Event, username: string) {
+    this.router.navigate([username]);
+    $event.stopPropagation();
+  }
+
+  openTweet(tweetId: string) {
+    this.router.navigate(['tweets', tweetId]);
   }
 }
