@@ -16,6 +16,8 @@ import { User } from '../../modules/shared/models/user.model';
 export class ProfileComponent implements OnInit {
   tabType = TabType;
   tab: TabType = TabType.TWEETS;
+  isFollowing: boolean = false;
+  loggedInUserId: string = '';
   user: User = User.default();
   tweets: Array<Tweet> = [];
   replies: Array<Tweet> = [];
@@ -35,22 +37,57 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.route.snapshot.data['user'];
-    this.userService.tweets(this.user.id ?? '', this.filters.tweets).subscribe({
-      next: (response: TPaginationResponse<TTweet>) => {
-        this.filters.tweets.offset = response.nextOffset;
-        this.tweets = response.records.map((tweet: TTweet) => new Tweet(tweet));
-      },
-      error: (e: any) => {
-        console.log(e);
-      },
-    });
-    this.userService
-      .replies(this.user.id ?? '', this.filters.replies)
-      .subscribe({
+    this.loggedInUserId = this.tokenService.id() ?? '';
+    this.route.params.subscribe((params) => {
+      this.user = this.route.snapshot.data['user'];
+      delete this.filters.tweets.offset;
+      delete this.filters.replies.offset;
+      delete this.filters.medias.offset;
+      delete this.filters.likes.offset;
+      // todo: call api for isFollowing
+      this.userService
+        .tweets(this.user.id ?? '', this.filters.tweets)
+        .subscribe({
+          next: (response: TPaginationResponse<TTweet>) => {
+            this.filters.tweets.offset = response.nextOffset;
+            this.tweets = response.records.map(
+              (tweet: TTweet) => new Tweet(tweet)
+            );
+          },
+          error: (e: any) => {
+            console.log(e);
+          },
+        });
+      this.userService
+        .replies(this.user.id ?? '', this.filters.replies)
+        .subscribe({
+          next: (response: TPaginationResponse<TTweet>) => {
+            this.filters.replies.offset = response.nextOffset;
+            this.replies = response.records.map(
+              (tweet: TTweet) => new Tweet(tweet)
+            );
+          },
+          error: (e: any) => {
+            console.log(e);
+          },
+        });
+      this.userService
+        .medias(this.user.id ?? '', this.filters.medias)
+        .subscribe({
+          next: (response: TPaginationResponse<TTweet>) => {
+            this.filters.medias.offset = response.nextOffset;
+            this.medias = response.records.map(
+              (tweet: TTweet) => new Tweet(tweet)
+            );
+          },
+          error: (e: any) => {
+            console.log(e);
+          },
+        });
+      this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
         next: (response: TPaginationResponse<TTweet>) => {
-          this.filters.replies.offset = response.nextOffset;
-          this.replies = response.records.map(
+          this.filters.likes.offset = response.nextOffset;
+          this.likes = response.records.map(
             (tweet: TTweet) => new Tweet(tweet)
           );
         },
@@ -58,23 +95,6 @@ export class ProfileComponent implements OnInit {
           console.log(e);
         },
       });
-    this.userService.medias(this.user.id ?? '', this.filters.medias).subscribe({
-      next: (response: TPaginationResponse<TTweet>) => {
-        this.filters.medias.offset = response.nextOffset;
-        this.medias = response.records.map((tweet: TTweet) => new Tweet(tweet));
-      },
-      error: (e: any) => {
-        console.log(e);
-      },
-    });
-    this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
-      next: (response: TPaginationResponse<TTweet>) => {
-        this.filters.likes.offset = response.nextOffset;
-        this.likes = response.records.map((tweet: TTweet) => new Tweet(tweet));
-      },
-      error: (e: any) => {
-        console.log(e);
-      },
     });
   }
 
