@@ -19,11 +19,9 @@
     </div>
 
     <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
-      <app-tweet></app-tweet>
-      <app-tweet></app-tweet>
-      <app-tweet></app-tweet>
-      <app-tweet></app-tweet>
-      <app-tweet></app-tweet>
+      <ng-template ngFor let-tweet [ngForOf]="tweets">
+        <app-tweet [tweet]="tweet"></app-tweet>
+      </ng-template>
     </section>
 
     <aside class="lg:w-1/4"></aside>

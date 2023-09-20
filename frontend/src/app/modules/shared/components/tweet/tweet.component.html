@@ -7,44 +7,45 @@
     alt=""
   />
 
-  <div class="flex flex-col">
+  <div class="flex flex-grow flex-col">
     <div class="flex flex-row items-center justify-between">
       <div class="font-bold">
-        Danish Ali Furniturewala
-        <span class="font-normal text-gray-400">@danish</span>
+        {{ tweet.user.name }}
+        <span class="font-normal text-gray-400"
+          >@{{ tweet.user.username }}</span
+        >
       </div>
 
-      <div class="text-gray-400">Fri May 1 2023 10:00 AM</div>
+      <div class="text-gray-400">
+        {{ tweet.createdAt | date: 'MMM dd, yyyy hh:mm a' }}
+      </div>
     </div>
 
     <div class="break-words">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem
-      temporibus, asperiores sunt aspernatur at laboriosam reprehenderit
-      molestias corporis distinctio praesentium consequuntur quaerat alias ipsum
-      totam quo debitis atque eveniet magnam.
+      {{ tweet.content }}
     </div>
 
-    <div class="mt-2 flex flex-wrap overflow-hidden rounded-md">
-      <img
-        class="w-1/2 border object-none"
-        src="https://placehold.co/300"
-        alt="image 1"
-      />
-      <img
-        class="w-1/2 border object-none"
-        src="https://placehold.co/300"
-        alt="image 2"
-      />
-      <img
-        class="w-1/2 border object-none"
-        src="https://placehold.co/300"
-        alt="image 3"
-      />
-      <img
-        class="w-1/2 border object-none"
-        src="https://placehold.co/300"
-        alt="image 4"
-      />
+    <div
+      class="mt-2 flex flex-wrap rounded-md"
+      *ngIf="tweet.attachments.length > 0"
+    >
+      <ng-template ngFor let-attachment [ngForOf]="tweet.attachments">
+        <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
+          <img
+            class="w-1/2 border object-none"
+            src="{{ attachment.content }}"
+            alt="{{ attachment.id }}"
+          />
+        </ng-container>
+
+        <ng-container *ngIf="attachment.type === attachmentType.VIDEO">
+          <video
+            class="w-1/2 border object-none"
+            src="{{ attachment.content }}"
+            controls
+          ></video>
+        </ng-container>
+      </ng-template>
     </div>
 
     <div class="mt-2 flex flex-row items-center justify-between">

@@ -34,4 +34,8 @@ export class Tweet {
     this.createdAt = new Date(tweet.createdAt ?? '');
     this.updatedAt = new Date(tweet.updatedAt ?? '');
   }
+
+  static default(): Tweet {
+    return new Tweet({});
+  }
 }
