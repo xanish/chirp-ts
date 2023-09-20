@@ -19,9 +19,19 @@
     </div>
 
     <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
-      <ng-template ngFor let-tweet [ngForOf]="tweets">
-        <app-tweet [tweet]="tweet"></app-tweet>
-      </ng-template>
+      <ng-container *ngIf="tweets.length > 0">
+        <ng-template ngFor let-tweet [ngForOf]="tweets">
+          <app-tweet [tweet]="tweet"></app-tweet>
+        </ng-template>
+      </ng-container>
+
+      <ng-container *ngIf="tweets.length === 0">
+        <div class="mt-10 flex w-full flex-col items-center justify-center">
+          <h3 class="font-display text-3xl text-gray-500">
+            Nothing to see here
+          </h3>
+        </div>
+      </ng-container>
     </section>
 
     <aside class="lg:w-1/4"></aside>
