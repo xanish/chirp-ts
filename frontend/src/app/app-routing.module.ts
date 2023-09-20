@@ -4,6 +4,7 @@ import { editProfileGuard } from './modules/core/guards/edit-profile.guard';
 import { userAuthenticatedGuard } from './modules/core/guards/user-authenticated.guard';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FeedComponent } from './pages/feed/feed.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
 const routes: Routes = [
@@ -26,6 +27,10 @@ const routes: Routes = [
     path: ':username/edit',
     component: EditProfileComponent,
     canActivate: [userAuthenticatedGuard, editProfileGuard],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 
