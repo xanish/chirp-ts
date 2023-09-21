@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { User } from '../../models/user.model';
 
@@ -8,6 +9,7 @@ import { User } from '../../models/user.model';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
+  faGear = faGear;
   user: User = this.tokenService.user();
 
   constructor(private tokenService: TokenService) {}

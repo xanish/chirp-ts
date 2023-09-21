@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from '../shared/shared.module';
 import { EditProfileGuard } from './guards/edit-profile.guard';
 import { UserAuthenticatedGuard } from './guards/user-authenticated.guard';
@@ -18,6 +19,7 @@ import { TweetService } from './services/tweet.service';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    FontAwesomeModule,
   ],
   exports: [FormsModule, ReactiveFormsModule, SharedModule],
   providers: [

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faRetweet, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { AttachmentType } from '../../enums/attachment-type.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
@@ -10,6 +12,11 @@ import { Tweet } from '../../models/tweet.model';
   styleUrls: ['./tweet.component.css'],
 })
 export class TweetComponent {
+  faComments = faComments;
+  faRetweet = faRetweet;
+  faHeart = faHeart;
+  faShareNodes = faShareNodes;
+
   @Input({ required: true }) tweet: Tweet = Tweet.default();
   tweetType = TweetType;
   attachmentType = AttachmentType;
@@ -33,7 +40,20 @@ export class TweetComponent {
     $event.stopPropagation();
   }
 
-  openTweet(tweetId: string) {
+  openTweet($event: Event, tweetId: string) {
     this.router.navigate(['tweets', tweetId]);
+    $event.stopPropagation();
+  }
+
+  showRetweetOptions($event: Event, tweetId: string) {
+    $event.stopPropagation();
+  }
+
+  likeTweet($event: Event, tweetId: string) {
+    $event.stopPropagation();
+  }
+
+  shareTweet($event: Event, tweetId: string) {
+    $event.stopPropagation();
   }
 }
