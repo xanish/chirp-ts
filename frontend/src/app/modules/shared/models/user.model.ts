@@ -28,13 +28,13 @@ export class User {
     this.email = user.email ?? '';
     this.city = user.city ?? '';
     this.country = user.country ?? '';
-    this.birthDate = new Date(user.birthDate ?? '');
+    this.birthDate = user.birthDate ? new Date(user.birthDate) : new Date();
     this.count.tweets = user._count?.tweets ?? 0;
     this.count.likes = user._count?.likes ?? 0;
     this.count.followers = user._count?.followers ?? 0;
     this.count.following = user._count?.following ?? 0;
-    this.createdAt = new Date(user.createdAt ?? '');
-    this.updatedAt = new Date(user.updatedAt ?? '');
+    this.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
+    this.updatedAt = user.updatedAt ? new Date(user.updatedAt) : new Date();
   }
 
   get name(): string {

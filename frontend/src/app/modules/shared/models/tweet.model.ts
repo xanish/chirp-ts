@@ -31,8 +31,8 @@ export class Tweet {
     this.related = tweet.related ? new Tweet(tweet.related) : undefined;
     this.count.replies = tweet._count?.replies ?? 0;
     this.count.likes = tweet._count?.likes ?? 0;
-    this.createdAt = new Date(tweet.createdAt ?? '');
-    this.updatedAt = new Date(tweet.updatedAt ?? '');
+    this.createdAt = tweet.createdAt ? new Date(tweet.createdAt) : new Date();
+    this.updatedAt = tweet.updatedAt ? new Date(tweet.updatedAt) : new Date();
   }
 
   static default(): Tweet {
