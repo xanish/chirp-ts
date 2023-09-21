@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  faFeather = faFeather;
   disableSubmit = false;
   form = this.formBuilder.group({
     username: ['', [Validators.required]],

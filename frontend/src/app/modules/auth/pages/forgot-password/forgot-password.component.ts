@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./forgot-password.component.css'],
 })
 export class ForgotPasswordComponent {
+  faFeather = faFeather;
   disableSubmit = false;
   form = this.formBuilder.group({
     username: ['', [Validators.required]],

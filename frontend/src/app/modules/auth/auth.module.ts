@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
@@ -19,6 +20,12 @@ import { AuthService } from './services/auth.service';
     ResetPasswordComponent,
   ],
   providers: [AuthService],
-  imports: [CommonModule, AuthRoutingModule, ReactiveFormsModule, SharedModule],
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    ReactiveFormsModule,
+    SharedModule,
+    CoreModule,
+  ],
 })
 export class AuthModule {}
