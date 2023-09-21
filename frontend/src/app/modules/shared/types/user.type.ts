@@ -16,3 +16,13 @@ export type TUser = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TUserUpdate = {
+  username?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  city?: string;
+  country?: string;
+  birthDate?: string;
+};

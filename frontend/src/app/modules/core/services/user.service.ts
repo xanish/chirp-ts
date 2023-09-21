@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { TPaginationResponse } from '../../shared/types/paginated-response.type';
 import { TPaginationOptions } from '../../shared/types/pagination-options.type';
 import { TTweet } from '../../shared/types/tweet.type';
-import { TUser } from '../../shared/types/user.type';
+import { TUser, TUserUpdate } from '../../shared/types/user.type';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 
@@ -102,5 +102,14 @@ export class UserService {
     }
 
     return this.apiService.get(`/users/${id}/likes`, options);
+  }
+
+  update(user: TUserUpdate): Observable<TUser> {
+    return this.apiService.put(
+      `/users/${this.tokenService.id()}`,
+      Object.fromEntries(
+        Object.entries(user).filter(([_, v]) => v != null && v != '')
+      )
+    );
   }
 }
