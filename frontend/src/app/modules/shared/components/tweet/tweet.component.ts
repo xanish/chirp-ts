@@ -54,6 +54,15 @@ export class TweetComponent {
   }
 
   shareTweet($event: Event, tweetId: string) {
+    const type = 'text/plain';
+    const blob = new Blob([`http://localhost:4200/tweets/${tweetId}`], {
+      type,
+    });
+    const data = [new ClipboardItem({ [type]: blob })];
+
+    navigator.clipboard.write(data).then(() => {
+      console.log('Copied tweet url to clipboard');
+    });
     $event.stopPropagation();
   }
 }
