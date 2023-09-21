@@ -45,6 +45,7 @@ class ReplyController extends BaseController {
         _count: {
           select: {
             likes: true,
+            replies: true,
           },
         },
         createdAt: true,
@@ -86,6 +87,12 @@ class ReplyController extends BaseController {
             id: true,
             type: true,
             content: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            replies: true,
           },
         },
         createdAt: true,
