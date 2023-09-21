@@ -33,13 +33,13 @@ export class TweetService {
     return this.apiService.get(`/tweets/${id}/likes`, options);
   }
 
-  like(id: string): Observable<TPaginationResponse<TTweet>> {
+  like(id: string): Observable<any> {
     return this.apiService.put(`/tweets/${id}/likes`, {
       userId: this.tokenService.id(),
     });
   }
 
-  unlike(id: string): Observable<TPaginationResponse<TTweet>> {
+  unlike(id: string): Observable<any> {
     return this.apiService.delete(`/tweets/${id}/likes`, {
       userId: this.tokenService.id(),
     });
