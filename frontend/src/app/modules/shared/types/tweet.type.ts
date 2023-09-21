@@ -9,6 +9,7 @@ export type TTweet = {
   related: Partial<TTweet>;
   _count: {
     replies: number;
+    retweets: number;
     likes: number;
   };
   user: Partial<TUser>;

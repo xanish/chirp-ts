@@ -13,6 +13,7 @@ export class Tweet {
   public related?: Tweet;
   public count = {
     replies: 0,
+    retweets: 0,
     likes: 0,
   };
   public createdAt: Date;
@@ -30,6 +31,7 @@ export class Tweet {
       }) ?? [];
     this.related = tweet.related ? new Tweet(tweet.related) : undefined;
     this.count.replies = tweet._count?.replies ?? 0;
+    this.count.retweets = tweet._count?.retweets ?? 0;
     this.count.likes = tweet._count?.likes ?? 0;
     this.createdAt = tweet.createdAt ? new Date(tweet.createdAt) : new Date();
     this.updatedAt = tweet.updatedAt ? new Date(tweet.updatedAt) : new Date();
