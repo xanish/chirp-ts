@@ -33,7 +33,11 @@ export default [
   {
     method: 'get',
     path: '/tweets/:tweetId',
-    middlewares: [verifyToken, checkSchema(FindOneTweetSchema), validateRequest],
+    middlewares: [
+      verifyToken,
+      checkSchema(FindOneTweetSchema),
+      validateRequest,
+    ],
     action: TweetController.findOne.bind(TweetController),
   },
   {
