@@ -11,6 +11,7 @@ import CreateTweetSchema from '../schemas/tweets/create-tweet.schema.js';
 import DeleteTweetSchema from '../schemas/tweets/delete-tweet.schema.js';
 import FindManyTweetLikesSchema from '../schemas/tweets/find-many-tweet.likes.js';
 import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet.replies.js';
+import FindOneTweetSchema from '../schemas/tweets/find-one-tweet.schema.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.middleware.js';
@@ -28,6 +29,12 @@ export default [
     path: '/tweets',
     middlewares: [verifyToken, checkSchema(CreateTweetSchema), validateRequest],
     action: TweetController.create.bind(TweetController),
+  },
+  {
+    method: 'get',
+    path: '/tweets/:tweetId',
+    middlewares: [verifyToken, checkSchema(FindOneTweetSchema), validateRequest],
+    action: TweetController.findOne.bind(TweetController),
   },
   {
     method: 'delete',

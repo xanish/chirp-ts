@@ -153,6 +153,74 @@ class TweetController extends BaseController {
     return res.status(204).send();
   }
 
+  async findOne(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
+
+    const tweet = await this.prisma.tweet.findUnique({
+      select: {
+        id: true,
+        content: true,
+        type: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        related: {
+          select: {
+            id: true,
+            content: true,
+            type: true,
+            relatedId: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
+          },
+        },
+        attachments: {
+          select: {
+            id: true,
+            type: true,
+            content: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            replies: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: {
+        id: BigInt(req.params.tweetId).valueOf(),
+      },
+    });
+
+    return res.json(tweet);
+  }
+
   async findByUser(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
     const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
