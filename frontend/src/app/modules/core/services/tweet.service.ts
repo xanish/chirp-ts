@@ -14,12 +14,16 @@ export class TweetService {
     private tokenService: TokenService
   ) {}
 
+  findOne(id: string): Observable<TTweet> {
+    return this.apiService.get(`/tweets/${id}`);
+  }
+
   create(tweet: Tweet): Observable<TTweet> {
-    return this.apiService.post('/tweet', tweet);
+    return this.apiService.post('/tweets', tweet);
   }
 
   delete(id: string): Observable<any> {
-    return this.apiService.delete(`/tweet/${id}`);
+    return this.apiService.delete(`/tweets/${id}`);
   }
 
   feed(options: TPaginationOptions): Observable<TPaginationResponse<TTweet>> {
