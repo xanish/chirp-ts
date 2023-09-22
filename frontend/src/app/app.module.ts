@@ -13,6 +13,7 @@ import { FeedComponent } from './pages/feed/feed.component';
 import { FollowsComponent } from './pages/follows/follows.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { RepliesComponent } from './pages/replies/replies.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
     EditProfileComponent,
     NotFoundComponent,
     FollowsComponent,
+    RepliesComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, CoreModule, SharedModule],
   bootstrap: [AppComponent],
