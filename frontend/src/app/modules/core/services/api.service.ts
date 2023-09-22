@@ -8,8 +8,8 @@ import { ValidationError } from '../../shared/errors/validation.error';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  delete(path: string, params: any = {}): Observable<any> {
-    return this.http.delete(`${environment.api_url}${path}`, { params });
+  delete(path: string, body: any = {}): Observable<any> {
+    return this.http.delete(`${environment.api_url}${path}`, { body });
   }
 
   get(path: string, params: any = {}): Observable<any> {

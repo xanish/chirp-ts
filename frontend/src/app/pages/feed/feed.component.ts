@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { TweetService } from '../../modules/core/services/tweet.service';
 import { Tweet } from '../../modules/shared/models/tweet.model';
 import { TPaginationResponse } from '../../modules/shared/types/paginated-response.type';
@@ -27,6 +28,17 @@ export class FeedComponent implements OnInit {
       error: (e) => {
         console.log(e);
       },
+    });
+  }
+
+  tweetLiked(event: any) {
+    this.tweets.map((tweet: Tweet) => {
+      if (tweet.id === event.id) {
+        tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+        tweet.liked = event.action === TweetLike.LIKED;
+      }
+
+      return tweet;
     });
   }
 }

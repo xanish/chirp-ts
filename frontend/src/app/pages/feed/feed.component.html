@@ -21,7 +21,10 @@
     <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
       <ng-container *ngIf="tweets.length > 0">
         <ng-template ngFor let-tweet [ngForOf]="tweets">
-          <app-tweet [tweet]="tweet"></app-tweet>
+          <app-tweet
+            [tweet]="tweet"
+            (toggleLike)="tweetLiked($event)"
+          ></app-tweet>
         </ng-template>
       </ng-container>
 

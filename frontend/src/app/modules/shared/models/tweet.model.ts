@@ -11,6 +11,7 @@ export class Tweet {
   public user: User;
   public attachments: Array<TAttachment>;
   public related?: Tweet;
+  public liked: boolean;
   public count = {
     replies: 0,
     retweets: 0,
@@ -30,6 +31,7 @@ export class Tweet {
         return attachment;
       }) ?? [];
     this.related = tweet.related ? new Tweet(tweet.related) : undefined;
+    this.liked = tweet.likes && tweet.likes.length > 0 ? true : false;
     this.count.replies = tweet._count?.replies ?? 0;
     this.count.retweets = tweet._count?.retweets ?? 0;
     this.count.likes = tweet._count?.likes ?? 0;

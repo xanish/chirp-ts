@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faRetweet, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { TweetService } from 'src/app/modules/core/services/tweet.service';
+import { environment } from 'src/environments/environment';
 import { AttachmentType } from '../../enums/attachment-type.enum';
+import { TweetLike } from '../../enums/tweet-like.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
 
@@ -12,16 +15,24 @@ import { Tweet } from '../../models/tweet.model';
   styleUrls: ['./tweet.component.css'],
 })
 export class TweetComponent {
+  @Input({ required: true }) tweet: Tweet = Tweet.default();
+  @Output() toggleLike: EventEmitter<{
+    id: string;
+    action: TweetLike;
+  }> = new EventEmitter();
+
   faComments = faComments;
   faRetweet = faRetweet;
   faHeart = faHeart;
   faShareNodes = faShareNodes;
 
-  @Input({ required: true }) tweet: Tweet = Tweet.default();
   tweetType = TweetType;
   attachmentType = AttachmentType;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private tweetService: TweetService
+  ) {}
 
   gridClasses(attachmentCount: number): string {
     switch (attachmentCount) {
@@ -49,13 +60,26 @@ export class TweetComponent {
     $event.stopPropagation();
   }
 
-  likeTweet($event: Event, tweetId: string) {
+  toggleLikeTweet($event: Event, tweetId: string) {
+    if (this.tweet.liked) {
+      this.tweetService.unlike(tweetId).subscribe({
+        next: (response: any) => {
+          this.toggleLike.emit({ id: tweetId, action: TweetLike.UNLIKED });
+        },
+      });
+    } else {
+      this.tweetService.like(tweetId).subscribe({
+        next: (response: any) => {
+          this.toggleLike.emit({ id: tweetId, action: TweetLike.LIKED });
+        },
+      });
+    }
     $event.stopPropagation();
   }
 
   shareTweet($event: Event, tweetId: string) {
     const type = 'text/plain';
-    const blob = new Blob([`http://localhost:4200/tweets/${tweetId}`], {
+    const blob = new Blob([`${environment.app_url}/tweets/${tweetId}`], {
       type,
     });
     const data = [new ClipboardItem({ [type]: blob })];

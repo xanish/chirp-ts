@@ -73,7 +73,10 @@
       <div *ngIf="tab === tabType.TWEETS" class="flex w-full flex-col gap-2">
         <ng-container *ngIf="tweets.length > 0">
           <ng-template ngFor let-tweet [ngForOf]="tweets">
-            <app-tweet [tweet]="tweet"></app-tweet>
+            <app-tweet
+              [tweet]="tweet"
+              (toggleLike)="tweetLiked($event, 'tweet')"
+            ></app-tweet>
           </ng-template>
         </ng-container>
 
@@ -89,7 +92,10 @@
       <div *ngIf="tab === tabType.REPLIES" class="flex w-full flex-col gap-2">
         <ng-container *ngIf="replies.length > 0">
           <ng-template ngFor let-reply [ngForOf]="replies">
-            <app-tweet [tweet]="reply"></app-tweet>
+            <app-tweet
+              [tweet]="reply"
+              (toggleLike)="tweetLiked($event, 'reply')"
+            ></app-tweet>
           </ng-template>
         </ng-container>
 
@@ -105,7 +111,10 @@
       <div *ngIf="tab === tabType.MEDIA" class="flex w-full flex-col gap-2">
         <ng-container *ngIf="medias.length > 0">
           <ng-template ngFor let-media [ngForOf]="medias">
-            <app-tweet [tweet]="media"></app-tweet>
+            <app-tweet
+              [tweet]="media"
+              (toggleLike)="tweetLiked($event, 'media')"
+            ></app-tweet>
           </ng-template>
         </ng-container>
 
@@ -121,7 +130,10 @@
       <div *ngIf="tab === tabType.LIKES" class="flex w-full flex-col gap-2">
         <ng-container *ngIf="likes.length > 0">
           <ng-template ngFor let-like [ngForOf]="likes">
-            <app-tweet [tweet]="like"></app-tweet>
+            <app-tweet
+              [tweet]="like"
+              (toggleLike)="tweetLiked($event, 'like')"
+            ></app-tweet>
           </ng-template>
         </ng-container>
 

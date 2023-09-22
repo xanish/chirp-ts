@@ -7,6 +7,7 @@ export type TTweet = {
   content: string;
   type: TweetType;
   related: Partial<TTweet>;
+  likes: Array<any>;
   _count: {
     replies: number;
     retweets: number;

@@ -75,7 +75,7 @@
       </button>
       <button
         class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200"
-        (click)="likeTweet($event, tweet.id)"
+        (click)="toggleLikeTweet($event, tweet.id)"
       >
         <fa-icon [icon]="faHeart"></fa-icon> {{ tweet.count.likes }}
       </button>

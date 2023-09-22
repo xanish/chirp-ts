@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
+import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
 import { TTweet } from 'src/app/modules/shared/types/tweet.type';
@@ -95,5 +96,50 @@ export class ProfileComponent implements OnInit {
 
   tabChange(tab: TabType) {
     this.tab = tab;
+  }
+
+  tweetLiked(event: any, field: string) {
+    switch (field) {
+      case 'tweet':
+        this.tweets.map((tweet: Tweet) => {
+          if (tweet.id === event.id) {
+            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+            tweet.liked = event.action === TweetLike.LIKED;
+          }
+
+          return tweet;
+        });
+        break;
+      case 'reply':
+        this.replies.map((tweet: Tweet) => {
+          if (tweet.id === event.id) {
+            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+            tweet.liked = event.action === TweetLike.LIKED;
+          }
+
+          return tweet;
+        });
+        break;
+      case 'media':
+        this.medias.map((tweet: Tweet) => {
+          if (tweet.id === event.id) {
+            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+            tweet.liked = event.action === TweetLike.LIKED;
+          }
+
+          return tweet;
+        });
+        break;
+      case 'like':
+        this.likes.map((tweet: Tweet) => {
+          if (tweet.id === event.id) {
+            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+            tweet.liked = event.action === TweetLike.LIKED;
+          }
+
+          return tweet;
+        });
+        break;
+    }
   }
 }
