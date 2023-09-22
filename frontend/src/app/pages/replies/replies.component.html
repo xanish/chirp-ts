@@ -1,1 +1,36 @@
-<p>replies works!</p>
+<div class="flex min-h-screen flex-col">
+  <app-navbar class="sticky top-0 z-50"></app-navbar>
+
+  <div class="flex flex-grow px-64">
+    <div class="flex flex-grow lg:w-1/4">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
+      <app-tweet
+        [tweet]="tweet"
+        (toggleLike)="tweetLiked($event)"
+        class="mb-6"
+      ></app-tweet>
+
+      <ng-container *ngIf="replies.length > 0">
+        <ng-template ngFor let-reply [ngForOf]="replies">
+          <app-tweet
+            [tweet]="reply"
+            (toggleLike)="tweetLiked($event)"
+          ></app-tweet>
+        </ng-template>
+      </ng-container>
+
+      <ng-container *ngIf="replies.length === 0">
+        <div class="mt-10 flex w-full flex-col items-center justify-center">
+          <h3 class="font-display text-3xl text-gray-500">
+            Nothing to see here
+          </h3>
+        </div>
+      </ng-container>
+    </section>
+
+    <aside class="lg:w-1/4"></aside>
+  </div>
+</div>
