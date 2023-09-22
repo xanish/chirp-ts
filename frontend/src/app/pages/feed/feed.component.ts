@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { TweetService } from '../../modules/core/services/tweet.service';
 import { Tweet } from '../../modules/shared/models/tweet.model';
@@ -13,7 +12,6 @@ import { TTweet } from '../../modules/shared/types/tweet.type';
   styleUrls: ['./feed.component.css'],
 })
 export class FeedComponent implements OnInit {
-  faFeather = faFeather;
   tweets: Array<Tweet> = [];
   filters: TPaginationOptions = {
     limit: 10,

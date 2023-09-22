@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
@@ -16,7 +15,6 @@ import { User } from '../../modules/shared/models/user.model';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  faFeather = faFeather;
   tabType = TabType;
   tab: TabType = TabType.TWEETS;
   user: User = User.default();
