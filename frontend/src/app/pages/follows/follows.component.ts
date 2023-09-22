@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowsTabType } from 'src/app/modules/shared/enums/follows-tab-type.enum';
 import { User } from 'src/app/modules/shared/models/user.model';
@@ -13,6 +14,7 @@ import { TUser } from 'src/app/modules/shared/types/user.type';
   styleUrls: ['./follows.component.css'],
 })
 export class FollowsComponent implements OnInit {
+  faFeather = faFeather;
   tab: FollowsTabType = FollowsTabType.FOLLOWERS;
   tabType = FollowsTabType;
   filters: TPaginationOptions = { limit: 100 };
