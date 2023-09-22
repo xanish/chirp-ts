@@ -28,13 +28,13 @@ export class UserService {
 
   follow(id: string): Observable<any> {
     return this.apiService.put(`/users/${id}/followers`, {
-      userId: this.tokenService.id(),
+      followerId: this.tokenService.id(),
     });
   }
 
   unfollow(id: string): Observable<any> {
     return this.apiService.delete(`/users/${id}/followers`, {
-      userId: this.tokenService.id(),
+      followerId: this.tokenService.id(),
     });
   }
 

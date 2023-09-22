@@ -51,4 +51,41 @@ export class FollowsComponent implements OnInit {
   tabChange(tab: FollowsTabType) {
     this.tab = tab;
   }
+
+  followUser(userId: string) {
+    this.userService.follow(userId).subscribe({
+      next: (response: any) => {
+        this.follows = this.follows.map((follow: User) => {
+          if (follow.id === userId) {
+            follow.following = true;
+            this.user.count.following += 1;
+          }
+
+          return follow;
+        });
+      },
+    });
+  }
+
+  unfollowUser(userId: string) {
+    this.userService.unfollow(userId).subscribe({
+      next: (response: any) => {
+        if (this.tab === FollowsTabType.FOLLOWERS) {
+          this.follows = this.follows.map((follow: User) => {
+            if (follow.id === userId) {
+              follow.following = false;
+              this.user.count.following -= 1;
+            }
+
+            return follow;
+          });
+        } else {
+          this.user.count.following -= 1;
+          this.follows = this.follows.filter(
+            (follow: User) => follow.id !== userId
+          );
+        }
+      },
+    });
+  }
 }

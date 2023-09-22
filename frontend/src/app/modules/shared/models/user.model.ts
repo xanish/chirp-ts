@@ -9,6 +9,7 @@ export class User {
   public city?: string;
   public country?: string;
   public birthDate?: Date;
+  public following: boolean;
   public count = {
     tweets: 0,
     likes: 0,
@@ -29,6 +30,7 @@ export class User {
     this.city = user.city ?? '';
     this.country = user.country ?? '';
     this.birthDate = user.birthDate ? new Date(user.birthDate) : new Date();
+    this.following = user.following && user.following.length > 0 ? true : false;
     this.count.tweets = user._count?.tweets ?? 0;
     this.count.likes = user._count?.likes ?? 0;
     this.count.followers = user._count?.followers ?? 0;

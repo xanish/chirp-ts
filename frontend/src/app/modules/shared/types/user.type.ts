@@ -7,6 +7,7 @@ export type TUser = {
   city?: string;
   country?: string;
   birthDate?: string;
+  following: Array<any>;
   _count?: {
     tweets?: number;
     likes?: number;

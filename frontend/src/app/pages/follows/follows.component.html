@@ -47,7 +47,10 @@
         </a>
       </div>
 
-      <div class="w-full rounded-md bg-white py-4 shadow-sm">
+      <div
+        class="w-full rounded-md bg-white py-4 shadow-sm"
+        *ngIf="follows.length > 0"
+      >
         <ng-template ngFor let-follow [ngForOf]="follows">
           <div
             class="flex flex-row items-center justify-center gap-2 px-4 py-2"
@@ -59,13 +62,20 @@
             />
 
             <ul class="flex-grow">
-              <li class="font-semibold">{{ follow.name }}</li>
-              <li class="text-gray-500">@{{ follow.username }}</li>
+              <li class="font-semibold">
+                <a routerLink="/{{ follow.username }}">{{ follow.name }}</a>
+              </li>
+              <li class="text-gray-500">
+                <a routerLink="/{{ follow.username }}"
+                  >@{{ follow.username }}</a
+                >
+              </li>
             </ul>
 
             <ng-container *ngIf="tab === tabType.FOLLOWING">
               <button
                 type="button"
+                (click)="unfollowUser(follow.id ?? '')"
                 class="rounded-md border-2 border-red-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-red-600 hover:bg-red-600 hover:text-white"
               >
                 Unfollow
@@ -74,15 +84,34 @@
 
             <ng-container *ngIf="tab === tabType.FOLLOWERS">
               <button
+                *ngIf="follow.following === false"
                 type="button"
+                (click)="followUser(follow.id ?? '')"
                 class="rounded-md border-2 border-indigo-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-indigo-600 hover:bg-indigo-600 hover:text-white"
               >
                 Follow
+              </button>
+
+              <button
+                *ngIf="follow.following === true"
+                type="button"
+                (click)="unfollowUser(follow.id ?? '')"
+                class="rounded-md border-2 border-red-600 bg-transparent px-4 py-2 text-sm font-semibold uppercase leading-6 text-red-600 hover:bg-red-600 hover:text-white"
+              >
+                Unfollow
               </button>
             </ng-container>
           </div>
         </ng-template>
       </div>
+
+      <ng-container *ngIf="follows.length === 0">
+        <div class="mt-10 flex w-full flex-col items-center justify-center">
+          <h3 class="font-display text-3xl text-gray-500">
+            Nothing to see here
+          </h3>
+        </div>
+      </ng-container>
     </section>
 
     <aside class="lg:w-1/4"></aside>
