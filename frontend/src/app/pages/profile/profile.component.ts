@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/modules/core/services/user.service';
+import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
@@ -141,5 +142,10 @@ export class ProfileComponent implements OnInit {
         });
         break;
     }
+  }
+
+  handleFollowAction(event: any) {
+    this.user.count.followers += event.action === FollowAction.FOLLOW ? 1 : -1;
+    this.user.following = event.action === FollowAction.FOLLOW;
   }
 }
