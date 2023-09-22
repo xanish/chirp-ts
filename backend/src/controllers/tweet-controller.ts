@@ -52,6 +52,14 @@ class TweetController extends BaseController {
             content: true,
           },
         },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
+          },
+        },
         _count: {
           select: {
             likes: true,
@@ -146,6 +154,9 @@ class TweetController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -178,6 +189,14 @@ class TweetController extends BaseController {
             },
             createdAt: true,
             updatedAt: true,
+          },
+        },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
           },
         },
         attachments: {
@@ -222,6 +241,9 @@ class TweetController extends BaseController {
   }
 
   async findMediaByUser(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -254,6 +276,14 @@ class TweetController extends BaseController {
             },
             createdAt: true,
             updatedAt: true,
+          },
+        },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
           },
         },
         attachments: {
