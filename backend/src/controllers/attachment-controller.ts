@@ -25,7 +25,10 @@ class AttachmentController extends BaseController {
       maxFiles: 4,
       maxFileSize: 5 * 1024 * 1024,
       filter: function (part: Part) {
-        return !!(part.mimetype && part.mimetype.includes('image'));
+        return !!(
+          part.mimetype &&
+          (part.mimetype.includes('image') || part.mimetype.includes('video'))
+        );
       },
     });
 
@@ -58,6 +61,8 @@ class AttachmentController extends BaseController {
     const uploads = Array.isArray(files.attachments)
       ? files.attachments
       : [files.attachments];
+
+    console.log(files);
 
     try {
       // wait for move to finish
