@@ -31,12 +31,38 @@
       <li>@{{ user.username }}</li>
     </ul>
 
-    <button
-      type="button"
-      class="h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-300"
-    >
-      <fa-icon [icon]="faGear"></fa-icon>
-    </button>
+    <div class="relative inline-block">
+      <ul
+        *ngIf="userOptions"
+        class="absolute bottom-12 w-fit rounded-md border border-gray-100 bg-white shadow-sm"
+      >
+        <li>
+          <button
+            type="button"
+            class="w-full px-4 py-2 hover:bg-gray-200"
+            routerLink="/{{ user.username }}"
+          >
+            Edit Profile
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="w-full px-4 py-2 hover:bg-gray-200"
+            (click)="logout()"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+      <button
+        type="button"
+        (click)="toggleUserOptions()"
+        class="h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-300"
+      >
+        <fa-icon [icon]="faGear"></fa-icon>
+      </button>
+    </div>
   </div>
 </nav>
 

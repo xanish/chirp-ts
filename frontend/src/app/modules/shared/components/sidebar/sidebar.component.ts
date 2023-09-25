@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { User } from '../../models/user.model';
@@ -10,10 +11,14 @@ import { User } from '../../models/user.model';
 })
 export class SidebarComponent {
   faGear = faGear;
+  userOptions = false;
   user: User = this.tokenService.user();
   tweetModal = false;
 
-  constructor(private tokenService: TokenService) {}
+  constructor(
+    private router: Router,
+    private tokenService: TokenService
+  ) {}
 
   showTweetModal() {
     this.tweetModal = true;
@@ -21,5 +26,14 @@ export class SidebarComponent {
 
   hideTweetModal() {
     this.tweetModal = false;
+  }
+
+  toggleUserOptions() {
+    this.userOptions = !this.userOptions;
+  }
+
+  logout() {
+    this.tokenService.clear();
+    this.router.navigate(['auth/login']);
   }
 }
