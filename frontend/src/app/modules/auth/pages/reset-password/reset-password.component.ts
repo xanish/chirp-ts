@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -27,7 +28,8 @@ export class ResetPasswordComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   onSubmit() {
@@ -43,9 +45,11 @@ export class ResetPasswordComponent {
           next: (response: any) => {
             this.form.reset();
             this.router.navigate(['/auth/login']);
+            this.alertService.success('Your password has been reset');
+            this.disableSubmit = false;
           },
-          error: (e) => console.error(e),
-          complete: () => {
+          error: (e) => {
+            this.alertService.error(e);
             this.disableSubmit = false;
           },
         });

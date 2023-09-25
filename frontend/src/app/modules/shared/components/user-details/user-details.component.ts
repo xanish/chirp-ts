@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowAction } from '../../enums/follow-action.enum';
@@ -17,7 +18,8 @@ export class UserDetailsComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,9 @@ export class UserDetailsComponent implements OnInit {
       next: (response: any) => {
         this.toggleFollow.emit({ id: userId, action: FollowAction.FOLLOW });
       },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to follow user');
+      },
     });
   }
 
@@ -36,6 +41,9 @@ export class UserDetailsComponent implements OnInit {
     this.userService.unfollow(userId).subscribe({
       next: (response: any) => {
         this.toggleFollow.emit({ id: userId, action: FollowAction.UNFOLLOW });
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to unfollow user');
       },
     });
   }

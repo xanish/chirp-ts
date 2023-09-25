@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class ForgotPasswordComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   onSubmit() {
@@ -30,10 +32,11 @@ export class ForgotPasswordComponent {
         .subscribe({
           next: (response: any) => {
             this.form.reset();
-            console.log('please check your inbox for reset link');
+            this.alertService.success('Please check your inbox for reset link');
+            this.disableSubmit = false;
           },
-          error: (e) => console.error(e),
-          complete: () => {
+          error: (e) => {
+            this.alertService.error(e);
             this.disableSubmit = false;
           },
         });

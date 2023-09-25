@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { TweetService } from '../../modules/core/services/tweet.service';
 import { Tweet } from '../../modules/shared/models/tweet.model';
@@ -17,7 +18,10 @@ export class FeedComponent implements OnInit {
     limit: 10,
   };
 
-  constructor(private tweetService: TweetService) {}
+  constructor(
+    private tweetService: TweetService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.tweetService.feed(this.filters).subscribe({
@@ -26,7 +30,7 @@ export class FeedComponent implements OnInit {
         this.tweets = response.records.map((tweet: TTweet) => new Tweet(tweet));
       },
       error: (e) => {
-        console.log(e);
+        this.alertService.error(e);
       },
     });
   }

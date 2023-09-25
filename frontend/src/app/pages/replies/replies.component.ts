@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
@@ -21,7 +22,8 @@ export class RepliesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tweetService: TweetService
+    private tweetService: TweetService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +36,9 @@ export class RepliesComponent implements OnInit {
             (tweet: TTweet) => new Tweet(tweet)
           );
           this.filters.offset = response.nextOffset ?? undefined;
+        },
+        error: (e) => {
+          this.alertService.error(e);
         },
       });
     });

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
@@ -31,7 +32,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -51,8 +53,8 @@ export class ProfileComponent implements OnInit {
               (tweet: TTweet) => new Tweet(tweet)
             );
           },
-          error: (e: any) => {
-            console.log(e);
+          error: (e) => {
+            this.alertService.error(e, 'Failed to fetch tweets');
           },
         });
       this.userService
@@ -64,8 +66,8 @@ export class ProfileComponent implements OnInit {
               (tweet: TTweet) => new Tweet(tweet)
             );
           },
-          error: (e: any) => {
-            console.log(e);
+          error: (e) => {
+            this.alertService.error(e, 'Failed to fetch replies');
           },
         });
       this.userService
@@ -77,8 +79,8 @@ export class ProfileComponent implements OnInit {
               (tweet: TTweet) => new Tweet(tweet)
             );
           },
-          error: (e: any) => {
-            console.log(e);
+          error: (e) => {
+            this.alertService.error(e, 'Failed to fetch medias');
           },
         });
       this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
@@ -88,8 +90,8 @@ export class ProfileComponent implements OnInit {
             (tweet: TTweet) => new Tweet(tweet)
           );
         },
-        error: (e: any) => {
-          console.log(e);
+        error: (e) => {
+          this.alertService.error(e, 'Failed to fetch likes');
         },
       });
     });

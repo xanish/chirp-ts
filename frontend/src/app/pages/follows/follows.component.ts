@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowsTabType } from 'src/app/modules/shared/enums/follows-tab-type.enum';
 import { User } from 'src/app/modules/shared/models/user.model';
@@ -22,7 +23,8 @@ export class FollowsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,9 @@ export class FollowsComponent implements OnInit {
           this.filters.offset = response.nextOffset ?? undefined;
           this.follows = response.records.map((user: TUser) => new User(user));
         },
-        error: (e) => console.log(e),
+        error: (e) => {
+          this.alertService.error(e, 'Failed to followers');
+        },
       });
     } else {
       this.tab = FollowsTabType.FOLLOWING;
@@ -43,7 +47,9 @@ export class FollowsComponent implements OnInit {
           this.filters.offset = response.nextOffset ?? undefined;
           this.follows = response.records.map((user: TUser) => new User(user));
         },
-        error: (e) => console.log(e),
+        error: (e) => {
+          this.alertService.error(e, 'Failed to following');
+        },
       });
     }
   }
@@ -63,6 +69,9 @@ export class FollowsComponent implements OnInit {
 
           return follow;
         });
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to follow user');
       },
     });
   }
@@ -85,6 +94,9 @@ export class FollowsComponent implements OnInit {
             (follow: User) => follow.id !== userId
           );
         }
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to unfollow user');
       },
     });
   }

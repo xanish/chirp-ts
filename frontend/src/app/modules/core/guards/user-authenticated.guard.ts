@@ -9,7 +9,10 @@ import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class UserAuthenticatedGuard {
-  constructor(private router: Router, private tokenService: TokenService) {}
+  constructor(
+    private router: Router,
+    private tokenService: TokenService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     // this is just a dummy call ideally need to call the server to

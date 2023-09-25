@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faPaperclip, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { AttachmentType } from '../../enums/attachment-type.enum';
@@ -29,7 +30,8 @@ export class TweetModalComponent {
   constructor(
     private formBuilder: FormBuilder,
     private tokenService: TokenService,
-    private tweetService: TweetService
+    private tweetService: TweetService,
+    private alertService: AlertService
   ) {}
 
   closeModal() {
@@ -93,8 +95,15 @@ export class TweetModalComponent {
                   this.form.reset();
                   this.close.emit();
                 },
-                error: (e: any) => {},
+                error: (e) => {
+                  this.alertService.error(e, 'Failed to create tweet');
+                  this.disableSubmit = false;
+                },
               });
+          },
+          error: (e) => {
+            this.alertService.error(e, 'Failed to upload tweet media');
+            this.disableSubmit = false;
           },
         });
       } else {
@@ -110,7 +119,10 @@ export class TweetModalComponent {
               this.form.reset();
               this.close.emit();
             },
-            error: (e: any) => {},
+            error: (e) => {
+              this.alertService.error(e, 'Failed to create tweet');
+              this.disableSubmit = false;
+            },
           });
       }
     }

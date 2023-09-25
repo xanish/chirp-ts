@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faArrowLeft, faFeather } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TUser } from 'src/app/modules/shared/types/user.type';
@@ -48,7 +49,8 @@ export class EditProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -84,10 +86,11 @@ export class EditProfileComponent implements OnInit {
         })
         .subscribe({
           next: (response: TUser) => {
-            console.info('Update successful');
+            this.alertService.success('Updated profile details');
+            this.disableSubmit = false;
           },
-          error: (e) => console.error(e),
-          complete: () => {
+          error: (e) => {
+            this.alertService.error(e);
             this.disableSubmit = false;
           },
         });

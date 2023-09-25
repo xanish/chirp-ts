@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faRetweet, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { environment } from 'src/environments/environment';
@@ -35,7 +36,8 @@ export class TweetComponent {
   constructor(
     private router: Router,
     private tweetService: TweetService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private alertService: AlertService
   ) {}
 
   gridClasses(attachmentCount: number): string {
@@ -71,11 +73,17 @@ export class TweetComponent {
         next: (response: any) => {
           this.toggleLike.emit({ id: tweetId, action: TweetLike.UNLIKED });
         },
+        error: (e) => {
+          this.alertService.error(e, 'Failed to unlike tweet');
+        },
       });
     } else {
       this.tweetService.like(tweetId).subscribe({
         next: (response: any) => {
           this.toggleLike.emit({ id: tweetId, action: TweetLike.LIKED });
+        },
+        error: (e) => {
+          this.alertService.error(e, 'Failed to like tweet');
         },
       });
     }
@@ -98,7 +106,9 @@ export class TweetComponent {
   newRetweet($event: Event, tweetId: string) {
     this.tweetService.retweet(tweetId).subscribe({
       next: (tweet: TTweet) => {},
-      error: (e: any) => {},
+      error: (e) => {
+        this.alertService.error(e, 'Failed to retweet');
+      },
     });
     this.retweetOptions = !this.retweetOptions;
     $event.stopPropagation();

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
+import { AlertService } from 'src/app/modules/core/services/alert.service';
+import { TUser } from 'src/app/modules/shared/types/user.type';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -42,7 +44,8 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   onSubmit() {
@@ -57,14 +60,15 @@ export class RegisterComponent {
           password: this.form.value.password!,
         })
         .subscribe({
-          next: (v) => {
+          next: (response: TUser) => {
             this.form.reset();
-            console.info(
+            this.alertService.success(
               'Registration successful, please check your inbox to verify your e-mail'
             );
+            this.disableSubmit = false;
           },
-          error: (e) => console.error(e),
-          complete: () => {
+          error: (e) => {
+            this.alertService.error(e);
             this.disableSubmit = false;
           },
         });

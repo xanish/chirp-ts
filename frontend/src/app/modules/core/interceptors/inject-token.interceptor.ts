@@ -31,14 +31,13 @@ export class InjectTokenInterceptor implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
-      catchError((err) => {
-        if (err.status === 401) {
+      catchError((e) => {
+        if (e.status === 401) {
           this.tokenService.clear();
           this.router.navigate(['/auth/login']);
         }
 
-        const error = err.error.message || err.statusText;
-        return throwError(() => new Error(error));
+        return throwError(() => e);
       })
     );
   }
