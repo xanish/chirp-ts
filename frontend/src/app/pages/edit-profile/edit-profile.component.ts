@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { faFeather } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faFeather } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TUser } from 'src/app/modules/shared/types/user.type';
@@ -14,6 +14,7 @@ import { TUser } from 'src/app/modules/shared/types/user.type';
 })
 export class EditProfileComponent implements OnInit {
   faFeather = faFeather;
+  faArrowLeft = faArrowLeft;
   disableSubmit = false;
   user: User = User.default();
   form = this.formBuilder.group({
