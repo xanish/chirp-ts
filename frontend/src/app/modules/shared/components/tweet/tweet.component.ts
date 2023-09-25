@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faRetweet, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { environment } from 'src/environments/environment';
 import { AttachmentType } from '../../enums/attachment-type.enum';
 import { TweetLike } from '../../enums/tweet-like.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
+import { TTweet } from '../../types/tweet.type';
 
 @Component({
   selector: 'app-tweet',
@@ -28,10 +30,12 @@ export class TweetComponent {
 
   tweetType = TweetType;
   attachmentType = AttachmentType;
+  retweetOptions = false;
 
   constructor(
     private router: Router,
-    private tweetService: TweetService
+    private tweetService: TweetService,
+    private tokenService: TokenService
   ) {}
 
   gridClasses(attachmentCount: number): string {
@@ -56,7 +60,8 @@ export class TweetComponent {
     $event.stopPropagation();
   }
 
-  showRetweetOptions($event: Event, tweetId: string) {
+  toggleRetweetOptions($event: Event, tweetId: string) {
+    this.retweetOptions = !this.retweetOptions;
     $event.stopPropagation();
   }
 
@@ -87,6 +92,15 @@ export class TweetComponent {
     navigator.clipboard.write(data).then(() => {
       console.log('Copied tweet url to clipboard');
     });
+    $event.stopPropagation();
+  }
+
+  newRetweet($event: Event, tweetId: string) {
+    this.tweetService.retweet(tweetId).subscribe({
+      next: (tweet: TTweet) => {},
+      error: (e: any) => {},
+    });
+    this.retweetOptions = !this.retweetOptions;
     $event.stopPropagation();
   }
 }

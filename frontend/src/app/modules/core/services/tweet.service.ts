@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TweetType } from '../../shared/enums/tweet-type.enum';
 import { Tweet } from '../../shared/models/tweet.model';
 import { TPaginationResponse } from '../../shared/types/paginated-response.type';
 import { TPaginationOptions } from '../../shared/types/pagination-options.type';
@@ -20,6 +21,14 @@ export class TweetService {
 
   create(tweet: Tweet): Observable<TTweet> {
     return this.apiService.post('/tweets', tweet);
+  }
+
+  retweet(id: string): Observable<TTweet> {
+    return this.apiService.post('/tweets', {
+      userId: this.tokenService.id(),
+      type: TweetType.RETWEET,
+      relatedId: id,
+    });
   }
 
   delete(id: string): Observable<any> {
