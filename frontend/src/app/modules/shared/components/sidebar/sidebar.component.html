@@ -12,6 +12,7 @@
       >Profile</a
     >
     <button
+      (click)="showTweetModal()"
       class="my-2 block w-full rounded-md bg-indigo-600 px-4 py-4 text-sm font-bold uppercase leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       New Post
@@ -38,3 +39,8 @@
     </button>
   </div>
 </nav>
+
+<app-tweet-modal
+  *ngIf="tweetModal"
+  (close)="hideTweetModal()"
+></app-tweet-modal>

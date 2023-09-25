@@ -11,6 +11,15 @@ import { User } from '../../models/user.model';
 export class SidebarComponent {
   faGear = faGear;
   user: User = this.tokenService.user();
+  tweetModal = false;
 
   constructor(private tokenService: TokenService) {}
+
+  showTweetModal() {
+    this.tweetModal = true;
+  }
+
+  hideTweetModal() {
+    this.tweetModal = false;
+  }
 }
