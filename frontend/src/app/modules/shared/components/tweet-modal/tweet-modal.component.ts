@@ -1,8 +1,12 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faPaperclip, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { AttachmentType } from '../../enums/attachment-type.enum';
+import { TweetType } from '../../enums/tweet-type.enum';
+import { TTweet } from '../../types/tweet.type';
+import { UploadAttachmentResponse } from '../../types/upload-attachment-response.type';
 
 @Component({
   selector: 'app-tweet-modal',
@@ -24,6 +28,7 @@ export class TweetModalComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private tokenService: TokenService,
     private tweetService: TweetService
   ) {}
 
@@ -71,7 +76,43 @@ export class TweetModalComponent {
   onSubmit() {
     if (this.form.valid) {
       this.disableSubmit = true;
-      // this.tweetService.create();
+      if (this.medias.length > 0) {
+        const medias = this.medias.map((media) => media.file);
+        this.tweetService.upload(medias).subscribe({
+          next: (response: UploadAttachmentResponse) => {
+            this.tweetService
+              .create({
+                type: TweetType.TWEET,
+                content: this.form.value.content ?? undefined,
+                attachments: response.uploadedFiles,
+                userId: this.tokenService.id(),
+              })
+              .subscribe({
+                next: (response: TTweet) => {
+                  this.disableSubmit = false;
+                  this.form.reset();
+                  this.close.emit();
+                },
+                error: (e: any) => {},
+              });
+          },
+        });
+      } else {
+        this.tweetService
+          .create({
+            type: TweetType.TWEET,
+            content: this.form.value.content ?? undefined,
+            userId: this.tokenService.id(),
+          })
+          .subscribe({
+            next: (response: TTweet) => {
+              this.disableSubmit = false;
+              this.form.reset();
+              this.close.emit();
+            },
+            error: (e: any) => {},
+          });
+      }
     }
   }
 }
