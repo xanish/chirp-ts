@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-
-import BaseController from './base.controller.js';
 import { TweetType } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
+import BaseController from './base.controller.js';
 
 class ReplyController extends BaseController {
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
 
     const replies = await this.prisma.tweet.findMany({
       select: {
@@ -53,7 +48,7 @@ class ReplyController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         _count: {
@@ -91,9 +86,7 @@ class ReplyController extends BaseController {
   }
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
 
     const replies = await this.prisma.tweet.findMany({
       select: {
@@ -120,7 +113,7 @@ class ReplyController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         _count: {

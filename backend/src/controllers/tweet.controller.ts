@@ -1,16 +1,11 @@
+import mime from 'mime-types';
 import { NextFunction, Request, Response } from 'express';
 import { AttachmentType, TweetType } from '@prisma/client';
-import mime from 'mime-types';
-
 import BaseController from './base.controller.js';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
 
 class TweetController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -57,7 +52,7 @@ class TweetController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         _count: {
@@ -76,7 +71,7 @@ class TweetController extends BaseController {
               following: {
                 some: {
                   followerId: {
-                    equals: BigInt(userId).valueOf(),
+                    equals: loggedInUserId,
                   },
                 },
               },
@@ -89,7 +84,7 @@ class TweetController extends BaseController {
                   following: {
                     some: {
                       followerId: {
-                        equals: BigInt(userId).valueOf(),
+                        equals: loggedInUserId,
                       },
                     },
                   },
@@ -154,9 +149,7 @@ class TweetController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
 
     const tweet = await this.prisma.tweet.findUnique({
       select: {
@@ -194,7 +187,7 @@ class TweetController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         attachments: {
@@ -222,9 +215,7 @@ class TweetController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -264,7 +255,7 @@ class TweetController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         attachments: {
@@ -309,9 +300,7 @@ class TweetController extends BaseController {
   }
 
   async findMediaByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = req.query.offset ?? undefined;
     const limit = +(req.query.limit || 10);
 
@@ -351,7 +340,7 @@ class TweetController extends BaseController {
             createdAt: true,
           },
           where: {
-            userId: BigInt(userId).valueOf(),
+            userId: loggedInUserId,
           },
         },
         attachments: {

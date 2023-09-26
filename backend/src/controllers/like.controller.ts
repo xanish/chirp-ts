@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-
 import BaseController from './base.controller.js';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
 
 class LikeController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -40,9 +37,7 @@ class LikeController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
@@ -90,7 +85,7 @@ class LikeController extends BaseController {
                 createdAt: true,
               },
               where: {
-                userId: BigInt(userId).valueOf(),
+                userId: loggedInUserId,
               },
             },
             _count: {

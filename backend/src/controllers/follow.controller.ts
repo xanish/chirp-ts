@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
 import BaseController from './base.controller.js';
 
 class FollowController extends BaseController {
@@ -39,9 +37,7 @@ class FollowController extends BaseController {
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
@@ -60,7 +56,7 @@ class FollowController extends BaseController {
                 createdAt: true,
               },
               where: {
-                followerId: userId.valueOf(),
+                followerId: loggedInUserId,
               },
             },
           },
@@ -85,9 +81,7 @@ class FollowController extends BaseController {
   }
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     const offset = +(req.query.offset || 0);
     const limit = +(req.query.limit || 10);
 
@@ -106,7 +100,7 @@ class FollowController extends BaseController {
                 createdAt: true,
               },
               where: {
-                followerId: userId.valueOf(),
+                followerId: loggedInUserId,
               },
             },
           },

@@ -1,7 +1,5 @@
 import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
 import BaseController from './base.controller.js';
 import { ApplicationError } from '../errors/application.error.js';
 
@@ -42,9 +40,7 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
+    const loggedInUserId = this.auth.id(req);
     let where: any = {};
 
     try {
@@ -79,7 +75,7 @@ class UserController extends BaseController {
               createdAt: true,
             },
             where: {
-              followerId: userId.valueOf(),
+              followerId: loggedInUserId,
             },
           },
           createdAt: true,
