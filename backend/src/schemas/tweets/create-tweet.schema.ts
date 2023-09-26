@@ -1,11 +1,9 @@
-import { Meta, Schema } from 'express-validator';
+import { Meta } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
+
 import { TweetType } from '@prisma/client';
 
-import isTweetPresent from '../../validators/is-tweet-present.js';
-import isUserPresent from '../../validators/is-user-present.js';
-import isValidUploadedMedia from '../../validators/is-valid-uploaded-media.js';
-
-const CreateTweetSchema: Schema = {
+const CreateTweetSchema: CustomExpressValidatorSchema = {
   userId: {
     in: ['body'],
     exists: {
@@ -15,9 +13,7 @@ const CreateTweetSchema: Schema = {
       errorMessage: 'The user id field is required',
       bail: true,
     },
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 
   content: {
@@ -56,9 +52,7 @@ const CreateTweetSchema: Schema = {
     optional: {
       options: { nullable: true },
     },
-    custom: {
-      options: isTweetPresent,
-    },
+    isTweetPresent: true,
   },
 
   attachments: {
@@ -77,9 +71,7 @@ const CreateTweetSchema: Schema = {
       errorMessage: 'The attachments field must contain valid strings',
       bail: true,
     },
-    custom: {
-      options: isValidUploadedMedia,
-    },
+    isValidUploadedMedia: true,
   },
 };
 

@@ -1,13 +1,9 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import isTweetPresent from '../../validators/is-tweet-present.js';
-
-const FindManyTweetLikesSchema: Schema = {
+const FindManyTweetLikesSchema: CustomExpressValidatorSchema = {
   tweetId: {
     in: ['params'],
-    custom: {
-      options: isTweetPresent,
-    },
+    isTweetPresent: true,
   },
 
   offset: {

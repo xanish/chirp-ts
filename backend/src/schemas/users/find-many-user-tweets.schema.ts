@@ -1,21 +1,15 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import isTweetPresent from '../../validators/is-tweet-present.js';
-import isUserPresent from '../../validators/is-user-present.js';
-
-const FindManyUserTweetsSchema: Schema = {
+const FindManyUserTweetsSchema: CustomExpressValidatorSchema = {
   userId: {
     in: ['params'],
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 
   offset: {
     in: ['query'],
     optional: { options: { nullable: true } },
-    custom: {
-      options: isTweetPresent,
+    isTweetPresent: {
       errorMessage: 'The offset field must be a valid tweet id',
     },
   },

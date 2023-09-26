@@ -1,4 +1,4 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema } from '../bootstrap/express-validator.js';
 
 // controllers
 import AuthController from '../controllers/auth-controller.js';

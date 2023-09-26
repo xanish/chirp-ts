@@ -1,15 +1,9 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import isEmailAvailable from '../../validators/is-email-available.js';
-import isUsernameAvailable from '../../validators/is-username-available.js';
-import isUserPresent from '../../validators/is-user-present.js';
-
-const UpdateUserSchema: Schema = {
+const UpdateUserSchema: CustomExpressValidatorSchema = {
   userId: {
     in: ['params'],
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 
   username: {
@@ -25,9 +19,7 @@ const UpdateUserSchema: Schema = {
       errorMessage:
         'The username field must have length between 2 and 64 characters',
     },
-    custom: {
-      options: isUsernameAvailable,
-    },
+    isUsernameAvailable: true,
   },
 
   email: {
@@ -41,9 +33,7 @@ const UpdateUserSchema: Schema = {
     isEmail: {
       errorMessage: 'The email field must be a valid e-mail address',
     },
-    custom: {
-      options: isEmailAvailable,
-    },
+    isEmailAvailable: true,
     isLength: {
       options: { min: 6, max: 64 },
       errorMessage:

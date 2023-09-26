@@ -1,13 +1,9 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import { isUserIdOrUsernamePresent } from '../../validators/is-user-present.js';
-
-const FindOneUserSchema: Schema = {
+const FindOneUserSchema: CustomExpressValidatorSchema = {
   userId: {
     in: ['params'],
-    custom: {
-      options: isUserIdOrUsernamePresent,
-    },
+    isUserIdOrUsernamePresent: true,
   },
 };
 

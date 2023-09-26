@@ -1,7 +1,6 @@
-import { Schema } from 'express-validator';
-import isUserPresent from '../../validators/is-user-present.js';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-const FindManyUserSchema: Schema = {
+const FindManyUserSchema: CustomExpressValidatorSchema = {
   term: {
     in: ['query'],
     optional: { options: { nullable: true } },
@@ -18,8 +17,7 @@ const FindManyUserSchema: Schema = {
   offset: {
     in: ['query'],
     optional: { options: { nullable: true } },
-    custom: {
-      options: isUserPresent,
+    isUserPresent: {
       errorMessage: 'The offset field must be a valid user id',
     },
   },

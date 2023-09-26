@@ -1,8 +1,6 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import { isUsernamePresent } from '../../validators/is-user-present.js';
-
-const ForgotPasswordUserSchema: Schema = {
+const ForgotPasswordUserSchema: CustomExpressValidatorSchema = {
   username: {
     in: ['body'],
     exists: {
@@ -11,9 +9,7 @@ const ForgotPasswordUserSchema: Schema = {
       },
       errorMessage: 'The username field is required',
     },
-    custom: {
-      options: isUsernamePresent,
-    },
+    isUsernamePresent: true,
   },
 };
 

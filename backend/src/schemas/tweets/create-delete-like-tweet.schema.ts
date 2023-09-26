@@ -1,21 +1,14 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import isTweetPresent from '../../validators/is-tweet-present.js';
-import isUserPresent from '../../validators/is-user-present.js';
-
-const CreateDeleteLikeTweetSchema: Schema = {
+const CreateDeleteLikeTweetSchema: CustomExpressValidatorSchema = {
   tweetId: {
     in: ['params'],
-    custom: {
-      options: isTweetPresent,
-    },
+    isTweetPresent: true,
   },
 
   userId: {
     in: ['body'],
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 };
 

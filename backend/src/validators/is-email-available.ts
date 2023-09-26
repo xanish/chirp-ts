@@ -12,10 +12,16 @@ const isEmailAvailable = async (email: string, meta: Meta) => {
 
   const token =
     meta.req.headers?.authorization?.replace('Bearer', '').trim() ?? '';
-  const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-  const userId = BigInt(decoded.id).valueOf();
+  if (token !== '') {
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id).valueOf();
 
-  if (user && user.id !== userId) {
+    if (user && user.id !== userId) {
+      throw new Error('The specified e-mail is already in use');
+    }
+  }
+
+  if (user) {
     throw new Error('The specified e-mail is already in use');
   }
 };

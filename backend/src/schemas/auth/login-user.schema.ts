@@ -1,6 +1,6 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-const LoginUserSchema: Schema = {
+const LoginUserSchema: CustomExpressValidatorSchema = {
   username: {
     in: ['body'],
     exists: {

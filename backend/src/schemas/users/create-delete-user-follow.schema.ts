@@ -1,20 +1,14 @@
-import { Schema } from 'express-validator';
+import { CustomExpressValidatorSchema } from '../../bootstrap/express-validator.js';
 
-import isUserPresent from '../../validators/is-user-present.js';
-
-const CreateDeleteUserFollowSchema: Schema = {
+const CreateDeleteUserFollowSchema: CustomExpressValidatorSchema = {
   userId: {
     in: ['params'],
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 
   followerId: {
     in: ['body'],
-    custom: {
-      options: isUserPresent,
-    },
+    isUserPresent: true,
   },
 };
 
