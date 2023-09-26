@@ -1,4 +1,4 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema } from '../bootstrap/express-validator.js';
 
 // controllers
 import FollowController from '../controllers/follow-controller.js';
@@ -8,14 +8,14 @@ import TweetController from '../controllers/tweet-controller.js';
 import UserController from '../controllers/user-controller.js';
 
 // validation schemas
-import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow-schema.js';
-import FindManyUserFollowsSchema from '../schemas/users/find-many-user-follows-schema.js';
-import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.js';
-import FindManyUserMediasSchema from '../schemas/users/find-many-user-medias-schema.js';
-import FindManyUserSchema from '../schemas/users/find-many-user-schema.js';
-import FindManyUserTweetsSchema from '../schemas/users/find-many-user-tweets-schema.js';
-import FindOneUserSchema from '../schemas/users/find-one-user-schema.js';
-import UpdateUserSchema from '../schemas/users/update-user-schema.js';
+import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow.schema.js';
+import FindManyUserFollowsSchema from '../schemas/users/find-many-user-follows.schema.js';
+import FindManyUserLikesSchema from '../schemas/users/find-many-user.likes.js';
+import FindManyUserMediasSchema from '../schemas/users/find-many-user-medias.schema.js';
+import FindManyUserSchema from '../schemas/users/find-many-user.schema.js';
+import FindManyUserTweetsSchema from '../schemas/users/find-many-user-tweets.schema.js';
+import FindOneUserSchema from '../schemas/users/find-one-user.schema.js';
+import UpdateUserSchema from '../schemas/users/update-user.schema.js';
 
 // middlewares
 import validateRequest from '../middlewares/validate-request.middleware.js';
