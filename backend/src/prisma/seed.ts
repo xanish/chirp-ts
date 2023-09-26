@@ -240,14 +240,24 @@ async function main() {
       .slice(0, 3);
 
     for (let id of tweetIds) {
-      await prisma.tweet.create({
-        data: {
-          id: await getId(),
-          content: replies[Math.floor(Math.random() * replies.length)],
-          type: TweetType.REPLY,
-          relatedId: id,
-        },
+      const tweet = await prisma.tweet.findUnique({
+        where: { id: id },
+        select: { user: { select: { username: true } } },
       });
+
+      if (tweet && tweet.user) {
+        await prisma.tweet.create({
+          data: {
+            id: await getId(),
+            content: `@${tweet.user.username} ${
+              replies[Math.floor(Math.random() * replies.length)]
+            }`,
+            type: TweetType.REPLY,
+            relatedId: id,
+            userId: user.id,
+          },
+        });
+      }
     }
   }
 }
