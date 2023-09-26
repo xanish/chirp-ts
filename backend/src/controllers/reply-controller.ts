@@ -2,14 +2,28 @@ import { NextFunction, Request, Response } from 'express';
 
 import BaseController from './base-controller.js';
 import { TweetType } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+import AppConfig from '../config/app-config.js';
 
 class ReplyController extends BaseController {
   async findByUser(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
+
     const replies = await this.prisma.tweet.findMany({
       select: {
         id: true,
         type: true,
         content: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         attachments: {
           select: {
             id: true,
@@ -34,9 +48,18 @@ class ReplyController extends BaseController {
             updatedAt: true,
           },
         },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
+          },
+        },
         _count: {
           select: {
             likes: true,
+            replies: true,
           },
         },
         createdAt: true,
@@ -68,16 +91,42 @@ class ReplyController extends BaseController {
   }
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
+
     const replies = await this.prisma.tweet.findMany({
       select: {
         id: true,
         type: true,
         content: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         attachments: {
           select: {
             id: true,
             type: true,
             content: true,
+          },
+        },
+        likes: {
+          select: {
+            createdAt: true,
+          },
+          where: {
+            userId: BigInt(userId).valueOf(),
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            replies: true,
           },
         },
         createdAt: true,
