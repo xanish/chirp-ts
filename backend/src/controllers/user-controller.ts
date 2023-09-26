@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
-
+import jwt from 'jsonwebtoken';
+import AppConfig from '../config/app-config.js';
 import BaseController from './base-controller.js';
 import { ApplicationError } from '../errors/application.error.js';
 
@@ -41,6 +42,9 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
+    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
+    const userId = BigInt(decoded.id);
     let where: any = {};
 
     try {
@@ -68,10 +72,25 @@ class UserController extends BaseController {
               following: true,
             },
           },
+          following: {
+            select: {
+              followerId: true,
+              followingId: true,
+              createdAt: true,
+            },
+            where: {
+              followerId: userId.valueOf(),
+            },
+          },
           createdAt: true,
           updatedAt: true,
         },
       });
+
+      [user._count.followers, user._count.following] = [
+        user._count.following,
+        user._count.followers,
+      ];
 
       return res.json(user);
     } catch (e) {
