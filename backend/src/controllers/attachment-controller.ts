@@ -62,8 +62,6 @@ class AttachmentController extends BaseController {
       ? files.attachments
       : [files.attachments];
 
-    console.log(files);
-
     try {
       // wait for move to finish
       await Promise.all(
