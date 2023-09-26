@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
 import BaseController from './base.controller.js';
 import AppConfig from '../config/app-config.js';
 import { AuthenticationError } from '../errors/authentication.error.js';
@@ -35,10 +34,8 @@ class AuthController extends BaseController {
       } else {
         return res.status(400).send('Failed to verify');
       }
-    } catch (err) {
-      return next(
-        new AuthenticationError((<{ message: string }>err).message, 400)
-      );
+    } catch (e: any) {
+      return next(new AuthenticationError(e.message, 400));
     }
   }
 
@@ -61,18 +58,14 @@ class AuthController extends BaseController {
     const matches = await bcrypt.compare(req.body.password, user.password);
 
     if (matches) {
-      const token = jwt.sign(
-        {
+      return res.json({
+        token: this.auth.token({
           id: user.id,
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
-        },
-        AppConfig.JWT_SECRET,
-        { expiresIn: AppConfig.JWT_DURATION }
-      );
-
-      return res.json({ token });
+        }),
+      });
     } else {
       return next(new AuthenticationError('Unauthorized', 401));
     }
@@ -86,16 +79,13 @@ class AuthController extends BaseController {
     });
 
     if (user) {
-      const token = jwt.sign(
-        {
-          id: user.id,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        },
-        AppConfig.JWT_SECRET,
-        { expiresIn: AppConfig.JWT_DURATION }
-      );
+      const token = this.auth.token({
+        id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      });
+
       // todo: send password reset mail with token
 
       return res.status(200).send();
@@ -103,22 +93,27 @@ class AuthController extends BaseController {
   }
 
   async resetPassword(req: Request, res: Response, next: NextFunction) {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
-    const { username, password } = req.body;
+    try {
+      const decoded: any = jwt.verify(req.params.token, AppConfig.JWT_SECRET);
+      const id = BigInt(decoded.id).valueOf();
 
-    const userExists = await this.prisma.user.findFirst({
-      where: { username },
-    });
+      const userExists = await this.prisma.user.findFirst({ where: { id } });
 
-    if (userExists) {
-      const user = await this.prisma.user.update({
-        where: { username },
-        data: { password },
-      });
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+      const { username, password } = req.body;
 
-      // todo: send password updated mail
+      if (userExists) {
+        const user = await this.prisma.user.update({
+          where: { username },
+          data: { password },
+        });
 
-      return res.json(user);
+        // todo: send password updated mail
+
+        return res.json(user);
+      }
+    } catch (e: any) {
+      return next(new AuthenticationError(e.message, 400));
     }
   }
 }

@@ -2,6 +2,7 @@ import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 import AppConfig from '../config/app-config.js';
 import { ApplicationError } from '../errors/application.error.js';
+import { Prisma } from '@prisma/client';
 
 export class AuthService {
   id(req: Request): bigint {
@@ -13,5 +14,18 @@ export class AuthService {
     }
 
     throw new ApplicationError('Unauthorized', 401);
+  }
+
+  token(user: any): string {
+    return jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      AppConfig.JWT_SECRET,
+      { expiresIn: AppConfig.JWT_DURATION }
+    );
   }
 }
