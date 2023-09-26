@@ -1,7 +1,7 @@
 import { checkSchema } from '../bootstrap/express-validator.js';
 
 // controllers
-import AuthController from '../controllers/auth-controller.js';
+import AuthController from '../controllers/auth.controller.js';
 
 // validation schemas
 import ForgotPasswordUserSchema from '../schemas/auth/forgot-password-user.schema.js';

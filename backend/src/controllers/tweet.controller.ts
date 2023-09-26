@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AttachmentType, TweetType } from '@prisma/client';
 import mime from 'mime-types';
 
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
 import jwt from 'jsonwebtoken';
 import AppConfig from '../config/app-config.js';
 

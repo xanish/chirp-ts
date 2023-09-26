@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import AppConfig from '../config/app-config.js';
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
 import { ApplicationError } from '../errors/application.error.js';
 
 class UserController extends BaseController {

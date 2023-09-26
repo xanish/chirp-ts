@@ -1,5 +1,5 @@
 // controllers
-import AttachmentController from '../controllers/attachment-controller.js';
+import AttachmentController from '../controllers/attachment.controller.js';
 
 // middlewares
 import verifyToken from '../middlewares/validate-token.middleware.js';

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import AppConfig from '../config/app-config.js';
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
 
 class FollowController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {

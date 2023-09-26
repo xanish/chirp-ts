@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
 import AppConfig from '../config/app-config.js';
 import { AuthenticationError } from '../errors/authentication.error.js';
 

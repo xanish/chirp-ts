@@ -1,11 +1,11 @@
 import { checkSchema } from '../bootstrap/express-validator.js';
 
 // controllers
-import FollowController from '../controllers/follow-controller.js';
-import LikeController from '../controllers/like-controller.js';
-import ReplyController from '../controllers/reply-controller.js';
-import TweetController from '../controllers/tweet-controller.js';
-import UserController from '../controllers/user-controller.js';
+import FollowController from '../controllers/follow.controller.js';
+import LikeController from '../controllers/like.controller.js';
+import ReplyController from '../controllers/reply.controller.js';
+import TweetController from '../controllers/tweet.controller.js';
+import UserController from '../controllers/user.controller.js';
 
 // validation schemas
 import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow.schema.js';
