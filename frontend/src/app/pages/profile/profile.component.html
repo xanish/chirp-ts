@@ -6,7 +6,11 @@
       <app-sidebar></app-sidebar>
     </div>
 
-    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
+    <section
+      class="my-2 flex flex-col items-center gap-2 lg:w-1/2"
+      infiniteScroll
+      (scrolled)="nextPage()"
+    >
       <app-user-details
         [user]="user"
         (toggleFollow)="handleFollowAction($event)"
@@ -66,7 +70,7 @@
           <ng-template ngFor let-tweet [ngForOf]="tweets">
             <app-tweet
               [tweet]="tweet"
-              (toggleLike)="tweetLiked($event, 'tweet')"
+              (toggleLike)="objectLiked($event, 'TWEET')"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -85,7 +89,7 @@
           <ng-template ngFor let-reply [ngForOf]="replies">
             <app-tweet
               [tweet]="reply"
-              (toggleLike)="tweetLiked($event, 'reply')"
+              (toggleLike)="objectLiked($event, 'REPLY')"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -104,7 +108,7 @@
           <ng-template ngFor let-media [ngForOf]="medias">
             <app-tweet
               [tweet]="media"
-              (toggleLike)="tweetLiked($event, 'media')"
+              (toggleLike)="objectLiked($event, 'MEDIA')"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -123,7 +127,7 @@
           <ng-template ngFor let-like [ngForOf]="likes">
             <app-tweet
               [tweet]="like"
-              (toggleLike)="tweetLiked($event, 'like')"
+              (toggleLike)="objectLiked($event, 'LIKE')"
             ></app-tweet>
           </ng-template>
         </ng-container>

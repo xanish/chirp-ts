@@ -44,104 +44,149 @@ export class ProfileComponent implements OnInit {
       delete this.filters.medias.offset;
       delete this.filters.likes.offset;
       // todo: call api for isFollowing
-      this.userService
-        .tweets(this.user.id ?? '', this.filters.tweets)
-        .subscribe({
-          next: (response: TPaginationResponse<TTweet>) => {
-            this.filters.tweets.offset = response.nextOffset;
-            this.tweets = response.records.map(
-              (tweet: TTweet) => new Tweet(tweet)
-            );
-          },
-          error: (e) => {
-            this.alertService.error(e, 'Failed to fetch tweets');
-          },
-        });
-      this.userService
-        .replies(this.user.id ?? '', this.filters.replies)
-        .subscribe({
-          next: (response: TPaginationResponse<TTweet>) => {
-            this.filters.replies.offset = response.nextOffset;
-            this.replies = response.records.map(
-              (tweet: TTweet) => new Tweet(tweet)
-            );
-          },
-          error: (e) => {
-            this.alertService.error(e, 'Failed to fetch replies');
-          },
-        });
-      this.userService
-        .medias(this.user.id ?? '', this.filters.medias)
-        .subscribe({
-          next: (response: TPaginationResponse<TTweet>) => {
-            this.filters.medias.offset = response.nextOffset;
-            this.medias = response.records.map(
-              (tweet: TTweet) => new Tweet(tweet)
-            );
-          },
-          error: (e) => {
-            this.alertService.error(e, 'Failed to fetch medias');
-          },
-        });
-      this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
-        next: (response: TPaginationResponse<TTweet>) => {
-          this.filters.likes.offset = response.nextOffset;
-          this.likes = response.records.map(
-            (tweet: TTweet) => new Tweet(tweet)
-          );
-        },
-        error: (e) => {
-          this.alertService.error(e, 'Failed to fetch likes');
-        },
-      });
+      this.fetchTweets();
+      this.fetchReplies();
+      this.fetchMedias();
+      this.fetchLikes();
     });
   }
 
-  tabChange(tab: TabType) {
-    this.tab = tab;
+  fetchTweets() {
+    this.userService.tweets(this.user.id ?? '', this.filters.tweets).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.tweets.offset =
+          response.nextOffset ?? this.filters.tweets.offset;
+        this.tweets = this.tweets.concat(
+          response.records.map((tweet: TTweet) => new Tweet(tweet))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to fetch tweets');
+      },
+    });
   }
 
-  tweetLiked(event: any, field: string) {
-    switch (field) {
-      case 'tweet':
-        this.tweets.map((tweet: Tweet) => {
-          if (tweet.id === event.id) {
-            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
-            tweet.liked = event.action === TweetLike.LIKED;
-          }
+  fetchReplies() {
+    this.userService
+      .replies(this.user.id ?? '', this.filters.replies)
+      .subscribe({
+        next: (response: TPaginationResponse<TTweet>) => {
+          this.filters.replies.offset =
+            response.nextOffset ?? this.filters.replies.offset;
+          this.replies = this.replies.concat(
+            response.records.map((tweet: TTweet) => new Tweet(tweet))
+          );
+        },
+        error: (e) => {
+          this.alertService.error(e, 'Failed to fetch replies');
+        },
+      });
+  }
 
-          return tweet;
-        });
+  fetchMedias() {
+    this.userService.medias(this.user.id ?? '', this.filters.medias).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.medias.offset =
+          response.nextOffset ?? this.filters.medias.offset;
+        this.medias = this.medias.concat(
+          response.records.map((tweet: TTweet) => new Tweet(tweet))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to fetch medias');
+      },
+    });
+  }
+
+  fetchLikes() {
+    this.userService.likes(this.user.id ?? '', this.filters.likes).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.likes.offset =
+          response.nextOffset ?? this.filters.likes.offset;
+        this.likes = this.likes.concat(
+          response.records.map((tweet: TTweet) => new Tweet(tweet))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to fetch likes');
+      },
+    });
+  }
+
+  tweetLiked(event: any) {
+    this.tweets.map((tweet: Tweet) => {
+      if (tweet.id === event.id) {
+        tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+        tweet.liked = event.action === TweetLike.LIKED;
+      }
+
+      return tweet;
+    });
+  }
+
+  replyLiked(event: any) {
+    this.replies.map((tweet: Tweet) => {
+      if (tweet.id === event.id) {
+        tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+        tweet.liked = event.action === TweetLike.LIKED;
+      }
+
+      return tweet;
+    });
+  }
+
+  mediaLiked(event: any) {
+    this.medias.map((tweet: Tweet) => {
+      if (tweet.id === event.id) {
+        tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+        tweet.liked = event.action === TweetLike.LIKED;
+      }
+
+      return tweet;
+    });
+  }
+
+  likeLiked(event: any) {
+    this.likes.map((tweet: Tweet) => {
+      if (tweet.id === event.id) {
+        tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
+        tweet.liked = event.action === TweetLike.LIKED;
+      }
+
+      return tweet;
+    });
+  }
+
+  nextPage() {
+    switch (this.tab) {
+      case TabType.TWEETS:
+        this.fetchTweets();
         break;
-      case 'reply':
-        this.replies.map((tweet: Tweet) => {
-          if (tweet.id === event.id) {
-            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
-            tweet.liked = event.action === TweetLike.LIKED;
-          }
-
-          return tweet;
-        });
+      case TabType.REPLIES:
+        this.fetchReplies();
         break;
-      case 'media':
-        this.medias.map((tweet: Tweet) => {
-          if (tweet.id === event.id) {
-            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
-            tweet.liked = event.action === TweetLike.LIKED;
-          }
-
-          return tweet;
-        });
+      case TabType.MEDIA:
+        this.fetchMedias();
         break;
-      case 'like':
-        this.likes.map((tweet: Tweet) => {
-          if (tweet.id === event.id) {
-            tweet.count.likes += event.action === TweetLike.LIKED ? 1 : -1;
-            tweet.liked = event.action === TweetLike.LIKED;
-          }
+      case TabType.LIKES:
+        this.fetchLikes();
+        break;
+    }
+  }
 
-          return tweet;
-        });
+  objectLiked(event: any, type: string) {
+    switch (type) {
+      case 'TWEET':
+        this.tweetLiked(event);
+        break;
+      case 'REPLY':
+        this.replyLiked(event);
+        break;
+      case 'MEDIA':
+        this.mediaLiked(event);
+        break;
+      case 'LIKE':
+        this.likeLiked(event);
         break;
     }
   }
@@ -149,5 +194,9 @@ export class ProfileComponent implements OnInit {
   handleFollowAction(event: any) {
     this.user.count.followers += event.action === FollowAction.FOLLOW ? 1 : -1;
     this.user.following = event.action === FollowAction.FOLLOW;
+  }
+
+  tabChange(tab: TabType) {
+    this.tab = tab;
   }
 }
