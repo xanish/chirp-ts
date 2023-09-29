@@ -37,6 +37,8 @@
 
       <div
         class="w-full rounded-md bg-white py-4 shadow-sm"
+        infiniteScroll
+        (scrolled)="nextPage()"
         *ngIf="follows.length > 0"
       >
         <ng-template ngFor let-follow [ngForOf]="follows">

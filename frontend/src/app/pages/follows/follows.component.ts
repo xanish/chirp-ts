@@ -31,31 +31,39 @@ export class FollowsComponent implements OnInit {
     this.user = this.route.snapshot.data['user'];
     if (this.router.url.endsWith('followers')) {
       this.tab = FollowsTabType.FOLLOWERS;
-      this.userService.followers(this.user.id ?? '', this.filters).subscribe({
-        next: (response: TPaginationResponse<TUser>) => {
-          this.filters.offset = response.nextOffset ?? undefined;
-          this.follows = response.records.map((user: TUser) => new User(user));
-        },
-        error: (e) => {
-          this.alertService.error(e, 'Failed to followers');
-        },
-      });
+      this.fetchFollowers();
     } else {
       this.tab = FollowsTabType.FOLLOWING;
-      this.userService.following(this.user.id ?? '', this.filters).subscribe({
-        next: (response: TPaginationResponse<TUser>) => {
-          this.filters.offset = response.nextOffset ?? undefined;
-          this.follows = response.records.map((user: TUser) => new User(user));
-        },
-        error: (e) => {
-          this.alertService.error(e, 'Failed to following');
-        },
-      });
+      this.fetchFollowing();
     }
   }
 
-  tabChange(tab: FollowsTabType) {
-    this.tab = tab;
+  fetchFollowers() {
+    this.userService.followers(this.user.id ?? '', this.filters).subscribe({
+      next: (response: TPaginationResponse<TUser>) => {
+        this.filters.offset = response.nextOffset ?? undefined;
+        this.follows = this.follows.concat(
+          response.records.map((user: TUser) => new User(user))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to followers');
+      },
+    });
+  }
+
+  fetchFollowing() {
+    this.userService.following(this.user.id ?? '', this.filters).subscribe({
+      next: (response: TPaginationResponse<TUser>) => {
+        this.filters.offset = response.nextOffset ?? undefined;
+        this.follows = this.follows.concat(
+          response.records.map((user: TUser) => new User(user))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e, 'Failed to following');
+      },
+    });
   }
 
   followUser(userId: string) {
@@ -99,5 +107,20 @@ export class FollowsComponent implements OnInit {
         this.alertService.error(e, 'Failed to unfollow user');
       },
     });
+  }
+
+  nextPage() {
+    switch (this.tab) {
+      case FollowsTabType.FOLLOWERS:
+        this.fetchFollowers();
+        break;
+      case FollowsTabType.FOLLOWING:
+        this.fetchFollowing();
+        break;
+    }
+  }
+
+  tabChange(tab: FollowsTabType) {
+    this.tab = tab;
   }
 }
