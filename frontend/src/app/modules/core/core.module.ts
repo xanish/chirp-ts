@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ToastrModule } from 'ngx-toastr';
 import { CanAccessAuthGuard } from './guards/can-access-auth.guard';
 import { EditProfileGuard } from './guards/edit-profile.guard';
@@ -21,13 +22,20 @@ import { TweetService } from './services/tweet.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     ToastrModule.forRoot({
       timeOut: 10000,
       preventDuplicates: true,
     }),
     FontAwesomeModule,
   ],
-  exports: [FormsModule, ReactiveFormsModule, FontAwesomeModule, ToastrModule],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    InfiniteScrollModule,
+    ToastrModule,
+  ],
   providers: [
     DatePipe,
     ApiService,
