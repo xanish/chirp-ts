@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
+import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
@@ -8,6 +9,7 @@ import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
 import { TTweet } from 'src/app/modules/shared/types/tweet.type';
+import { TUser } from 'src/app/modules/shared/types/user.type';
 import { User } from '../../modules/shared/models/user.model';
 
 @Component({
@@ -23,6 +25,7 @@ export class ProfileComponent implements OnInit {
   replies: Array<Tweet> = [];
   medias: Array<Tweet> = [];
   likes: Array<Tweet> = [];
+  suggestedFollows: Array<User> = [];
   filters: any = {
     tweets: { limit: 10 },
     replies: { limit: 10 },
@@ -32,6 +35,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private suggestionService: SuggestionService,
     private route: ActivatedRoute,
     private alertService: AlertService
   ) {}
@@ -47,6 +51,7 @@ export class ProfileComponent implements OnInit {
       this.fetchReplies();
       this.fetchMedias();
       this.fetchLikes();
+      this.populateSuggestedFollows();
     });
   }
 
@@ -108,6 +113,19 @@ export class ProfileComponent implements OnInit {
       },
       error: (e) => {
         this.alertService.error(e, 'Failed to fetch likes');
+      },
+    });
+  }
+
+  populateSuggestedFollows() {
+    this.suggestionService.follows().subscribe({
+      next: (response: TPaginationResponse<TUser>) => {
+        this.suggestedFollows = response.records.map(
+          (user: TUser) => new User(user)
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e);
       },
     });
   }
@@ -193,6 +211,14 @@ export class ProfileComponent implements OnInit {
   handleFollowAction(event: any) {
     this.user.count.followers += event.action === FollowAction.FOLLOW ? 1 : -1;
     this.user.following = event.action === FollowAction.FOLLOW;
+  }
+
+  handleIfCurrentUserFollowAction(event: any) {
+    if (event.id === this.user.id) {
+      this.user.count.followers +=
+        event.action === FollowAction.FOLLOW ? 1 : -1;
+      this.user.following = event.action === FollowAction.FOLLOW;
+    }
   }
 
   tabChange(tab: TabType) {

@@ -107,6 +107,11 @@
       </ng-container>
     </section>
 
-    <aside class="lg:w-1/4"></aside>
+    <aside class="mx-6 lg:w-1/4">
+      <app-suggested-follows
+        [suggestions]="suggestedFollows"
+        (toggleFollow)="handleIfCurrentUserFollowAction($event)"
+      ></app-suggested-follows>
+    </aside>
   </div>
 </div>

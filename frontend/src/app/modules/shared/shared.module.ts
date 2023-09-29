@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SuggestedFollowsComponent } from './components/suggested-follows/suggested-follows.component';
 import { TweetModalComponent } from './components/tweet-modal/tweet-modal.component';
 import { TweetComponent } from './components/tweet/tweet.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
@@ -17,6 +18,7 @@ import { ValidationMessageComponent } from './components/validation-message/vali
     UserDetailsComponent,
     NavbarComponent,
     TweetModalComponent,
+    SuggestedFollowsComponent,
   ],
   imports: [CommonModule, RouterModule, CoreModule],
   exports: [
@@ -26,6 +28,7 @@ import { ValidationMessageComponent } from './components/validation-message/vali
     UserDetailsComponent,
     NavbarComponent,
     TweetModalComponent,
+    SuggestedFollowsComponent,
   ],
 })
 export class SharedModule {}
