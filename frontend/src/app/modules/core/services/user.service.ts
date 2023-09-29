@@ -4,6 +4,7 @@ import { TPaginationResponse } from '../../shared/types/paginated-response.type'
 import { TPaginationOptions } from '../../shared/types/pagination-options.type';
 import { TTweet } from '../../shared/types/tweet.type';
 import { TUser, TUserUpdate } from '../../shared/types/user.type';
+import filterObjectKeysUtil from '../../shared/utils/filter-object-keys.util';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 
@@ -23,7 +24,7 @@ export class UserService {
   findMany(
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TUser>> {
-    return this.apiService.get('/users', options);
+    return this.apiService.get('/users', filterObjectKeysUtil(options));
   }
 
   follow(id: string): Observable<any> {
@@ -42,74 +43,66 @@ export class UserService {
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TUser>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/followers`, options);
+    return this.apiService.get(
+      `/users/${id}/followers`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   following(
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TUser>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/following`, options);
+    return this.apiService.get(
+      `/users/${id}/following`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   tweets(
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/tweets`, options);
+    return this.apiService.get(
+      `/users/${id}/tweets`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   replies(
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/replies`, options);
+    return this.apiService.get(
+      `/users/${id}/replies`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   medias(
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/medias`, options);
+    return this.apiService.get(
+      `/users/${id}/medias`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   likes(
     id: string,
     options: TPaginationOptions
   ): Observable<TPaginationResponse<TTweet>> {
-    if (options.offset == null) {
-      delete options.offset;
-    }
-
-    return this.apiService.get(`/users/${id}/likes`, options);
+    return this.apiService.get(
+      `/users/${id}/likes`,
+      filterObjectKeysUtil(options)
+    );
   }
 
   update(user: TUserUpdate): Observable<TUser> {
     return this.apiService.put(
       `/users/${this.tokenService.id()}`,
-      Object.fromEntries(
-        Object.entries(user).filter(([_, v]) => v != null && v != '')
-      )
+      filterObjectKeysUtil(user)
     );
   }
 }
