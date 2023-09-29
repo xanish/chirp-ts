@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
+import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { FollowsTabType } from 'src/app/modules/shared/enums/follows-tab-type.enum';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
@@ -118,6 +119,11 @@ export class FollowsComponent implements OnInit {
         this.fetchFollowing();
         break;
     }
+  }
+
+  followProfileUser(event: any) {
+    this.user.count.followers += event.action === FollowAction.FOLLOW ? 1 : -1;
+    this.user.following = event.action === FollowAction.FOLLOW;
   }
 
   tabChange(tab: FollowsTabType) {
