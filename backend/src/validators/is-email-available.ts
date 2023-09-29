@@ -19,9 +19,7 @@ const isEmailAvailable = async (email: string, meta: Meta) => {
     if (user && user.id !== userId) {
       throw new Error('The specified e-mail is already in use');
     }
-  }
-
-  if (user) {
+  } else if (user) {
     throw new Error('The specified e-mail is already in use');
   }
 };
