@@ -75,7 +75,8 @@ class FollowController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: follows.length < limit ? null : offset + limit,
+      nextOffset:
+        follows.length < limit ? offset + follows.length : offset + limit,
       records: follows.map((follow) => follow.follower),
     });
   }
@@ -119,7 +120,8 @@ class FollowController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: follows.length < limit ? null : offset + limit,
+      nextOffset:
+        follows.length < limit ? offset + follows.length : offset + limit,
       records: follows.map((follow) => follow.following),
     });
   }

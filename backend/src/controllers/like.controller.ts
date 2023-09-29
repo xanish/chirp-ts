@@ -112,7 +112,7 @@ class LikeController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: likes.length < limit ? null : offset + limit,
+      nextOffset: likes.length < limit ? offset + likes.length : offset + limit,
       records: likes.map((like) => like.tweet),
     });
   }
@@ -145,7 +145,7 @@ class LikeController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: likes.length < limit ? null : offset + limit,
+      nextOffset: likes.length < limit ? offset + likes.length : offset + limit,
       records: likes.map((like) => like.user),
     });
   }
