@@ -6,7 +6,11 @@
       <app-sidebar></app-sidebar>
     </div>
 
-    <section class="my-2 flex flex-col items-center gap-2 lg:w-1/2">
+    <section
+      class="my-2 flex flex-col items-center gap-2 lg:w-1/2"
+      infiniteScroll
+      (scrolled)="populateFeed()"
+    >
       <ng-container *ngIf="tweets.length > 0">
         <ng-template ngFor let-tweet [ngForOf]="tweets">
           <app-tweet

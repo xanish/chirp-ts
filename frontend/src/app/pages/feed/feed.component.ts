@@ -24,15 +24,7 @@ export class FeedComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tweetService.feed(this.filters).subscribe({
-      next: (response: TPaginationResponse<TTweet>) => {
-        this.filters.offset = response.nextOffset ?? undefined;
-        this.tweets = response.records.map((tweet: TTweet) => new Tweet(tweet));
-      },
-      error: (e) => {
-        this.alertService.error(e);
-      },
-    });
+    this.populateFeed();
   }
 
   tweetLiked(event: any) {
@@ -43,6 +35,20 @@ export class FeedComponent implements OnInit {
       }
 
       return tweet;
+    });
+  }
+
+  populateFeed() {
+    this.tweetService.feed(this.filters).subscribe({
+      next: (response: TPaginationResponse<TTweet>) => {
+        this.filters.offset = response.nextOffset ?? this.filters.offset;
+        this.tweets = this.tweets.concat(
+          response.records.map((tweet: TTweet) => new Tweet(tweet))
+        );
+      },
+      error: (e) => {
+        this.alertService.error(e);
+      },
     });
   }
 }
