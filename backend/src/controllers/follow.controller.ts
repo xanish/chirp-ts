@@ -125,6 +125,48 @@ class FollowController extends BaseController {
       records: follows.map((follow) => follow.following),
     });
   }
+
+  async suggestions(req: Request, res: Response, next: NextFunction) {
+    const limit = 5;
+    const userId = this.auth.id(req);
+
+    const suggestions = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        firstName: true,
+        lastName: true,
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+          },
+        },
+      },
+      orderBy: {
+        followers: {
+          _count: 'desc',
+        },
+      },
+      where: {
+        id: {
+          not: userId,
+        },
+        following: {
+          none: {
+            followerId: userId,
+          },
+        },
+      },
+      take: limit,
+    });
+
+    return res.json({
+      currentLimit: limit,
+      currentOffset: null,
+      records: suggestions,
+    });
+  }
 }
 
 export default new FollowController();
