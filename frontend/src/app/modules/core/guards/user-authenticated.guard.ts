@@ -20,7 +20,7 @@ export class UserAuthenticatedGuard {
     const authenticated = !!this.tokenService.token();
 
     if (!authenticated) {
-      this.router.navigate(['auth/login']);
+      return this.router.parseUrl('auth/login');
     }
 
     return authenticated;

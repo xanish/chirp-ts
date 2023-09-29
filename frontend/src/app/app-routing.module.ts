@@ -13,6 +13,11 @@ import { RepliesComponent } from './pages/replies/replies.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'feed',
+    pathMatch: 'full',
+  },
+  {
     path: 'auth',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
