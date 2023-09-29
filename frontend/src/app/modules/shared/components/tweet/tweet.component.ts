@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faRetweet, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faRetweet,
+  faShareNodes,
+  faHeart as faSolidHeart,
+} from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
@@ -27,6 +31,7 @@ export class TweetComponent {
   faComments = faComments;
   faRetweet = faRetweet;
   faHeart = faHeart;
+  faSolidHeart = faSolidHeart;
   faShareNodes = faShareNodes;
 
   tweetType = TweetType;

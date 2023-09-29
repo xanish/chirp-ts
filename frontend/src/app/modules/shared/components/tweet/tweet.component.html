@@ -171,7 +171,10 @@
           )
         "
       >
-        <fa-icon [icon]="faHeart"></fa-icon>
+        <fa-icon
+          [icon]="tweet.liked ? faSolidHeart : faHeart"
+          [ngClass]="{ 'text-red-600': tweet.liked }"
+        ></fa-icon>
         {{
           tweet.type === tweetType.RETWEET
             ? tweet.related!.count.likes
