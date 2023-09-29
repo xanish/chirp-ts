@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit {
       delete this.filters.replies.offset;
       delete this.filters.medias.offset;
       delete this.filters.likes.offset;
-      // todo: call api for isFollowing
       this.fetchTweets();
       this.fetchReplies();
       this.fetchMedias();
