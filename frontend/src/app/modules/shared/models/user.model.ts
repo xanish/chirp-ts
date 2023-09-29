@@ -1,16 +1,20 @@
 import { TUser } from '../types/user.type';
 
 export class User {
-  public id: null | string;
-  public username: null | string;
-  public firstName: null | string;
-  public lastName: null | string;
-  public email: string;
-  public city?: string;
-  public country?: string;
-  public birthDate?: Date;
-  public following: boolean;
-  public count = {
+  id: null | string;
+  username: null | string;
+  firstName: null | string;
+  lastName: null | string;
+  email: string;
+  city?: string;
+  country?: string;
+  birthDate?: Date;
+  images = {
+    small: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
+    medium: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
+  };
+  following: boolean;
+  count = {
     tweets: 0,
     likes: 0,
     followers: 0,
@@ -18,8 +22,6 @@ export class User {
   };
   createdAt: Date;
   updatedAt: Date;
-  public profileImg =
-    'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto';
 
   constructor(user: Partial<TUser>) {
     this.id = user.id ?? '';
@@ -37,6 +39,15 @@ export class User {
     this.count.following = user._count?.following ?? 0;
     this.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
     this.updatedAt = user.updatedAt ? new Date(user.updatedAt) : new Date();
+    this.images.small = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
+    this.images.medium = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
+  }
+
+  get initials() {
+    return (
+      (this.firstName?.charAt(0).toUpperCase() ?? '') +
+      (this.lastName?.charAt(0).toUpperCase() ?? '')
+    );
   }
 
   get name(): string {
