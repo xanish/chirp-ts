@@ -10,7 +10,9 @@ import filterObjectKeysUtil from '../../shared/utils/filter-object-keys.util';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TweetService {
   constructor(
     private apiService: ApiService,

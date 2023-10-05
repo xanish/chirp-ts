@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivateFn,
@@ -7,26 +7,19 @@ import {
 } from '@angular/router';
 import { TokenService } from '../services/token.service';
 
-@Injectable()
-export class UserAuthenticatedGuard {
-  constructor(
-    private router: Router,
-    private tokenService: TokenService
-  ) {}
+export const userAuthenticatedGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  // this is just a dummy call ideally need to call the server to
+  // verify the authenticity of the token
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
+  const authenticated = !!tokenService.token();
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // this is just a dummy call ideally need to call the server to
-    // verify the authenticity of the token
-    const authenticated = !!this.tokenService.token();
-
-    if (!authenticated) {
-      return this.router.parseUrl('auth/login');
-    }
-
-    return authenticated;
+  if (!authenticated) {
+    return router.parseUrl('auth/login');
   }
-}
 
-export const userAuthenticatedGuard: CanActivateFn = (route, state) => {
-  return inject(UserAuthenticatedGuard).canActivate(route, state);
+  return authenticated;
 };

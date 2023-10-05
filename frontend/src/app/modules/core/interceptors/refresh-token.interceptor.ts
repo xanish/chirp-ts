@@ -7,7 +7,9 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RefreshTokenInterceptor implements HttpInterceptor {
   constructor() {}
 

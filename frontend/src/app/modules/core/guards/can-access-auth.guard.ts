@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivateFn,
@@ -7,22 +7,16 @@ import {
 } from '@angular/router';
 import { TokenService } from '../services/token.service';
 
-@Injectable()
-export class CanAccessAuthGuard {
-  constructor(
-    private tokenService: TokenService,
-    private router: Router
-  ) {}
+export const canAccessAuthGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!!this.tokenService.token()) {
-      return this.router.parseUrl('/feed');
-    } else {
-      return true;
-    }
+  if (!!tokenService.token()) {
+    return router.parseUrl('/feed');
+  } else {
+    return true;
   }
-}
-
-export const canAccessAuthGuard: CanActivateFn = (route, state) => {
-  return inject(CanAccessAuthGuard).canActivate(route, state);
 };

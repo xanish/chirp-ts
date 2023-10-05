@@ -4,7 +4,9 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ValidationError } from '../../shared/errors/validation.error';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ApiService {
   constructor(private http: HttpClient) {}
 

@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { editProfileGuard } from './modules/core/guards/edit-profile.guard';
 import { userAuthenticatedGuard } from './modules/core/guards/user-authenticated.guard';
 import { tweetResolver } from './modules/core/resolvers/tweet.resolver';
@@ -11,7 +10,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RepliesComponent } from './pages/replies/replies.component';
 
-const routes: Routes = [
+export const AppRoutes: Routes = [
   {
     path: '',
     redirectTo: 'feed',
@@ -20,7 +19,7 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./modules/auth/auth.module').then((m) => m.AuthModule),
+      import('./modules/auth/auth.routes').then((m) => m.AuthRoutes),
   },
   {
     path: 'feed',
@@ -71,9 +70,3 @@ const routes: Routes = [
     component: NotFoundComponent,
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

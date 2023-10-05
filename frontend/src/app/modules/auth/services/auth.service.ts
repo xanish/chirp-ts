@@ -8,7 +8,9 @@ import { LoginOptions } from '../shared/types/login-options.type';
 import { RegisterOptions } from '../shared/types/register-options.type';
 import { ResetPasswordOptions } from '../shared/types/reset-password-options.type';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
   constructor(private apiService: ApiService) {}
 

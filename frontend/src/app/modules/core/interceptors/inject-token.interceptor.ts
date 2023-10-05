@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
 import { Observable, catchError, throwError } from 'rxjs';
 import { TokenService } from '../services/token.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class InjectTokenInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
