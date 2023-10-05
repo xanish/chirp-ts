@@ -1,5 +1,7 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
@@ -10,12 +12,29 @@ import { Tweet } from 'src/app/modules/shared/models/tweet.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
 import { TTweet } from 'src/app/modules/shared/types/tweet.type';
 import { TUser } from 'src/app/modules/shared/types/user.type';
+import { NavbarComponent } from '../../modules/shared/components/navbar/navbar.component';
+import { SidebarComponent } from '../../modules/shared/components/sidebar/sidebar.component';
+import { SuggestedFollowsComponent } from '../../modules/shared/components/suggested-follows/suggested-follows.component';
+import { TweetComponent } from '../../modules/shared/components/tweet/tweet.component';
+import { UserDetailsComponent } from '../../modules/shared/components/user-details/user-details.component';
 import { User } from '../../modules/shared/models/user.model';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    SidebarComponent,
+    InfiniteScrollModule,
+    UserDetailsComponent,
+    NgClass,
+    NgIf,
+    NgFor,
+    TweetComponent,
+    SuggestedFollowsComponent,
+  ],
 })
 export class ProfileComponent implements OnInit {
   tabType = TabType;

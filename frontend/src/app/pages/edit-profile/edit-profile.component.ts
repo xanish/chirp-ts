@@ -1,17 +1,33 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faFeather } from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TUser } from 'src/app/modules/shared/types/user.type';
+import { ValidationMessageComponent } from '../../modules/shared/components/validation-message/validation-message.component';
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css'],
+  standalone: true,
+  imports: [
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationMessageComponent,
+    RouterLink,
+    NgIf,
+  ],
 })
 export class EditProfileComponent implements OnInit {
   faFeather = faFeather;

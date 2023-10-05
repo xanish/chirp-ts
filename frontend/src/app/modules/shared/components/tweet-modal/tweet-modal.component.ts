@@ -1,5 +1,12 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPaperclip, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
@@ -8,11 +15,22 @@ import { AttachmentType } from '../../enums/attachment-type.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { TTweet } from '../../types/tweet.type';
 import { UploadAttachmentResponse } from '../../types/upload-attachment-response.type';
+import { ValidationMessageComponent } from '../validation-message/validation-message.component';
 
 @Component({
   selector: 'app-tweet-modal',
   templateUrl: './tweet-modal.component.html',
   styleUrls: ['./tweet-modal.component.css'],
+  standalone: true,
+  imports: [
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationMessageComponent,
+    NgIf,
+    NgClass,
+    NgFor,
+  ],
 })
 export class TweetModalComponent {
   @Output() close: EventEmitter<any> = new EventEmitter();

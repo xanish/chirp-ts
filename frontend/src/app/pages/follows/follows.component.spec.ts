@@ -8,7 +8,7 @@ describe('FollowsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FollowsComponent],
+      imports: [FollowsComponent],
     });
     fixture = TestBed.createComponent(FollowsComponent);
     component = fixture.componentInstance;

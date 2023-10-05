@@ -1,5 +1,7 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
@@ -9,11 +11,27 @@ import { User } from 'src/app/modules/shared/models/user.model';
 import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-response.type';
 import { TPaginationOptions } from 'src/app/modules/shared/types/pagination-options.type';
 import { TUser } from 'src/app/modules/shared/types/user.type';
+import { NavbarComponent } from '../../modules/shared/components/navbar/navbar.component';
+import { SidebarComponent } from '../../modules/shared/components/sidebar/sidebar.component';
+import { SuggestedFollowsComponent } from '../../modules/shared/components/suggested-follows/suggested-follows.component';
+import { UserDetailsComponent } from '../../modules/shared/components/user-details/user-details.component';
 
 @Component({
   selector: 'app-follows',
   templateUrl: './follows.component.html',
   styleUrls: ['./follows.component.css'],
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    SidebarComponent,
+    UserDetailsComponent,
+    RouterLink,
+    NgClass,
+    NgIf,
+    InfiniteScrollModule,
+    NgFor,
+    SuggestedFollowsComponent,
+  ],
 })
 export class FollowsComponent implements OnInit {
   tab: FollowsTabType = FollowsTabType.FOLLOWERS;

@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { startWith } from 'rxjs';
@@ -6,6 +7,8 @@ import { startWith } from 'rxjs';
   selector: 'app-validation-message',
   templateUrl: './validation-message.component.html',
   styleUrls: ['./validation-message.component.css'],
+  standalone: true,
+  imports: [NgIf],
 })
 export class ValidationMessageComponent implements OnInit {
   @Input() fieldName: string = 'Field';

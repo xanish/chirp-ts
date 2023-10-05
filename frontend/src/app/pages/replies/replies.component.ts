@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
@@ -10,11 +11,24 @@ import { TPaginationResponse } from 'src/app/modules/shared/types/paginated-resp
 import { TPaginationOptions } from 'src/app/modules/shared/types/pagination-options.type';
 import { TTweet } from 'src/app/modules/shared/types/tweet.type';
 import { TUser } from 'src/app/modules/shared/types/user.type';
+import { NavbarComponent } from '../../modules/shared/components/navbar/navbar.component';
+import { SidebarComponent } from '../../modules/shared/components/sidebar/sidebar.component';
+import { SuggestedFollowsComponent } from '../../modules/shared/components/suggested-follows/suggested-follows.component';
+import { TweetComponent } from '../../modules/shared/components/tweet/tweet.component';
 
 @Component({
   selector: 'app-replies',
   templateUrl: './replies.component.html',
   styleUrls: ['./replies.component.css'],
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    SidebarComponent,
+    TweetComponent,
+    NgIf,
+    NgFor,
+    SuggestedFollowsComponent,
+  ],
 })
 export class RepliesComponent implements OnInit {
   filters: TPaginationOptions = {

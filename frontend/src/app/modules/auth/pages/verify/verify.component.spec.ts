@@ -8,7 +8,7 @@ describe('VerifyComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [VerifyComponent],
+      imports: [VerifyComponent],
     });
     fixture = TestBed.createComponent(VerifyComponent);
     component = fixture.componentInstance;

@@ -11,7 +11,10 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    RouterModule,
+    CoreModule,
     ValidationMessageComponent,
     SidebarComponent,
     TweetComponent,
@@ -20,7 +23,6 @@ import { ValidationMessageComponent } from './components/validation-message/vali
     TweetModalComponent,
     SuggestedFollowsComponent,
   ],
-  imports: [CommonModule, RouterModule, CoreModule],
   exports: [
     ValidationMessageComponent,
     SidebarComponent,

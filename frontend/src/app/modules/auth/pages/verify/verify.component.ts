@@ -1,6 +1,8 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,6 +11,8 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-verify',
   templateUrl: './verify.component.html',
   styleUrls: ['./verify.component.css'],
+  standalone: true,
+  imports: [FontAwesomeModule, FormsModule, ReactiveFormsModule, NgIf],
 })
 export class VerifyComponent {
   faFeather = faFeather;

@@ -1,4 +1,6 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
 import { FollowAction } from '../../enums/follow-action.enum';
@@ -8,6 +10,8 @@ import { User } from '../../models/user.model';
   selector: 'app-suggested-follows',
   templateUrl: './suggested-follows.component.html',
   styleUrls: ['./suggested-follows.component.css'],
+  standalone: true,
+  imports: [NgFor, RouterLink, NgIf],
 })
 export class SuggestedFollowsComponent {
   @Input() suggestions: Array<User> = [];

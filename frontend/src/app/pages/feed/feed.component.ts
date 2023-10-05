@@ -1,10 +1,16 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TUser } from 'src/app/modules/shared/types/user.type';
 import { TweetService } from '../../modules/core/services/tweet.service';
+import { NavbarComponent } from '../../modules/shared/components/navbar/navbar.component';
+import { SidebarComponent } from '../../modules/shared/components/sidebar/sidebar.component';
+import { SuggestedFollowsComponent } from '../../modules/shared/components/suggested-follows/suggested-follows.component';
+import { TweetComponent } from '../../modules/shared/components/tweet/tweet.component';
 import { Tweet } from '../../modules/shared/models/tweet.model';
 import { TPaginationResponse } from '../../modules/shared/types/paginated-response.type';
 import { TPaginationOptions } from '../../modules/shared/types/pagination-options.type';
@@ -14,6 +20,16 @@ import { TTweet } from '../../modules/shared/types/tweet.type';
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.css'],
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    SidebarComponent,
+    InfiniteScrollModule,
+    NgIf,
+    NgFor,
+    TweetComponent,
+    SuggestedFollowsComponent,
+  ],
 })
 export class FeedComponent implements OnInit {
   tweets: Array<Tweet> = [];

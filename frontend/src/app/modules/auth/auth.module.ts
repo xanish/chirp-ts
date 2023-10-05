@@ -12,13 +12,6 @@ import { VerifyComponent } from './pages/verify/verify.component';
 import { AuthService } from './services/auth.service';
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    VerifyComponent,
-    ResetPasswordComponent,
-  ],
   providers: [AuthService],
   imports: [
     CommonModule,
@@ -26,6 +19,11 @@ import { AuthService } from './services/auth.service';
     ReactiveFormsModule,
     SharedModule,
     CoreModule,
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
+    VerifyComponent,
+    ResetPasswordComponent,
   ],
 })
 export class AuthModule {}

@@ -1,14 +1,30 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
+import { ValidationMessageComponent } from '../../../shared/components/validation-message/validation-message.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css'],
+  standalone: true,
+  imports: [
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationMessageComponent,
+    NgIf,
+  ],
 })
 export class ResetPasswordComponent {
   faFeather = faFeather;

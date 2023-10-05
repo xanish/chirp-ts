@@ -1,5 +1,7 @@
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faComments, faHeart } from '@fortawesome/free-regular-svg-icons';
 import {
   faRetweet,
@@ -20,6 +22,8 @@ import { TTweet } from '../../types/tweet.type';
   selector: 'app-tweet',
   templateUrl: './tweet.component.html',
   styleUrls: ['./tweet.component.css'],
+  standalone: true,
+  imports: [NgIf, FontAwesomeModule, NgClass, NgFor, DatePipe],
 })
 export class TweetComponent {
   @Input({ required: true }) tweet: Tweet = Tweet.default();

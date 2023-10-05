@@ -8,7 +8,7 @@ describe('SuggestedFollowsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SuggestedFollowsComponent],
+      imports: [SuggestedFollowsComponent],
     });
     fixture = TestBed.createComponent(SuggestedFollowsComponent);
     component = fixture.componentInstance;

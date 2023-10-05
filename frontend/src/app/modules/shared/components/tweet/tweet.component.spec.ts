@@ -8,7 +8,7 @@ describe('TweetComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TweetComponent],
+      imports: [TweetComponent],
     });
     fixture = TestBed.createComponent(TweetComponent);
     component = fixture.componentInstance;

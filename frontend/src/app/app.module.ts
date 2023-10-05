@@ -17,21 +17,19 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RepliesComponent } from './pages/replies/replies.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FeedComponent,
-    ProfileComponent,
-    EditProfileComponent,
-    NotFoundComponent,
-    FollowsComponent,
-    RepliesComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    FeedComponent,
+    ProfileComponent,
+    EditProfileComponent,
+    NotFoundComponent,
+    FollowsComponent,
+    RepliesComponent,
   ],
   bootstrap: [AppComponent],
   providers: [

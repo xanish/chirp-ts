@@ -1,4 +1,6 @@
+import { DatePipe, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
@@ -9,6 +11,8 @@ import { User } from '../../models/user.model';
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
+  standalone: true,
+  imports: [RouterLink, NgIf, DatePipe],
 })
 export class UserDetailsComponent implements OnInit {
   @Input() user: User = User.default();
