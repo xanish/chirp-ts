@@ -61,8 +61,8 @@ export class TweetComponent {
     }
   }
 
-  openProfile($event: Event, username: string) {
-    this.router.navigate([username]);
+  openProfile($event: Event, username: null | string) {
+    this.router.navigate([username ?? '']);
     $event.stopPropagation();
   }
 

@@ -62,6 +62,10 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.user = this.route.snapshot.data['user'];
+      this.tweets = [];
+      this.replies = [];
+      this.medias = [];
+      this.likes = [];
       delete this.filters.tweets.offset;
       delete this.filters.replies.offset;
       delete this.filters.medias.offset;

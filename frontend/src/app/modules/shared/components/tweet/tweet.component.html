@@ -15,14 +15,25 @@
 >
   <img
     class="mr-2 block rounded-full"
-    src="{{ tweet.user.images.small }}"
+    src="{{
+      tweet.type === tweetType.RETWEET
+        ? tweet.related!.user.images.small
+        : tweet.user.images.small
+    }}"
     alt=""
   />
 
   <div class="flex flex-grow flex-col">
     <div class="flex flex-row items-center justify-between">
       <a
-        (click)="openProfile($event, tweet.user.username ?? '')"
+        (click)="
+          openProfile(
+            $event,
+            tweet.type === tweetType.RETWEET
+              ? tweet.related!.user.username
+              : tweet.user.username
+          )
+        "
         class="font-bold"
       >
         {{
