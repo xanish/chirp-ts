@@ -2,12 +2,12 @@ import mime from 'mime-types';
 import { NextFunction, Request, Response } from 'express';
 import { AttachmentType, TweetType } from '@prisma/client';
 import BaseController from './base.controller.js';
+import { parseCursorPaginationParams } from '../utils/functions/parse-cursor-pagination-params.function.js';
 
 class TweetController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
-    const offset = req.query.offset ?? undefined;
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const tweets = await this.prisma.tweet.findMany({
       select: {
@@ -100,7 +100,7 @@ class TweetController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -224,8 +224,7 @@ class TweetController extends BaseController {
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
-    const offset = req.query.offset ?? undefined;
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const tweets = await this.prisma.tweet.findMany({
       select: {
@@ -294,7 +293,7 @@ class TweetController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -313,8 +312,7 @@ class TweetController extends BaseController {
 
   async findMediaByUser(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
-    const offset = req.query.offset ?? undefined;
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const tweets = await this.prisma.tweet.findMany({
       select: {
@@ -381,7 +379,7 @@ class TweetController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },

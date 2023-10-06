@@ -2,7 +2,6 @@ import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 import AppConfig from '../config/app-config.js';
 import { ApplicationError } from '../errors/application.error.js';
-import { Prisma } from '@prisma/client';
 
 export class AuthService {
   id(req: Request): bigint {

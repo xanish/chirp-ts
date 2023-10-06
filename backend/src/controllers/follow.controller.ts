@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
+import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
 
 class FollowController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -38,8 +39,7 @@ class FollowController extends BaseController {
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.prisma.follow.findMany({
       select: {
@@ -66,7 +66,7 @@ class FollowController extends BaseController {
         followingId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
-      skip: offset,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -83,8 +83,7 @@ class FollowController extends BaseController {
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.prisma.follow.findMany({
       select: {
@@ -111,7 +110,7 @@ class FollowController extends BaseController {
         followerId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
-      skip: offset,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },

@@ -2,11 +2,11 @@ import { Prisma } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
 import { ApplicationError } from '../errors/application.error.js';
+import { parseCursorPaginationParams } from '../utils/functions/parse-cursor-pagination-params.function.js';
 
 class UserController extends BaseController {
   async findMany(req: Request, res: Response, next: NextFunction) {
-    const offset = req.query.offset ?? undefined;
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const users = await this.prisma.user.findMany({
       select: {
@@ -22,7 +22,7 @@ class UserController extends BaseController {
       },
       take: limit,
       skip: offset ? 1 : undefined,
-      cursor: offset ? { id: BigInt(offset.toString()).valueOf() } : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },

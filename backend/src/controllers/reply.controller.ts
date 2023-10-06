@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { TweetType } from '@prisma/client';
 import BaseController from './base.controller.js';
+import { parseCursorPaginationParams } from '../utils/functions/parse-cursor-pagination-params.function.js';
 
 class ReplyController extends BaseController {
   async findByUser(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
+    const { limit, offset } = parseCursorPaginationParams(req.query);
 
     const replies = await this.prisma.tweet.findMany({
       select: {
@@ -68,11 +70,9 @@ class ReplyController extends BaseController {
         userId: BigInt(req.params.userId).valueOf(),
         type: TweetType.REPLY,
       },
-      take: +(req.query.limit || 10),
-      skip: req.query.offset ? 1 : undefined,
-      cursor: req.query.offset
-        ? { id: BigInt(req.query.offset.toString()).valueOf() }
-        : undefined,
+      take: limit,
+      skip: offset ? 1 : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -82,8 +82,8 @@ class ReplyController extends BaseController {
     const lastReplyId = replies.length ? replies[replies.length - 1].id : null;
 
     return res.json({
-      currentOffset: req.query.offset ?? null,
-      currentLimit: req.query.limit ?? 10,
+      currentOffset: offset ?? null,
+      currentLimit: limit ?? 10,
       nextOffset: lastReplyId,
       records: replies,
     });
@@ -91,6 +91,7 @@ class ReplyController extends BaseController {
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
+    const { limit, offset } = parseCursorPaginationParams(req.query);
 
     const replies = await this.prisma.tweet.findMany({
       select: {
@@ -137,11 +138,9 @@ class ReplyController extends BaseController {
         relatedId: BigInt(req.params.tweetId).valueOf(),
         type: TweetType.REPLY,
       },
-      take: +(req.query.limit || 10),
-      skip: req.query.offset ? 1 : undefined,
-      cursor: req.query.offset
-        ? { id: BigInt(req.query.offset.toString()).valueOf() }
-        : undefined,
+      take: limit,
+      skip: offset ? 1 : undefined,
+      cursor: offset ? { id: offset } : undefined,
       orderBy: {
         createdAt: 'desc',
       },
