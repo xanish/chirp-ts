@@ -3,72 +3,22 @@ import { NextFunction, Request, Response } from 'express';
 import { AttachmentType, TweetType } from '@prisma/client';
 import BaseController from './base.controller.js';
 import { parseCursorPaginationParams } from '../utils/functions/parse-cursor-pagination-params.function.js';
+import { TweetService } from '../services/tweet.service.js';
 
 class TweetController extends BaseController {
+  protected tweet: TweetService;
+
+  constructor() {
+    super();
+    this.tweet = new TweetService();
+  }
+
   async findMany(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
-    const tweets = await this.prisma.tweet.findMany({
-      select: {
-        id: true,
-        content: true,
-        type: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        related: {
-          select: {
-            id: true,
-            content: true,
-            type: true,
-            relatedId: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                firstName: true,
-                lastName: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        attachments: {
-          select: {
-            id: true,
-            type: true,
-            content: true,
-          },
-        },
-        likes: {
-          select: {
-            createdAt: true,
-          },
-          where: {
-            userId: loggedInUserId,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            replies: {
-              where: {
-                type: TweetType.REPLY,
-              },
-            },
-          },
-        },
-        createdAt: true,
-        updatedAt: true,
-      },
-      where: {
+    const tweets = await this.tweet.findMany(
+      {
         OR: [
           {
             user: {
@@ -98,13 +48,9 @@ class TweetController extends BaseController {
           },
         ],
       },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset } : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+      { offset, limit },
+      loggedInUserId
+    );
 
     // if not tweets then return next offset as null to indicate end of results
     const lastTweetId = tweets.length ? tweets[tweets.length - 1].id : null;
@@ -155,69 +101,12 @@ class TweetController extends BaseController {
   async findOne(req: Request, res: Response, next: NextFunction) {
     const loggedInUserId = this.auth.id(req);
 
-    const tweet = await this.prisma.tweet.findUnique({
-      select: {
-        id: true,
-        content: true,
-        type: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        related: {
-          select: {
-            id: true,
-            content: true,
-            type: true,
-            relatedId: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                firstName: true,
-                lastName: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        likes: {
-          select: {
-            createdAt: true,
-          },
-          where: {
-            userId: loggedInUserId,
-          },
-        },
-        attachments: {
-          select: {
-            id: true,
-            type: true,
-            content: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            replies: {
-              where: {
-                type: TweetType.REPLY,
-              },
-            },
-          },
-        },
-        createdAt: true,
-        updatedAt: true,
-      },
-      where: {
+    const tweet = await this.tweet.findUnique(
+      {
         id: BigInt(req.params.tweetId).valueOf(),
       },
-    });
+      loggedInUserId
+    );
 
     return res.json(tweet);
   }
@@ -226,78 +115,16 @@ class TweetController extends BaseController {
     const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
-    const tweets = await this.prisma.tweet.findMany({
-      select: {
-        id: true,
-        content: true,
-        type: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        related: {
-          select: {
-            id: true,
-            content: true,
-            type: true,
-            relatedId: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                firstName: true,
-                lastName: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        likes: {
-          select: {
-            createdAt: true,
-          },
-          where: {
-            userId: loggedInUserId,
-          },
-        },
-        attachments: {
-          select: {
-            id: true,
-            type: true,
-            content: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            replies: {
-              where: {
-                type: TweetType.REPLY,
-              },
-            },
-          },
-        },
-        createdAt: true,
-        updatedAt: true,
-      },
-      where: {
+    const tweets = await this.tweet.findMany(
+      {
         userId: BigInt(req.params.userId).valueOf(),
         NOT: {
           type: TweetType.REPLY,
         },
       },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset } : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+      { offset, limit },
+      loggedInUserId
+    );
 
     // if not tweets then return next offset as null to indicate end of results
     const lastTweetId = tweets.length ? tweets[tweets.length - 1].id : null;
@@ -314,76 +141,14 @@ class TweetController extends BaseController {
     const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
-    const tweets = await this.prisma.tweet.findMany({
-      select: {
-        id: true,
-        content: true,
-        type: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        related: {
-          select: {
-            id: true,
-            content: true,
-            type: true,
-            relatedId: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                firstName: true,
-                lastName: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-        likes: {
-          select: {
-            createdAt: true,
-          },
-          where: {
-            userId: loggedInUserId,
-          },
-        },
-        attachments: {
-          select: {
-            id: true,
-            type: true,
-            content: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            replies: {
-              where: {
-                type: TweetType.REPLY,
-              },
-            },
-          },
-        },
-        createdAt: true,
-        updatedAt: true,
-      },
-      where: {
+    const tweets = await this.tweet.findMany(
+      {
         userId: BigInt(req.params.userId).valueOf(),
         attachments: { some: {} },
       },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset } : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+      { offset, limit },
+      loggedInUserId
+    );
 
     // if not tweets then return next offset as null to indicate end of results
     const lastTweetId = tweets.length ? tweets[tweets.length - 1].id : null;
