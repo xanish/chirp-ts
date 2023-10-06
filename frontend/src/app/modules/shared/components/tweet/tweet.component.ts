@@ -107,7 +107,7 @@ export class TweetComponent {
     const data = [new ClipboardItem({ [type]: blob })];
 
     navigator.clipboard.write(data).then(() => {
-      console.log('Copied tweet url to clipboard');
+      this.alertService.success('Copied tweet url to clipboard');
     });
     $event.stopPropagation();
   }
