@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { TokenService } from 'src/app/modules/core/services/token.service';
@@ -12,7 +12,13 @@ import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [RouterLink, NgIf, FontAwesomeModule, TweetModalComponent],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    NgIf,
+    FontAwesomeModule,
+    TweetModalComponent,
+  ],
 })
 export class SidebarComponent {
   faGear = faGear;
