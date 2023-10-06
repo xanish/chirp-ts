@@ -10,6 +10,7 @@ export class User {
   country?: string;
   birthDate?: Date;
   images = {
+    tiny: 'https://placehold.co/50/4f46e5/white?text=Chirp&font=roboto',
     small: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
     medium: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
   };
@@ -39,6 +40,7 @@ export class User {
     this.count.following = user._count?.following ?? 0;
     this.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
     this.updatedAt = user.updatedAt ? new Date(user.updatedAt) : new Date();
+    this.images.tiny = `https://placehold.co/50/4f46e5/white?text=${this.initials}&font=roboto`;
     this.images.small = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
     this.images.medium = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
   }
