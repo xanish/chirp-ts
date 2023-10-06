@@ -12,7 +12,7 @@ export class User {
   images = {
     tiny: 'https://placehold.co/50/4f46e5/white?text=Chirp&font=roboto',
     small: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
-    medium: 'https://placehold.co/60/4f46e5/white?text=Chirp&font=roboto',
+    medium: 'https://placehold.co/100/4f46e5/white?text=Chirp&font=roboto',
   };
   following: boolean;
   count = {
@@ -42,7 +42,7 @@ export class User {
     this.updatedAt = user.updatedAt ? new Date(user.updatedAt) : new Date();
     this.images.tiny = `https://placehold.co/50/4f46e5/white?text=${this.initials}&font=roboto`;
     this.images.small = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
-    this.images.medium = `https://placehold.co/60/4f46e5/white?text=${this.initials}&font=roboto`;
+    this.images.medium = `https://placehold.co/100/4f46e5/white?text=${this.initials}&font=roboto`;
   }
 
   get initials() {
