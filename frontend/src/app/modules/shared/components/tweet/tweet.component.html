@@ -1,97 +1,37 @@
 <ng-container *ngIf="tweet.type === tweetType.RETWEET"
-  ><span class="text-sm text-gray-500"
+  ><span class="text-sm font-semibold text-gray-500"
     ><fa-icon [icon]="faRetweet"></fa-icon>
     {{ tweet.user.name }} retweeted</span
   ></ng-container
 >
 <div
   class="flex cursor-pointer flex-row items-start justify-start rounded-md bg-white px-4 py-4 shadow-sm"
-  (click)="
-    openTweet(
-      $event,
-      tweet.type === tweetType.RETWEET ? tweet.related!.id : tweet.id
-    )
-  "
+  (click)="openTweet($event, displayTweet.id)"
 >
-  <img
-    class="mr-2 block rounded-full"
-    src="{{
-      tweet.type === tweetType.RETWEET
-        ? tweet.related!.user.images.small
-        : tweet.user.images.small
-    }}"
-    alt=""
-  />
+  <img class="mr-2 block rounded-full" src="{{ user.images.small }}" alt="" />
 
   <div class="flex flex-grow flex-col">
     <div class="flex flex-row items-center justify-between">
-      <a
-        (click)="
-          openProfile(
-            $event,
-            tweet.type === tweetType.RETWEET
-              ? tweet.related!.user.username
-              : tweet.user.username
-          )
-        "
-        class="font-bold"
-      >
-        {{
-          tweet.type === tweetType.RETWEET
-            ? tweet.related!.user.name
-            : tweet.user.name
-        }}
-        <span class="font-normal text-gray-400"
-          >@{{
-            tweet.type === tweetType.RETWEET
-              ? tweet.related!.user.username
-              : tweet.user.username
-          }}</span
-        >
+      <a (click)="openProfile($event, user.username)" class="font-bold">
+        {{ user.name }}
+        <span class="font-normal text-gray-400">@{{ user.username }}</span>
       </a>
 
       <div class="text-gray-400">
-        {{
-          (tweet.type === tweetType.RETWEET
-            ? tweet.related!.createdAt
-            : tweet.createdAt
-          ) | date: 'MMM dd, yyyy hh:mm a'
-        }}
+        {{ displayTweet.createdAt | date: 'MMM dd, yyyy hh:mm a' }}
       </div>
     </div>
 
     <div class="break-words">
-      {{
-        tweet.type === tweetType.RETWEET
-          ? tweet.related!.content
-          : tweet.content
-      }}
+      {{ displayTweet.content }}
     </div>
 
     <div
       class="mt-2 grid rounded-md"
-      [ngClass]="
-        gridClasses(
-          tweet.type === tweetType.RETWEET
-            ? tweet.related!.attachments.length
-            : tweet.attachments.length
-        )
-      "
-      *ngIf="
-        tweet.type === tweetType.RETWEET
-          ? tweet.related!.attachments.length
-          : tweet.attachments.length > 0
-      "
+      [ngClass]="gridClasses(displayTweet.attachments.length)"
+      *ngIf="displayTweet.attachments.length > 0"
     >
-      <ng-template
-        ngFor
-        let-attachment
-        [ngForOf]="
-          tweet.type === tweetType.RETWEET
-            ? tweet.related!.attachments
-            : tweet.attachments
-        "
-      >
+      <ng-template ngFor let-attachment [ngForOf]="displayTweet.attachments">
         <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
           <img
             class="h-full w-auto border"
@@ -115,36 +55,18 @@
     <div class="mt-2 flex flex-row items-center justify-evenly">
       <button
         class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200 hover:text-indigo-600"
-        (click)="
-          openTweet(
-            $event,
-            tweet.type === tweetType.RETWEET ? tweet.related!.id : tweet.id
-          )
-        "
+        (click)="openTweet($event, displayTweet.id)"
       >
         <fa-icon [icon]="faComments"></fa-icon>
-        {{
-          tweet.type === tweetType.RETWEET
-            ? tweet.related!.count.replies
-            : tweet.count.replies
-        }}
+        {{ displayTweet.count.replies }}
       </button>
       <div class="w-full">
         <button
           class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200 hover:text-green-600"
-          (click)="
-            toggleRetweetOptions(
-              $event,
-              tweet.type === tweetType.RETWEET ? tweet.related!.id : tweet.id
-            )
-          "
+          (click)="toggleRetweetOptions($event, displayTweet.id)"
         >
           <fa-icon [icon]="faRetweet"></fa-icon>
-          {{
-            tweet.type === tweetType.RETWEET
-              ? tweet.related!.count.retweets
-              : tweet.count.retweets
-          }}
+          {{ displayTweet.count.retweets }}
         </button>
 
         <ul
@@ -154,14 +76,7 @@
           <li>
             <button
               class="w-full border-b border-gray-200 px-4 py-2 text-sm uppercase leading-6 hover:bg-gray-200"
-              (click)="
-                newRetweet(
-                  $event,
-                  tweet.type === tweetType.RETWEET
-                    ? tweet.related!.id
-                    : tweet.id
-                )
-              "
+              (click)="newRetweet($event, displayTweet.id)"
             >
               Retweet
             </button>
@@ -177,31 +92,17 @@
       </div>
       <button
         class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200 hover:text-red-600"
-        (click)="
-          toggleLikeTweet(
-            $event,
-            tweet.type === tweetType.RETWEET ? tweet.related!.id : tweet.id
-          )
-        "
+        (click)="toggleLikeTweet($event, displayTweet.id)"
       >
         <fa-icon
-          [icon]="tweet.liked ? faSolidHeart : faHeart"
-          [ngClass]="{ 'text-red-600': tweet.liked }"
+          [icon]="displayTweet.liked ? faSolidHeart : faHeart"
+          [ngClass]="{ 'text-red-600': displayTweet.liked }"
         ></fa-icon>
-        {{
-          tweet.type === tweetType.RETWEET
-            ? tweet.related!.count.likes
-            : tweet.count.likes
-        }}
+        {{ displayTweet.count.likes }}
       </button>
       <button
         class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200 hover:text-purple-600"
-        (click)="
-          shareTweet(
-            $event,
-            tweet.type === tweetType.RETWEET ? tweet.related!.id : tweet.id
-          )
-        "
+        (click)="shareTweet($event, displayTweet.id)"
       >
         <fa-icon [icon]="faShareNodes"></fa-icon>
       </button>

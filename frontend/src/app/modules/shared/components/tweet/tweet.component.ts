@@ -9,13 +9,13 @@ import {
   faHeart as faSolidHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
-import { TokenService } from 'src/app/modules/core/services/token.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { environment } from 'src/environments/environment';
 import { AttachmentType } from '../../enums/attachment-type.enum';
 import { TweetLike } from '../../enums/tweet-like.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
+import { User } from '../../models/user.model';
 import { TTweet } from '../../types/tweet.type';
 
 @Component({
@@ -45,9 +45,20 @@ export class TweetComponent {
   constructor(
     private router: Router,
     private tweetService: TweetService,
-    private tokenService: TokenService,
     private alertService: AlertService
   ) {}
+
+  get user(): User {
+    return this.tweet.type === this.tweetType.RETWEET
+      ? this.tweet.related!.user
+      : this.tweet.user;
+  }
+
+  get displayTweet(): Tweet {
+    return this.tweet.type === this.tweetType.RETWEET
+      ? this.tweet.related!
+      : this.tweet;
+  }
 
   gridClasses(attachmentCount: number): string {
     switch (attachmentCount) {
