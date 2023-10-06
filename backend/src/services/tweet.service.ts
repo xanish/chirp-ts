@@ -36,6 +36,25 @@ export class TweetService extends BaseService {
                 lastName: true,
               },
             },
+            attachments: true,
+            _count: {
+              select: {
+                likes: true,
+                replies: {
+                  where: {
+                    type: TweetType.REPLY,
+                  },
+                },
+              },
+            },
+            likes: {
+              select: {
+                createdAt: true,
+              },
+              where: {
+                userId: loggedInUserId,
+              },
+            },
           },
         },
         attachments: true,
@@ -98,6 +117,25 @@ export class TweetService extends BaseService {
                 username: true,
                 firstName: true,
                 lastName: true,
+              },
+            },
+            attachments: true,
+            _count: {
+              select: {
+                likes: true,
+                replies: {
+                  where: {
+                    type: TweetType.REPLY,
+                  },
+                },
+              },
+            },
+            likes: {
+              select: {
+                createdAt: true,
+              },
+              where: {
+                userId: loggedInUserId,
               },
             },
           },
