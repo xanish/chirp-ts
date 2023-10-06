@@ -58,7 +58,11 @@ class TweetController extends BaseController {
         _count: {
           select: {
             likes: true,
-            replies: true,
+            replies: {
+              where: {
+                type: TweetType.REPLY,
+              },
+            },
           },
         },
         createdAt: true,
@@ -200,7 +204,11 @@ class TweetController extends BaseController {
         _count: {
           select: {
             likes: true,
-            replies: true,
+            replies: {
+              where: {
+                type: TweetType.REPLY,
+              },
+            },
           },
         },
         createdAt: true,
@@ -268,7 +276,11 @@ class TweetController extends BaseController {
         _count: {
           select: {
             likes: true,
-            replies: true,
+            replies: {
+              where: {
+                type: TweetType.REPLY,
+              },
+            },
           },
         },
         createdAt: true,
@@ -353,7 +365,11 @@ class TweetController extends BaseController {
         _count: {
           select: {
             likes: true,
-            replies: true,
+            replies: {
+              where: {
+                type: TweetType.REPLY,
+              },
+            },
           },
         },
         createdAt: true,

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
+import { TweetType } from '@prisma/client';
 
 class LikeController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -91,7 +92,11 @@ class LikeController extends BaseController {
             _count: {
               select: {
                 likes: true,
-                replies: true,
+                replies: {
+                  where: {
+                    type: TweetType.REPLY,
+                  },
+                },
               },
             },
             createdAt: true,
