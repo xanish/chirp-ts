@@ -14,10 +14,14 @@
       <li class="font-semibold">{{ user.name }}</li>
       <li class="text-gray-500">@{{ user.username }}</li>
       <li>
-        {{ user.location }}
-        <span class="ms-4"
-          >Joined {{ user.createdAt | date: 'MMMM YYYY' }}</span
+        <span
+          ><fa-icon class="text-gray-500" [icon]="faLocationDot"></fa-icon>
+          {{ user.location }}</span
         >
+        <span class="ms-4">
+          <fa-icon class="text-gray-500" [icon]="faCalendarDays"></fa-icon>
+          Joined {{ user.createdAt | date: 'MMMM YYYY' }}
+        </span>
       </li>
       <li>
         <a

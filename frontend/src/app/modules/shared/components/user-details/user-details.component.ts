@@ -1,6 +1,11 @@
 import { DatePipe, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faCalendarDays,
+  faLocationDot,
+} from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
@@ -12,13 +17,15 @@ import { User } from '../../models/user.model';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
   standalone: true,
-  imports: [RouterLink, NgIf, DatePipe],
+  imports: [RouterLink, NgIf, DatePipe, FontAwesomeModule],
 })
 export class UserDetailsComponent implements OnInit {
   @Input() user: User = User.default();
   @Output() toggleFollow: EventEmitter<{ id: string; action: FollowAction }> =
     new EventEmitter();
   loggedInUserId: string = '';
+  faLocationDot = faLocationDot;
+  faCalendarDays = faCalendarDays;
 
   constructor(
     private tokenService: TokenService,
