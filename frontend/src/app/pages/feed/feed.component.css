@@ -2,3 +2,10 @@
   width: 100%;
   min-height: 100vh;
 }
+
+aside {
+  min-height: calc(100vh - 98px);
+  max-height: calc(100vh - 98px);
+  position: sticky;
+  top: 98px;
+}
