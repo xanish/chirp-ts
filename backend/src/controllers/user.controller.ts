@@ -3,30 +3,27 @@ import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
 import { ApplicationError } from '../errors/application.error.js';
 import { parseCursorPaginationParams } from '../utils/functions/parse-cursor-pagination-params.function.js';
+import { UserService } from '../services/user.service.js';
 
 class UserController extends BaseController {
+  protected user: UserService;
+
+  constructor() {
+    super();
+    this.user = new UserService();
+  }
+
   async findMany(req: Request, res: Response, next: NextFunction) {
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
-    const users = await this.prisma.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        firstName: true,
-        lastName: true,
-      },
-      where: {
+    const users = await this.user.findMany(
+      {
         username: {
           contains: req.query.term?.toString(),
         },
       },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      cursor: offset ? { id: offset } : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+      { offset, limit }
+    );
 
     // if not users then return next offset as null to indicate end of results
     const lastUserId = users.length ? users[users.length - 1].id : null;
@@ -50,47 +47,11 @@ class UserController extends BaseController {
     }
 
     try {
-      const user = await this.prisma.user.findFirstOrThrow({
-        where: where,
-        select: {
-          id: true,
-          username: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          city: true,
-          country: true,
-          birthDate: true,
-          _count: {
-            select: {
-              tweets: true,
-              followers: true,
-              following: true,
-            },
-          },
-          following: {
-            select: {
-              followerId: true,
-              followingId: true,
-              createdAt: true,
-            },
-            where: {
-              followerId: loggedInUserId,
-            },
-          },
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-
-      [user._count.followers, user._count.following] = [
-        user._count.following,
-        user._count.followers,
-      ];
+      const user = await this.user.findOne(where);
 
       return res.json(user);
     } catch (e) {
-      return next(new ApplicationError('User not found', 404));
+      return next(e);
     }
   }
 
@@ -98,10 +59,7 @@ class UserController extends BaseController {
     const id = BigInt(req.params.userId).valueOf();
     const data: Prisma.UserUpdateInput = req.body;
 
-    const user = await this.prisma.user.update({
-      where: { id },
-      data: data,
-    });
+    const user = await this.user.update(data, { id });
 
     return res.json(user);
   }

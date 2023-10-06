@@ -1,8 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
 import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
+import { UserService } from '../services/user.service.js';
 
 class FollowController extends BaseController {
+  protected user: UserService;
+
+  constructor() {
+    super();
+    this.user = new UserService();
+  }
+
   async create(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
       BigInt(req.body.followerId).valueOf(),
@@ -129,25 +137,8 @@ class FollowController extends BaseController {
     const limit = 5;
     const userId = this.auth.id(req);
 
-    const suggestions = await this.prisma.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        firstName: true,
-        lastName: true,
-        _count: {
-          select: {
-            followers: true,
-            following: true,
-          },
-        },
-      },
-      orderBy: {
-        followers: {
-          _count: 'desc',
-        },
-      },
-      where: {
+    const suggestions = await this.user.findMany(
+      {
         id: {
           not: userId,
         },
@@ -157,8 +148,8 @@ class FollowController extends BaseController {
           },
         },
       },
-      take: limit,
-    });
+      { limit: limit, offset: undefined }
+    );
 
     return res.json({
       currentLimit: limit,
