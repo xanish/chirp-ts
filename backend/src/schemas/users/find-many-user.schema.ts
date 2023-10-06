@@ -8,9 +8,8 @@ const FindManyUserSchema: CustomExpressValidatorSchema = {
       errorMessage: 'The term field must be a valid string',
     },
     isLength: {
-      options: { min: 2, max: 64 },
-      errorMessage:
-        'The term field must have length between 2 and 64 characters',
+      options: { max: 64 },
+      errorMessage: 'The term field must be at most 64 characters long',
     },
   },
 
