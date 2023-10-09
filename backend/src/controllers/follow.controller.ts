@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
+import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
+import { UserService } from '../services/user.service.js';
 
 class FollowController extends BaseController {
+  protected user: UserService;
+
+  constructor() {
+    super();
+    this.user = new UserService();
+  }
+
   async create(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
       BigInt(req.body.followerId).valueOf(),
@@ -39,11 +46,8 @@ class FollowController extends BaseController {
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const loggedInUserId = this.auth.id(req);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.prisma.follow.findMany({
       select: {
@@ -60,7 +64,7 @@ class FollowController extends BaseController {
                 createdAt: true,
               },
               where: {
-                followerId: userId.valueOf(),
+                followerId: loggedInUserId,
               },
             },
           },
@@ -70,7 +74,7 @@ class FollowController extends BaseController {
         followingId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
-      skip: offset,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -79,17 +83,15 @@ class FollowController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: follows.length < limit ? null : offset + limit,
+      nextOffset:
+        follows.length < limit ? offset + follows.length : offset + limit,
       records: follows.map((follow) => follow.follower),
     });
   }
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const loggedInUserId = this.auth.id(req);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.prisma.follow.findMany({
       select: {
@@ -106,7 +108,7 @@ class FollowController extends BaseController {
                 createdAt: true,
               },
               where: {
-                followerId: userId.valueOf(),
+                followerId: loggedInUserId,
               },
             },
           },
@@ -116,7 +118,7 @@ class FollowController extends BaseController {
         followerId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
-      skip: offset,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -125,8 +127,34 @@ class FollowController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: follows.length < limit ? null : offset + limit,
+      nextOffset:
+        follows.length < limit ? offset + follows.length : offset + limit,
       records: follows.map((follow) => follow.following),
+    });
+  }
+
+  async suggestions(req: Request, res: Response, next: NextFunction) {
+    const limit = 5;
+    const userId = this.auth.id(req);
+
+    const suggestions = await this.user.findMany(
+      {
+        id: {
+          not: userId,
+        },
+        following: {
+          none: {
+            followerId: userId,
+          },
+        },
+      },
+      { limit: limit, offset: undefined }
+    );
+
+    return res.json({
+      currentLimit: limit,
+      currentOffset: null,
+      records: suggestions,
     });
   }
 }

@@ -4,12 +4,14 @@ import authRoutes from '../routes/auth.routes.js';
 import userRoutes from '../routes/user.routes.js';
 import tweetRoutes from '../routes/tweet.routes.js';
 import attachmentRoutes from '../routes/attachment.routes.js';
+import suggestionRoutes from '../routes/suggestion.routes.js';
 
 const routes = [
   ...authRoutes,
   ...userRoutes,
   ...tweetRoutes,
   ...attachmentRoutes,
+  ...suggestionRoutes,
 ];
 
 export default function bootstrapRoutes(app: Express) {

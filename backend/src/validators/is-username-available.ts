@@ -19,9 +19,7 @@ const isUsernameAvailable = async (username: string, meta: Meta) => {
     if (user && user.id !== userId) {
       throw new Error('The specified username is already in use');
     }
-  }
-
-  if (user) {
+  } else if (user) {
     throw new Error('The specified username is already in use');
   }
 };

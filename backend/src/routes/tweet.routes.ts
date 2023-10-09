@@ -1,9 +1,9 @@
 import { checkSchema } from '../bootstrap/express-validator.js';
 
 // controllers
-import LikeController from '../controllers/like-controller.js';
-import ReplyController from '../controllers/reply-controller.js';
-import TweetController from '../controllers/tweet-controller.js';
+import LikeController from '../controllers/like.controller.js';
+import ReplyController from '../controllers/reply.controller.js';
+import TweetController from '../controllers/tweet.controller.js';
 
 // validation schemas
 import CreateDeleteLikeTweetSchema from '../schemas/tweets/create-delete-like-tweet.schema.js';

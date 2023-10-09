@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-
-import BaseController from './base-controller.js';
-import jwt from 'jsonwebtoken';
-import AppConfig from '../config/app-config.js';
+import BaseController from './base.controller.js';
+import { TweetType } from '@prisma/client';
+import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
 
 class LikeController extends BaseController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -40,11 +39,8 @@ class LikeController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer', '').trim() ?? '';
-    const decoded: any = jwt.verify(token, AppConfig.JWT_SECRET);
-    const userId = BigInt(decoded.id);
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const loggedInUserId = this.auth.id(req);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const likes = await this.prisma.like.findMany({
       select: {
@@ -90,13 +86,17 @@ class LikeController extends BaseController {
                 createdAt: true,
               },
               where: {
-                userId: BigInt(userId).valueOf(),
+                userId: loggedInUserId,
               },
             },
             _count: {
               select: {
                 likes: true,
-                replies: true,
+                replies: {
+                  where: {
+                    type: TweetType.REPLY,
+                  },
+                },
               },
             },
             createdAt: true,
@@ -108,7 +108,7 @@ class LikeController extends BaseController {
         userId: BigInt(req.params.userId).valueOf(),
       },
       take: limit,
-      skip: offset,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -117,14 +117,13 @@ class LikeController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: likes.length < limit ? null : offset + limit,
+      nextOffset: likes.length < limit ? offset + likes.length : offset + limit,
       records: likes.map((like) => like.tweet),
     });
   }
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
-    const offset = +(req.query.offset || 0);
-    const limit = +(req.query.limit || 10);
+    const { offset, limit } = parsePaginationParams(req.query);
 
     const likes = await this.prisma.like.findMany({
       select: {
@@ -140,8 +139,8 @@ class LikeController extends BaseController {
       where: {
         tweetId: BigInt(req.params.tweetId),
       },
-      take: +(req.query.limit || 10),
-      skip: req.query.offset ? +req.query.offset : 0,
+      take: limit,
+      skip: offset ? 1 : undefined,
       orderBy: {
         createdAt: 'desc',
       },
@@ -150,7 +149,7 @@ class LikeController extends BaseController {
     return res.json({
       currentLimit: limit,
       currentOffset: offset,
-      nextOffset: likes.length < limit ? null : offset + limit,
+      nextOffset: likes.length < limit ? offset + likes.length : offset + limit,
       records: likes.map((like) => like.user),
     });
   }

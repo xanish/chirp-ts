@@ -9,7 +9,7 @@ import util from 'util';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import BaseController from './base-controller.js';
+import BaseController from './base.controller.js';
 import AttachmentErrorsConfig from '../config/attachment-errors-config.js';
 import { ApplicationError } from '../errors/application.error.js';
 
