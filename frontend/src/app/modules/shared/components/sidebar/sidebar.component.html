@@ -36,6 +36,8 @@
     <div class="relative inline-block">
       <ul
         *ngIf="userOptions"
+        (clickOutside)="hideUserOptions()"
+        [exclude]="'#user-settings'"
         class="absolute bottom-12 w-fit rounded-md border border-gray-100 bg-white shadow-sm"
       >
         <li>
@@ -60,6 +62,7 @@
       <button
         type="button"
         (click)="toggleUserOptions()"
+        id="user-settings"
         class="h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-300"
       >
         <fa-icon [icon]="faGear"></fa-icon>

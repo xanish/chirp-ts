@@ -8,11 +8,13 @@
       type="text"
       placeholder="Search"
       (keyup)="handleSearch($event)"
+      (focus)="displaySearchResults()"
+      (clickOutside)="hideSearchResults()"
       class="block w-full rounded border border-gray-200 bg-gray-200 px-4 py-3 text-gray-700 focus:border-indigo-600 focus:bg-white focus:outline-none"
     />
 
     <div
-      *ngIf="searchedUsers.length"
+      *ngIf="searchedUsers.length && showSearchResults"
       class="fixed rounded-md border border-gray-200 bg-white shadow-sm md:w-1/2 lg:w-1/4"
     >
       <ng-template ngFor let-user [ngForOf]="searchedUsers">

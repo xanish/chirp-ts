@@ -8,6 +8,7 @@ import {
   faShareNodes,
   faHeart as faSolidHeart,
 } from '@fortawesome/free-solid-svg-icons';
+import { NgClickOutsideDirective } from 'ng-click-outside2';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
 import { environment } from 'src/environments/environment';
@@ -32,6 +33,7 @@ import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
     NgFor,
     DatePipe,
     TweetModalComponent,
+    NgClickOutsideDirective,
   ],
 })
 export class TweetComponent {
@@ -127,6 +129,10 @@ export class TweetComponent {
       index: event.index,
       attachments: event.attachments,
     });
+  }
+
+  hideRetweetOptions() {
+    this.retweetOptions = false;
   }
 
   hideTweetModal() {

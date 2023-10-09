@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { NgClickOutsideDirective } from 'ng-click-outside2';
 import { TokenService } from 'src/app/modules/core/services/token.service';
 import { User } from '../../models/user.model';
 import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
@@ -18,6 +19,7 @@ import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
     NgIf,
     FontAwesomeModule,
     TweetModalComponent,
+    NgClickOutsideDirective,
   ],
 })
 export class SidebarComponent {
@@ -37,6 +39,10 @@ export class SidebarComponent {
 
   hideTweetModal() {
     this.tweetModal = false;
+  }
+
+  hideUserOptions() {
+    this.userOptions = false;
   }
 
   toggleUserOptions() {
