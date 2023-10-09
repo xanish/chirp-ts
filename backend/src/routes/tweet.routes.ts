@@ -9,8 +9,8 @@ import TweetController from '../controllers/tweet.controller.js';
 import CreateDeleteLikeTweetSchema from '../schemas/tweets/create-delete-like-tweet.schema.js';
 import CreateTweetSchema from '../schemas/tweets/create-tweet.schema.js';
 import DeleteTweetSchema from '../schemas/tweets/delete-tweet.schema.js';
-import FindManyTweetLikesSchema from '../schemas/tweets/find-many-tweet.likes.js';
-import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet.replies.js';
+import FindManyTweetLikesSchema from '../schemas/tweets/find-many-tweet-likes.schema.js';
+import FindManyTweetRepliesSchema from '../schemas/tweets/find-many-tweet-replies.schema.js';
 import FindOneTweetSchema from '../schemas/tweets/find-one-tweet.schema.js';
 
 // middlewares
