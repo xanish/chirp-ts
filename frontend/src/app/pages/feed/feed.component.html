@@ -16,6 +16,7 @@
           <app-tweet
             [tweet]="tweet"
             (toggleLike)="tweetLiked($event)"
+            (showAttachment)="showLightbox($event)"
           ></app-tweet>
         </ng-template>
       </ng-container>
@@ -36,3 +37,10 @@
     </aside>
   </div>
 </div>
+
+<app-lightbox
+  *ngIf="lightbox.show"
+  [attachments]="lightbox.attachments"
+  [startAt]="lightbox.startAt"
+  (close)="closeLightbox()"
+></app-lightbox>

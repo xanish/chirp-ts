@@ -71,6 +71,7 @@
             <app-tweet
               [tweet]="tweet"
               (toggleLike)="objectLiked($event, 'TWEET')"
+              (showAttachment)="showLightbox($event)"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -90,6 +91,7 @@
             <app-tweet
               [tweet]="reply"
               (toggleLike)="objectLiked($event, 'REPLY')"
+              (showAttachment)="showLightbox($event)"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -109,6 +111,7 @@
             <app-tweet
               [tweet]="media"
               (toggleLike)="objectLiked($event, 'MEDIA')"
+              (showAttachment)="showLightbox($event)"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -128,6 +131,7 @@
             <app-tweet
               [tweet]="like"
               (toggleLike)="objectLiked($event, 'LIKE')"
+              (showAttachment)="showLightbox($event)"
             ></app-tweet>
           </ng-template>
         </ng-container>
@@ -150,3 +154,10 @@
     </aside>
   </div>
 </div>
+
+<app-lightbox
+  *ngIf="lightbox.show"
+  [attachments]="lightbox.attachments"
+  [startAt]="lightbox.startAt"
+  (close)="closeLightbox()"
+></app-lightbox>

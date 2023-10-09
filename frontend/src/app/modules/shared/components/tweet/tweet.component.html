@@ -31,13 +31,19 @@
       [ngClass]="gridClasses(displayTweet.attachments.length)"
       *ngIf="displayTweet.attachments.length > 0"
     >
-      <ng-template ngFor let-attachment [ngForOf]="displayTweet.attachments">
+      <ng-template
+        ngFor
+        let-attachment
+        [ngForOf]="displayTweet.attachments"
+        let-i="index"
+      >
         <ng-container *ngIf="attachment.type === attachmentType.IMAGE">
           <img
             class="h-full w-auto border"
             [ngClass]="tweet.attachments.length === 1 ? '' : 'object-none'"
             src="{{ attachment.content }}"
             alt="{{ attachment.id }}"
+            (click)="openLightbox($event, i)"
           />
         </ng-container>
 
@@ -46,7 +52,7 @@
             class="h-full w-auto border"
             [ngClass]="tweet.attachments.length === 1 ? '' : 'object-none'"
             src="{{ attachment.content }}"
-            controls
+            (click)="openLightbox($event, i)"
           ></video>
         </ng-container>
       </ng-template>
@@ -56,6 +62,7 @@
       *ngIf="tweet.type === tweetType.QUOTE"
       [tweet]="tweet.related!"
       [controls]="false"
+      (showAttachment)="openLightboxForQuoteTweet($event)"
       class="rounded-md border border-gray-200"
     ></app-tweet>
 

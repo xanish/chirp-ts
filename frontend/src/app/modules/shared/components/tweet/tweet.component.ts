@@ -16,6 +16,7 @@ import { TweetLike } from '../../enums/tweet-like.enum';
 import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
 import { User } from '../../models/user.model';
+import { TAttachment } from '../../types/attachment.type';
 import { TTweet } from '../../types/tweet.type';
 import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
 
@@ -39,6 +40,10 @@ export class TweetComponent {
   @Output() toggleLike: EventEmitter<{
     id: string;
     action: TweetLike;
+  }> = new EventEmitter();
+  @Output() showAttachment: EventEmitter<{
+    index: number;
+    attachments: Array<TAttachment>;
   }> = new EventEmitter();
 
   faComments = faComments;
@@ -106,6 +111,22 @@ export class TweetComponent {
     this.relatedTweetId = tweetId;
     this.tweetModal = true;
     $event.stopPropagation();
+  }
+
+  openLightbox($event: Event, index: number) {
+    // stop propagation first to prevent video playback on click
+    $event.stopPropagation();
+    this.showAttachment.emit({
+      index: index,
+      attachments: this.tweet.attachments,
+    });
+  }
+
+  openLightboxForQuoteTweet(event: any) {
+    this.showAttachment.emit({
+      index: event.index,
+      attachments: event.attachments,
+    });
   }
 
   hideTweetModal() {

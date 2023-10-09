@@ -1,0 +1,57 @@
+<div class="h-8/12 w-8/12 rounded-lg bg-white p-6 shadow-sm">
+  <div class="flex w-full justify-center">
+    <button
+      type="button"
+      (click)="closeModal()"
+      class="ms-auto h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-200"
+    >
+      <fa-icon [icon]="faXmark"></fa-icon>
+    </button>
+  </div>
+
+  <div class="flex w-full flex-grow-0 items-center justify-between gap-6 pb-12">
+    <button
+      class="h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-200 disabled:pointer-events-none disabled:text-gray-300"
+      [disabled]="attachments.length === 1 || currentIndex === 0"
+      (click)="loadPreviousAttachment()"
+    >
+      <fa-icon [icon]="faChevronLeft"></fa-icon>
+    </button>
+
+    <ng-container
+      *ngIf="
+        attachments.length &&
+        attachments[currentIndex].type === attachmentType.IMAGE
+      "
+    >
+      <img
+        class="h:1/2 w-1/2 object-scale-down"
+        src="{{ attachments[currentIndex].content }}"
+        alt="{{ attachments[currentIndex].id }}"
+      />
+    </ng-container>
+
+    <ng-container
+      *ngIf="
+        attachments.length &&
+        attachments[currentIndex].type === attachmentType.VIDEO
+      "
+    >
+      <video
+        class="h:1/2 w-1/2 object-scale-down"
+        src="{{ attachments[currentIndex].content }}"
+        controls
+      ></video>
+    </ng-container>
+
+    <button
+      class="h-10 w-10 rounded-full bg-transparent text-center text-sm font-semibold uppercase leading-6 text-gray-500 hover:bg-gray-200 disabled:pointer-events-none disabled:text-gray-300"
+      [disabled]="
+        attachments.length === 1 || currentIndex === attachments.length - 1
+      "
+      (click)="loadNextAttachment()"
+    >
+      <fa-icon [icon]="faChevronRight"></fa-icon>
+    </button>
+  </div>
+</div>

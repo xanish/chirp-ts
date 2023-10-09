@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { TweetService } from 'src/app/modules/core/services/tweet.service';
+import { LightboxComponent } from 'src/app/modules/shared/components/lightbox/lightbox.component';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { Tweet } from 'src/app/modules/shared/models/tweet.model';
 import { User } from 'src/app/modules/shared/models/user.model';
@@ -28,6 +29,7 @@ import { TweetComponent } from '../../modules/shared/components/tweet/tweet.comp
     NgIf,
     NgFor,
     SuggestedFollowsComponent,
+    LightboxComponent,
   ],
 })
 export class RepliesComponent implements OnInit {
@@ -37,6 +39,11 @@ export class RepliesComponent implements OnInit {
   tweet: Tweet = Tweet.default();
   replies: Array<Tweet> = [];
   suggestedFollows: Array<User> = [];
+  lightbox = {
+    show: false,
+    attachments: [],
+    startAt: 0,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -91,5 +98,21 @@ export class RepliesComponent implements OnInit {
         return tweet;
       });
     }
+  }
+
+  showLightbox(event: any) {
+    this.lightbox = {
+      show: true,
+      attachments: event.attachments,
+      startAt: event.index,
+    };
+  }
+
+  closeLightbox() {
+    this.lightbox = {
+      show: false,
+      attachments: [],
+      startAt: 0,
+    };
   }
 }

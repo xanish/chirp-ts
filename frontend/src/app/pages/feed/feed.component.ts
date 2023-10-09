@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
+import { LightboxComponent } from 'src/app/modules/shared/components/lightbox/lightbox.component';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
 import { User } from 'src/app/modules/shared/models/user.model';
 import { TUser } from 'src/app/modules/shared/types/user.type';
@@ -29,6 +30,7 @@ import { TTweet } from '../../modules/shared/types/tweet.type';
     NgFor,
     TweetComponent,
     SuggestedFollowsComponent,
+    LightboxComponent,
   ],
 })
 export class FeedComponent implements OnInit {
@@ -36,6 +38,11 @@ export class FeedComponent implements OnInit {
   suggestedFollows: Array<User> = [];
   filters: TPaginationOptions = {
     limit: 10,
+  };
+  lightbox = {
+    show: false,
+    attachments: [],
+    startAt: 0,
   };
 
   constructor(
@@ -85,5 +92,21 @@ export class FeedComponent implements OnInit {
         this.alertService.error(e);
       },
     });
+  }
+
+  showLightbox(event: any) {
+    this.lightbox = {
+      show: true,
+      attachments: event.attachments,
+      startAt: event.index,
+    };
+  }
+
+  closeLightbox() {
+    this.lightbox = {
+      show: false,
+      attachments: [],
+      startAt: 0,
+    };
   }
 }

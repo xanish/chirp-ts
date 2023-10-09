@@ -5,6 +5,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertService } from 'src/app/modules/core/services/alert.service';
 import { SuggestionService } from 'src/app/modules/core/services/suggestion.service';
 import { UserService } from 'src/app/modules/core/services/user.service';
+import { LightboxComponent } from 'src/app/modules/shared/components/lightbox/lightbox.component';
 import { FollowAction } from 'src/app/modules/shared/enums/follow-action.enum';
 import { TabType } from 'src/app/modules/shared/enums/tab-type.enum';
 import { TweetLike } from 'src/app/modules/shared/enums/tweet-like.enum';
@@ -34,6 +35,7 @@ import { User } from '../../modules/shared/models/user.model';
     NgFor,
     TweetComponent,
     SuggestedFollowsComponent,
+    LightboxComponent,
   ],
 })
 export class ProfileComponent implements OnInit {
@@ -50,6 +52,11 @@ export class ProfileComponent implements OnInit {
     replies: { limit: 10 },
     medias: { limit: 10 },
     likes: { limit: 10 },
+  };
+  lightbox = {
+    show: false,
+    attachments: [],
+    startAt: 0,
   };
 
   constructor(
@@ -246,5 +253,21 @@ export class ProfileComponent implements OnInit {
 
   tabChange(tab: TabType) {
     this.tab = tab;
+  }
+
+  showLightbox(event: any) {
+    this.lightbox = {
+      show: true,
+      attachments: event.attachments,
+      startAt: event.index,
+    };
+  }
+
+  closeLightbox() {
+    this.lightbox = {
+      show: false,
+      attachments: [],
+      startAt: 0,
+    };
   }
 }
