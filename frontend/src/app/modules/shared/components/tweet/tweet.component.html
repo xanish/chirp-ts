@@ -52,7 +52,17 @@
       </ng-template>
     </div>
 
-    <div class="mt-2 flex flex-row items-center justify-evenly">
+    <app-tweet
+      *ngIf="tweet.type === tweetType.QUOTE"
+      [tweet]="tweet.related!"
+      [controls]="false"
+      class="rounded-md border border-gray-200"
+    ></app-tweet>
+
+    <div
+      class="mt-2 flex flex-row items-center justify-evenly"
+      *ngIf="controls"
+    >
       <button
         class="w-full rounded-md py-1 text-lg text-gray-500 hover:bg-gray-200 hover:text-indigo-600"
         (click)="openReplyTweetModal($event, displayTweet.id)"
@@ -84,6 +94,7 @@
           <li>
             <button
               class="w-full px-4 py-2 text-sm uppercase leading-6 hover:bg-gray-200"
+              (click)="openQuoteRetweetModal($event, displayTweet.id)"
             >
               Quote Retweet
             </button>
@@ -111,8 +122,8 @@
 </div>
 
 <app-tweet-modal
-  *ngIf="replyTweetModal"
-  [type]="tweetType.REPLY"
+  *ngIf="tweetModal"
+  [type]="relatedType"
   [relatedId]="relatedTweetId"
-  (close)="hideReplyTweetModal()"
+  (close)="hideTweetModal()"
 ></app-tweet-modal>

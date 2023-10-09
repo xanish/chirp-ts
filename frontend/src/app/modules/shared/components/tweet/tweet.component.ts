@@ -35,6 +35,7 @@ import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
 })
 export class TweetComponent {
   @Input({ required: true }) tweet: Tweet = Tweet.default();
+  @Input() controls: boolean = true;
   @Output() toggleLike: EventEmitter<{
     id: string;
     action: TweetLike;
@@ -49,7 +50,8 @@ export class TweetComponent {
   tweetType = TweetType;
   attachmentType = AttachmentType;
   retweetOptions = false;
-  replyTweetModal = false;
+  tweetModal = false;
+  relatedType: TweetType = TweetType.REPLY;
   relatedTweetId: string | null = null;
 
   constructor(
@@ -93,14 +95,25 @@ export class TweetComponent {
   }
 
   openReplyTweetModal($event: Event, tweetId: string) {
+    this.relatedType = TweetType.REPLY;
     this.relatedTweetId = tweetId;
-    this.replyTweetModal = true;
+    this.tweetModal = true;
     $event.stopPropagation();
   }
 
-  hideReplyTweetModal() {
+  openQuoteRetweetModal($event: Event, tweetId: string) {
+    this.relatedType = TweetType.QUOTE;
+    this.relatedTweetId = tweetId;
+    this.tweetModal = true;
+    $event.stopPropagation();
+  }
+
+  hideTweetModal() {
+    if (this.retweetOptions) {
+      this.retweetOptions = false;
+    }
     this.relatedTweetId = null;
-    this.replyTweetModal = false;
+    this.tweetModal = false;
   }
 
   toggleRetweetOptions($event: Event, tweetId: string) {
