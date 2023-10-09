@@ -1,5 +1,11 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -33,9 +39,12 @@ import { ValidationMessageComponent } from '../validation-message/validation-mes
   ],
 })
 export class TweetModalComponent {
+  @Input() type: TweetType = TweetType.TWEET;
+  @Input() relatedId: string | null = null;
   @Output() close: EventEmitter<any> = new EventEmitter();
   @ViewChild('attachments') attachments: any;
 
+  tweetType = TweetType;
   medias: Array<any> = [];
   attachmentType = AttachmentType;
   form = this.formBuilder.group({
@@ -102,10 +111,11 @@ export class TweetModalComponent {
           next: (response: UploadAttachmentResponse) => {
             this.tweetService
               .create({
-                type: TweetType.TWEET,
+                type: this.type,
                 content: this.form.value.content ?? undefined,
                 attachments: response.uploadedFiles,
                 userId: this.tokenService.id(),
+                relatedId: this.relatedId ?? undefined,
               })
               .subscribe({
                 next: (response: TTweet) => {
@@ -127,9 +137,10 @@ export class TweetModalComponent {
       } else {
         this.tweetService
           .create({
-            type: TweetType.TWEET,
+            type: this.type,
             content: this.form.value.content ?? undefined,
             userId: this.tokenService.id(),
+            relatedId: this.relatedId ?? undefined,
           })
           .subscribe({
             next: (response: TTweet) => {

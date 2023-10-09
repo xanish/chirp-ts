@@ -17,13 +17,21 @@ import { TweetType } from '../../enums/tweet-type.enum';
 import { Tweet } from '../../models/tweet.model';
 import { User } from '../../models/user.model';
 import { TTweet } from '../../types/tweet.type';
+import { TweetModalComponent } from '../tweet-modal/tweet-modal.component';
 
 @Component({
   selector: 'app-tweet',
   templateUrl: './tweet.component.html',
   styleUrls: ['./tweet.component.css'],
   standalone: true,
-  imports: [NgIf, FontAwesomeModule, NgClass, NgFor, DatePipe],
+  imports: [
+    NgIf,
+    FontAwesomeModule,
+    NgClass,
+    NgFor,
+    DatePipe,
+    TweetModalComponent,
+  ],
 })
 export class TweetComponent {
   @Input({ required: true }) tweet: Tweet = Tweet.default();
@@ -41,6 +49,8 @@ export class TweetComponent {
   tweetType = TweetType;
   attachmentType = AttachmentType;
   retweetOptions = false;
+  replyTweetModal = false;
+  relatedTweetId: string | null = null;
 
   constructor(
     private router: Router,
@@ -80,6 +90,17 @@ export class TweetComponent {
   openTweet($event: Event, tweetId: string) {
     this.router.navigate(['tweets', tweetId]);
     $event.stopPropagation();
+  }
+
+  openReplyTweetModal($event: Event, tweetId: string) {
+    this.relatedTweetId = tweetId;
+    this.replyTweetModal = true;
+    $event.stopPropagation();
+  }
+
+  hideReplyTweetModal() {
+    this.relatedTweetId = null;
+    this.replyTweetModal = false;
   }
 
   toggleRetweetOptions($event: Event, tweetId: string) {

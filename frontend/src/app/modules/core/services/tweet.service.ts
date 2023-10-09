@@ -20,7 +20,7 @@ export class TweetService {
   ) {}
 
   create(tweet: CreateTweet): Observable<TTweet> {
-    return this.apiService.post('/tweets', tweet);
+    return this.apiService.post('/tweets', filterObjectKeysUtil(tweet));
   }
 
   delete(id: string): Observable<any> {
