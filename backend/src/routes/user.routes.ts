@@ -10,7 +10,7 @@ import UserController from '../controllers/user.controller.js';
 // validation schemas
 import CreateDeleteUserFollowSchema from '../schemas/users/create-delete-user-follow.schema.js';
 import FindManyUserFollowsSchema from '../schemas/users/find-many-user-follows.schema.js';
-import FindManyUserLikesSchema from '../schemas/users/find-many-user.likes.js';
+import FindManyUserLikesSchema from '../schemas/users/find-many-user-likes.schema.js';
 import FindManyUserMediasSchema from '../schemas/users/find-many-user-medias.schema.js';
 import FindManyUserSchema from '../schemas/users/find-many-user.schema.js';
 import FindManyUserTweetsSchema from '../schemas/users/find-many-user-tweets.schema.js';
