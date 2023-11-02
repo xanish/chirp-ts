@@ -1,8 +1,16 @@
-import { Prisma, TweetType } from '@prisma/client';
+import { Prisma, Tweet, TweetType } from '@prisma/client';
 import BaseService from './base.service.js';
 import { ParsedCursorPaginationParams } from '../utils/types/parsed-cursor-pagination-params.type.js';
 
 export class TweetService extends BaseService {
+  async create(tweet: Prisma.TweetCreateInput) {
+    return await this.prisma.tweet.create({ data: tweet });
+  }
+
+  async delete(id: bigint) {
+    return await this.prisma.tweet.delete({ where: { id } });
+  }
+
   async findMany(
     where: Prisma.TweetWhereInput,
     pagination: ParsedCursorPaginationParams,

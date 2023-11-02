@@ -87,13 +87,13 @@ class TweetController extends BaseController {
       attachments: attachments ? { create: attachments } : undefined,
     };
 
-    return res.json(await this.prisma.tweet.create({ data: tweet }));
+    return res.json(await this.tweet.create(tweet));
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const id = BigInt(req.params.tweetId).valueOf();
 
-    const countDeleted = await this.prisma.tweet.delete({ where: { id } });
+    const countDeleted = await this.tweet.delete(id);
 
     return res.status(204).send();
   }
