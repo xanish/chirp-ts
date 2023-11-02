@@ -16,7 +16,7 @@ class FollowController extends BaseController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.userId).valueOf(),
     ];
 
@@ -33,7 +33,7 @@ class FollowController extends BaseController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.userId).valueOf(),
     ];
 
@@ -43,13 +43,12 @@ class FollowController extends BaseController {
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.follow.followers(
       BigInt(req.params.userId).valueOf(),
       { offset, limit },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     return res.json({
@@ -62,13 +61,12 @@ class FollowController extends BaseController {
   }
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
     const follows = await this.follow.followings(
       BigInt(req.params.userId).valueOf(),
       { offset, limit },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     return res.json({

@@ -14,7 +14,7 @@ class LikeController extends BaseController {
 
   async create(req: Request, res: Response, next: NextFunction) {
     const [userId, tweetId] = [
-      BigInt(req.body.userId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.tweetId).valueOf(),
     ];
 
@@ -31,7 +31,7 @@ class LikeController extends BaseController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const [userId, tweetId] = [
-      BigInt(req.body.userId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.tweetId).valueOf(),
     ];
 
@@ -41,13 +41,12 @@ class LikeController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
     const likes = await this.like.findManyUserLikes(
       BigInt(req.params.userId).valueOf(),
       { offset, limit },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     return res.json({
