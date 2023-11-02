@@ -78,7 +78,7 @@ class TweetController extends BaseController {
 
     const tweet = {
       id: this.snowflakeId(),
-      userId: BigInt(req.body.userId).valueOf(),
+      userId: this.auth.id(req),
       content: req.body.content,
       type: req.body.type ?? undefined,
       relatedId: req.body.relatedId
@@ -87,32 +87,29 @@ class TweetController extends BaseController {
       attachments: attachments ? { create: attachments } : undefined,
     };
 
-    return res.json(await this.prisma.tweet.create({ data: tweet }));
+    return res.json(await this.tweet.create(tweet));
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const id = BigInt(req.params.tweetId).valueOf();
 
-    const countDeleted = await this.prisma.tweet.delete({ where: { id } });
+    const countDeleted = await this.tweet.delete(id);
 
     return res.status(204).send();
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
-
     const tweet = await this.tweet.findUnique(
       {
         id: BigInt(req.params.tweetId).valueOf(),
       },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     return res.json(tweet);
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const tweets = await this.tweet.findMany(
@@ -123,7 +120,7 @@ class TweetController extends BaseController {
         },
       },
       { offset, limit },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     // if not tweets then return next offset as null to indicate end of results
@@ -138,7 +135,6 @@ class TweetController extends BaseController {
   }
 
   async findMediaByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parseCursorPaginationParams(req.query);
 
     const tweets = await this.tweet.findMany(
@@ -147,7 +143,7 @@ class TweetController extends BaseController {
         attachments: { some: {} },
       },
       { offset, limit },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     // if not tweets then return next offset as null to indicate end of results

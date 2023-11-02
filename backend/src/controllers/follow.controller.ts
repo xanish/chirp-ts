@@ -2,83 +2,54 @@ import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
 import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
 import { UserService } from '../services/user.service.js';
+import { FollowService } from '../services/follow.service.js';
 
 class FollowController extends BaseController {
   protected user: UserService;
+  protected follow: FollowService;
 
   constructor() {
     super();
     this.user = new UserService();
+    this.follow = new FollowService();
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.userId).valueOf(),
     ];
 
-    const followExists = await this.prisma.follow.findFirst({
-      where: { followerId, followingId },
-    });
+    const followExists = await this.follow.exists(followerId, followingId);
 
     if (followExists) {
       return res.json(followExists);
     }
 
-    const newFollow = await this.prisma.follow.create({
-      data: { followerId, followingId },
-    });
+    const newFollow = await this.follow.create(followerId, followingId);
 
     return res.json(newFollow);
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
     const [followerId, followingId] = [
-      BigInt(req.body.followerId).valueOf(),
+      this.auth.id(req),
       BigInt(req.params.userId).valueOf(),
     ];
 
-    const countDeleted = await this.prisma.follow.deleteMany({
-      where: { followerId, followingId },
-    });
+    const countDeleted = await this.follow.delete(followerId, followingId);
 
     return res.status(204).send();
   }
 
   async followersByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
-    const follows = await this.prisma.follow.findMany({
-      select: {
-        follower: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-            following: {
-              select: {
-                followerId: true,
-                followingId: true,
-                createdAt: true,
-              },
-              where: {
-                followerId: loggedInUserId,
-              },
-            },
-          },
-        },
-      },
-      where: {
-        followingId: BigInt(req.params.userId).valueOf(),
-      },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const follows = await this.follow.followers(
+      BigInt(req.params.userId).valueOf(),
+      { offset, limit },
+      this.auth.id(req)
+    );
 
     return res.json({
       currentLimit: limit,
@@ -90,39 +61,13 @@ class FollowController extends BaseController {
   }
 
   async followingByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
-    const follows = await this.prisma.follow.findMany({
-      select: {
-        following: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-            following: {
-              select: {
-                followerId: true,
-                followingId: true,
-                createdAt: true,
-              },
-              where: {
-                followerId: loggedInUserId,
-              },
-            },
-          },
-        },
-      },
-      where: {
-        followerId: BigInt(req.params.userId).valueOf(),
-      },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const follows = await this.follow.followings(
+      BigInt(req.params.userId).valueOf(),
+      { offset, limit },
+      this.auth.id(req)
+    );
 
     return res.json({
       currentLimit: limit,

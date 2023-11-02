@@ -13,7 +13,6 @@ class ReplyController extends BaseController {
   }
 
   async findByUser(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { limit, offset } = parseCursorPaginationParams(req.query);
 
     const replies = await this.tweet.findMany(
@@ -22,7 +21,7 @@ class ReplyController extends BaseController {
         type: TweetType.REPLY,
       },
       { limit, offset },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     // if not replies then return next offset as null to indicate end of results
@@ -37,7 +36,6 @@ class ReplyController extends BaseController {
   }
 
   async findByTweet(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     const { limit, offset } = parseCursorPaginationParams(req.query);
 
     const replies = await this.tweet.findMany(
@@ -46,7 +44,7 @@ class ReplyController extends BaseController {
         type: TweetType.REPLY,
       },
       { limit, offset },
-      loggedInUserId
+      this.auth.id(req)
     );
 
     // if not replies then return next offset as null to indicate end of results

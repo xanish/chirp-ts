@@ -37,7 +37,6 @@ class UserController extends BaseController {
   }
 
   async findOne(req: Request, res: Response, next: NextFunction) {
-    const loggedInUserId = this.auth.id(req);
     let where: any = {};
 
     try {
