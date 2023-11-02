@@ -2,25 +2,29 @@ import { NextFunction, Request, Response } from 'express';
 import BaseController from './base.controller.js';
 import { TweetType } from '@prisma/client';
 import { parsePaginationParams } from '../utils/functions/parse-pagination-params.function.js';
+import { LikeService } from '../services/like.service.js';
 
 class LikeController extends BaseController {
+  protected like: LikeService;
+
+  constructor() {
+    super();
+    this.like = new LikeService();
+  }
+
   async create(req: Request, res: Response, next: NextFunction) {
     const [userId, tweetId] = [
       BigInt(req.body.userId).valueOf(),
       BigInt(req.params.tweetId).valueOf(),
     ];
 
-    const likeExists = await this.prisma.like.findFirst({
-      where: { userId, tweetId },
-    });
+    const likeExists = await this.like.exists(userId, tweetId);
 
     if (likeExists) {
       return res.json(likeExists);
     }
 
-    const newLike = await this.prisma.like.create({
-      data: { userId, tweetId },
-    });
+    const newLike = await this.like.create(userId, tweetId);
 
     return res.json(newLike);
   }
@@ -31,9 +35,7 @@ class LikeController extends BaseController {
       BigInt(req.params.tweetId).valueOf(),
     ];
 
-    const countDeleted = await this.prisma.like.deleteMany({
-      where: { userId, tweetId },
-    });
+    const countDeleted = await this.like.delete(userId, tweetId);
 
     return res.status(204).send();
   }
@@ -42,77 +44,11 @@ class LikeController extends BaseController {
     const loggedInUserId = this.auth.id(req);
     const { offset, limit } = parsePaginationParams(req.query);
 
-    const likes = await this.prisma.like.findMany({
-      select: {
-        tweet: {
-          select: {
-            id: true,
-            type: true,
-            content: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                firstName: true,
-                lastName: true,
-              },
-            },
-            attachments: {
-              select: {
-                id: true,
-                type: true,
-                content: true,
-              },
-            },
-            related: {
-              select: {
-                id: true,
-                type: true,
-                content: true,
-                user: {
-                  select: {
-                    id: true,
-                    username: true,
-                    firstName: true,
-                    lastName: true,
-                  },
-                },
-                createdAt: true,
-                updatedAt: true,
-              },
-            },
-            likes: {
-              select: {
-                createdAt: true,
-              },
-              where: {
-                userId: loggedInUserId,
-              },
-            },
-            _count: {
-              select: {
-                likes: true,
-                replies: {
-                  where: {
-                    type: TweetType.REPLY,
-                  },
-                },
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-      },
-      where: {
-        userId: BigInt(req.params.userId).valueOf(),
-      },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const likes = await this.like.findManyUserLikes(
+      BigInt(req.params.userId).valueOf(),
+      { offset, limit },
+      loggedInUserId
+    );
 
     return res.json({
       currentLimit: limit,
@@ -125,26 +61,10 @@ class LikeController extends BaseController {
   async findByTweet(req: Request, res: Response, next: NextFunction) {
     const { offset, limit } = parsePaginationParams(req.query);
 
-    const likes = await this.prisma.like.findMany({
-      select: {
-        user: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
-      where: {
-        tweetId: BigInt(req.params.tweetId),
-      },
-      take: limit,
-      skip: offset ? 1 : undefined,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const likes = await this.like.findManyTweetLikes(
+      BigInt(req.params.tweetId),
+      { offset, limit }
+    );
 
     return res.json({
       currentLimit: limit,
