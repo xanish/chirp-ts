@@ -126,6 +126,6 @@ export class LikeService extends BaseService {
       orderBy: {
         createdAt: 'desc',
       },
-    })
+    });
   }
 }
